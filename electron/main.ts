@@ -139,11 +139,14 @@ function createMainWindow() {
     ? savedY
     : 48;
 
+  const appIconPath = path.join(app.getAppPath(), 'public', 'icon.png');
+
   mainWindow = new BrowserWindow({
     width: WIDGET_WIDTH,
     height: WIDGET_HEIGHT,
     x: initialX,
     y: initialY,
+    icon: fs.existsSync(appIconPath) ? appIconPath : undefined,
     frame: false,
     transparent: true,
     resizable: true,
@@ -189,7 +192,10 @@ function createMainWindow() {
 }
 
 function setupTray() {
-  const icon = nativeImage.createEmpty();
+  const iconPath = path.join(app.getAppPath(), 'public', 'icon.png');
+  const icon = fs.existsSync(iconPath)
+    ? nativeImage.createFromPath(iconPath).resize({ width: 18, height: 18 })
+    : nativeImage.createEmpty();
   tray = new Tray(icon);
   tray.setToolTip('D-Deck');
 

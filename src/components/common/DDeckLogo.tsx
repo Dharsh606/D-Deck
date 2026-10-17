@@ -1,31 +1,61 @@
 import React from 'react';
+import iconImg from '../../assets/icon.png';
+import logoImg from '../../assets/logo.png';
 
 interface DDeckLogoProps {
   size?: 'sm' | 'md' | 'lg';
+  variant?: 'icon' | 'full';
+  showText?: boolean;
 }
 
-export const DDeckLogo: React.FC<DDeckLogoProps> = ({ size = 'md' }) => {
-  const sizeMap = {
-    sm: { box: 'w-6 h-6', font: 'text-xs', label: 'text-xs' },
-    md: { box: 'w-7 h-7', font: 'text-sm', label: 'text-sm' },
-    lg: { box: 'w-10 h-10', font: 'text-base', label: 'text-base' },
+export const DDeckLogo: React.FC<DDeckLogoProps> = ({ 
+  size = 'md', 
+  variant = 'icon',
+  showText = true 
+}) => {
+  if (variant === 'full') {
+    const fullSizeMap = {
+      sm: 'h-8',
+      md: 'h-11',
+      lg: 'h-16',
+    };
+    return (
+      <div className="flex items-center select-none">
+        <img 
+          src={logoImg} 
+          alt="D-Deck" 
+          className={`${fullSizeMap[size]} w-auto object-contain drop-shadow-md`} 
+        />
+      </div>
+    );
+  }
+
+  const iconSizeMap = {
+    sm: 'w-6 h-6',
+    md: 'w-7 h-7',
+    lg: 'w-9 h-9',
   };
 
-  const current = sizeMap[size];
+  const textMap = {
+    sm: 'text-xs',
+    md: 'text-sm',
+    lg: 'text-base',
+  };
 
   return (
     <div className="flex items-center gap-2 select-none">
-      <div className={`relative ${current.box} rounded-lg bg-zinc-900 border border-white/10 flex items-center justify-center shadow-sm`}>
-        <span className={`font-mono font-bold text-zinc-100 ${current.font}`}>
-          D
-        </span>
-        <div className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-indigo-500" />
+      <div className={`${iconSizeMap[size]} flex items-center justify-center flex-shrink-0`}>
+        <img 
+          src={iconImg} 
+          alt="D" 
+          className="w-full h-full object-contain drop-shadow-sm" 
+        />
       </div>
-      <div className="flex items-center gap-1.5">
-        <span className={`font-semibold text-zinc-100 tracking-tight font-sans ${current.label}`}>
+      {showText && (
+        <span className={`font-bold text-zinc-100 tracking-tight font-sans ${textMap[size]}`}>
           D-Deck
         </span>
-      </div>
+      )}
     </div>
   );
 };

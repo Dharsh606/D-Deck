@@ -3,82 +3,86 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>D-Deck — Desktop To-Do Widget for Windows & Mobile</title>
-  <meta name="description" content="A lightweight, local-first to-do list widget for Windows with dedicated categories and water tracking." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            deck: {
-              950: '#07090e',
-              900: '#0e121a',
-              850: '#141a26',
-              800: '#1c2436',
-              700: '#28344e',
+    <title>D-Deck — Desktop To-Do Widget for Windows & Mobile</title>
+    <link rel="icon" type="image/png" href="assets/icon.png" />
+    <meta name="description" content="A lightweight, local-first to-do list widget for Windows with dedicated categories and water tracking." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              deck: {
+                950: '#07090e',
+                900: '#0e121a',
+                850: '#141a26',
+                800: '#1c2436',
+                700: '#28344e',
+              }
             }
           }
         }
       }
-    }
-  </script>
-  <style>
-    body {
-      background-color: #07090e;
-      font-family: 'Outfit', sans-serif;
-    }
-    .panel-border {
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-  </style>
-</head>
-<body class="text-slate-100 min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
-  
-  <!-- Navigation -->
-  <header class="border-b border-slate-800/80 bg-deck-950/90 sticky top-0 z-50">
-    <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-7 h-7 rounded-lg bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center font-mono font-bold text-cyan-400 text-sm">
-          D
-        </div>
-        <span class="font-bold text-slate-100 tracking-wide text-sm font-mono">
-          D-Deck
-        </span>
-        <span class="text-[10px] font-mono text-slate-400 px-1.5 py-0.5 rounded bg-deck-900 border border-slate-800">
-          v1.0.0
-        </span>
-      </div>
-
-      <div class="flex items-center gap-3 text-xs font-mono">
-        <a 
-          href="https://github.com/Dharsh606/D-Deck" 
-          target="_blank" 
-          class="text-slate-400 hover:text-slate-200 transition-colors px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-deck-900/60"
-        >
-          GitHub
-        </a>
-        <a 
-          href="#download" 
-          class="px-3.5 py-1.5 rounded-lg bg-cyan-500 text-slate-950 font-semibold hover:bg-cyan-400 transition-colors"
-        >
-          Download
-        </a>
-      </div>
-    </div>
-  </header>
-
-  <!-- Hero Section -->
-  <main class="flex-1 max-w-5xl mx-auto px-6 py-16 flex flex-col items-center text-center">
+    </script>
+    <style>
+      body {
+        background-color: #07090e;
+        font-family: 'Outfit', sans-serif;
+      }
+      .panel-border {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+    </style>
+  </head>
+  <body class="text-slate-100 min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
     
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-800 bg-deck-900 text-slate-300 text-xs font-mono mb-6">
-      <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-      Open-source desktop widget for Windows
-    </div>
+    <!-- Navigation -->
+    <header class="border-b border-slate-800/80 bg-deck-950/90 sticky top-0 z-50">
+      <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="assets/icon.png" alt="D-Deck Icon" class="w-7 h-7 object-contain" />
+          <span class="font-bold text-slate-100 tracking-wide text-sm font-mono">
+            D-Deck
+          </span>
+          <span class="text-[10px] font-mono text-slate-400 px-1.5 py-0.5 rounded bg-deck-900 border border-slate-800">
+            v1.0.0
+          </span>
+        </div>
+
+        <div class="flex items-center gap-3 text-xs font-mono">
+          <a 
+            href="https://github.com/Dharsh606/D-Deck" 
+            target="_blank" 
+            class="text-slate-400 hover:text-slate-200 transition-colors px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-deck-900/60"
+          >
+            GitHub
+          </a>
+          <a 
+            href="#download" 
+            class="px-3.5 py-1.5 rounded-lg bg-cyan-500 text-slate-950 font-semibold hover:bg-cyan-400 transition-colors"
+          >
+            Download
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="flex-1 max-w-5xl mx-auto px-6 py-12 flex flex-col items-center text-center">
+      
+      <!-- Full Branding Logo -->
+      <div class="mb-6 flex justify-center">
+        <img src="assets/logo.png" alt="D-Deck Logo" class="h-32 md:h-40 w-auto object-contain drop-shadow-xl" />
+      </div>
+
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-800 bg-deck-900 text-slate-300 text-xs font-mono mb-4">
+        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+        Open-source desktop widget for Windows
+      </div>
 
     <h1 class="text-3xl md:text-5xl font-bold tracking-tight max-w-2xl text-slate-100">
       A desktop to-do widget with separate lists and water tracking.

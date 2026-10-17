@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/logo.png" alt="D-Deck Logo" width="200" />
+</p>
+
 # D-Deck
 
 A lightweight desktop to-do widget for Windows with dedicated lists and a local water intake tracker.

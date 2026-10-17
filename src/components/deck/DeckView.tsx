@@ -104,8 +104,8 @@ export const DeckView: React.FC<DeckViewProps> = ({
       {/* Sidebar */}
       <div className="w-56 bg-canvas-950/90 border-r border-white/[0.06] flex flex-col justify-between p-3.5">
         <div>
-          <div className="titlebar-drag pb-3 mb-3 border-b border-white/[0.06] cursor-move">
-            <DDeckLogo size="md" />
+          <div className="titlebar-drag pb-3 mb-3 border-b border-white/[0.06] cursor-move flex items-center justify-start pl-1">
+            <DDeckLogo size="md" variant="full" />
           </div>
 
           <nav className="space-y-0.5">
