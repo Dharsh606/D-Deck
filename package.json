@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "D-Deck: Futuristic Desktop Widget & Life Command Center for Windows & Mobile",
   "main": "dist-electron/electron/main.js",
-  "author": "Dharshan <https://github.com/Dharsh606>",
+  "author": "Dharshan V <https://github.com/Dharsh606>",
   "license": "MIT",
   "scripts": {
     "dev": "vite",

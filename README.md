@@ -2,6 +2,8 @@
 
 A lightweight desktop to-do widget for Windows with dedicated lists and a local water intake tracker.
 
+**Software Developer:** Dharshan V
+
 ## Background
 
 Most to-do software today is either trapped inside a browser tab or locked behind cloud accounts and subscriptions. On mobile, home screen widgets are common, but on Windows, having a simple widget that stays on the desktop or floats when needed is surprisingly difficult to find without installing heavy third-party shells or Chrome extensions.
@@ -45,6 +47,11 @@ Instead of one long dump of tasks, D-Deck provides dedicated categories:
 D-Deck is not published to the Microsoft Store or Google Play. It is distributed directly as an open-source project:
 - **Windows**: Standalone executable and installer available on GitHub Releases and personal website downloads.
 - **Android**: Companion build in progress to share the same local storage structure with an Android home-screen widget.
+
+## Developer
+
+**Software Developer:** Dharshan V  
+GitHub: [https://github.com/Dharsh606](https://github.com/Dharsh606)
 
 ## License
 
