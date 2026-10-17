@@ -8,8 +8,8 @@ let tray: Tray | null = null;
 let currentMode: ViewMode = 'widget';
 let reminderIntervalTimer: NodeJS.Timeout | null = null;
 
-const WIDGET_WIDTH = 370;
-const WIDGET_HEIGHT = 580;
+const WIDGET_WIDTH = 280;
+const WIDGET_HEIGHT = 380;
 const DECK_WIDTH = 1080;
 const DECK_HEIGHT = 740;
 
@@ -18,15 +18,12 @@ const DATA_FILE_PATH = path.join(app.getPath('userData'), 'd-deck-data.json');
 // Default initial storage - clean empty slate
 const DEFAULT_DECK_DATA: DeckData = {
   tasks: [],
-  waterHistory: {},
   settings: {
     startupOnBoot: true,
     alwaysOnTop: true,
     notificationsEnabled: true,
     soundEnabled: true,
     widgetOpacity: 0.95,
-    waterTargetMl: 3500,
-    waterReminderIntervalMin: 90,
   }
 };
 
@@ -79,7 +76,69 @@ function showSystemNotification(title: string, body: string, silent: boolean = f
   notification.show();
 }
 
-function checkTaskAndWaterReminders() {
+// 3-Stage Precise Reminder Engine (-5m, exact, +5m)
+function checkThreeStageReminders() {
+  const data = readDeckData();
+  if (!data.settings.notificationsEnabled) return;
+
+  const now = new Date();
+  let changed = false;
+
+  for (const task of data.tasks) {
+    if (task.completed || !task.reminderEnabled || !task.dueDate) continue;
+
+    // Time-based 3-stage notifications
+    if (task.dueTime) {
+      const [y, m, d] = task.dueDate.split('-').map(Number);
+      const [hh, mm] = task.dueTime.split(':').map(Number);
+      const targetDate = new Date(y, m - 1, d, hh, mm, 0);
+      const diffMinutes = (targetDate.getTime() - now.getTime()) / (60 * 1000);
+
+      if (!task.reminderStages) {
+        task.reminderStages = {};
+      }
+
+      // Stage 1: 5 minutes before (diff between 3.5 and 5.5 min)
+      if (diffMinutes <= 5.5 && diffMinutes >= 3.5 && !task.reminderStages.pre5) {
+        task.reminderStages.pre5 = true;
+        changed = true;
+        showSystemNotification(
+          'D-Deck (Upcoming in 5m)',
+          `Scheduled at ${task.dueTime}: "${task.title}"`
+        );
+      }
+
+      // Stage 2: Exact due time (diff between -1.5 and 0.5 min)
+      if (diffMinutes <= 0.5 && diffMinutes >= -1.5 && !task.reminderStages.exact) {
+        task.reminderStages.exact = true;
+        changed = true;
+        showSystemNotification(
+          'D-Deck Reminder',
+          `Time for: "${task.title}" (${task.dueTime})`
+        );
+      }
+
+      // Stage 3: 5 minutes after if still pending (diff between -7.0 and -4.5 min)
+      if (diffMinutes <= -4.5 && diffMinutes >= -7.0 && !task.reminderStages.post5 && !task.completed) {
+        task.reminderStages.post5 = true;
+        changed = true;
+        showSystemNotification(
+          'D-Deck Follow-up (+5m)',
+          `"${task.title}" is still pending. Don't forget to mark it done!`
+        );
+      }
+    }
+  }
+
+  if (changed) {
+    writeDeckData(data);
+    if (mainWindow) {
+      mainWindow.webContents.send('deck:data-updated', data);
+    }
+  }
+}
+
+function checkStartupAgenda() {
   const data = readDeckData();
   if (!data.settings.notificationsEnabled) return;
 
@@ -87,40 +146,27 @@ function checkTaskAndWaterReminders() {
   const overdueTasks = data.tasks.filter(t => !t.completed && t.dueDate && t.dueDate < today);
   const dueTodayTasks = data.tasks.filter(t => !t.completed && t.dueDate === today);
 
-  // Overdue tasks reminder
   if (overdueTasks.length > 0) {
     const taskSample = overdueTasks.slice(0, 2).map(t => `"${t.title}"`).join(', ');
     showSystemNotification(
-      'D-Deck',
+      'D-Deck Attention',
       `${overdueTasks.length} task(s) are overdue: ${taskSample}`
     );
   } else if (dueTodayTasks.length > 0) {
     showSystemNotification(
-      'D-Deck',
+      'D-Deck Agenda',
       `You have ${dueTodayTasks.length} task(s) scheduled for today.`
     );
-  }
-
-  // Water check
-  const todayWater = data.waterHistory[today]?.currentMl || 0;
-  const target = data.settings.waterTargetMl || 3500;
-  if (todayWater < target) {
-    setTimeout(() => {
-      showSystemNotification(
-        'D-Deck Water Reminder',
-        `Logged: ${todayWater}ml / ${target}ml. Don't forget to stay hydrated.`
-      );
-    }, 4000);
   }
 }
 
 function startReminderLoop() {
   if (reminderIntervalTimer) clearInterval(reminderIntervalTimer);
 
-  // Check every 30 minutes for overdue tasks and water intake
+  // Monitor reminders every 20 seconds for precise -5m, exact, and +5m trigger
   reminderIntervalTimer = setInterval(() => {
-    checkTaskAndWaterReminders();
-  }, 30 * 60 * 1000);
+    checkThreeStageReminders();
+  }, 20 * 1000);
 }
 
 function createMainWindow() {
@@ -219,31 +265,6 @@ function setupTray() {
     },
     { type: 'separator' },
     {
-      label: 'Log 250ml Water',
-      click: () => {
-        const data = readDeckData();
-        const today = new Date().toISOString().split('T')[0];
-        const now = new Date();
-        const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-        
-        if (!data.waterHistory[today]) {
-          data.waterHistory[today] = {
-            date: today,
-            targetMl: data.settings.waterTargetMl,
-            currentMl: 250,
-            entries: [{ id: 'w-' + Date.now(), time: timeStr, amountMl: 250 }]
-          };
-        } else {
-          data.waterHistory[today].currentMl += 250;
-          data.waterHistory[today].entries.push({ id: 'w-' + Date.now(), time: timeStr, amountMl: 250 });
-        }
-        writeDeckData(data);
-        showSystemNotification('D-Deck', `+250ml logged. Total: ${data.waterHistory[today].currentMl}ml`);
-        if (mainWindow) mainWindow.webContents.send('deck:data-updated', data);
-      }
-    },
-    { type: 'separator' },
-    {
       label: 'Quit D-Deck',
       click: () => app.quit()
     }
@@ -324,7 +345,7 @@ ipcMain.handle('window:save-position', (_, mode: ViewMode, x: number, y: number)
 app.whenReady().then(() => {
   createMainWindow();
   setupTray();
-  checkTaskAndWaterReminders();
+  checkStartupAgenda();
   startReminderLoop();
 
   const initialData = readDeckData();

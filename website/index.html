@@ -3,93 +3,106 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>D-Deck — Desktop To-Do Widget for Windows & Mobile</title>
-    <link rel="icon" type="image/png" href="assets/icon.png" />
-    <meta name="description" content="A lightweight, local-first to-do list widget for Windows with dedicated categories and water tracking." />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            colors: {
-              deck: {
-                950: '#07090e',
-                900: '#0e121a',
-                850: '#141a26',
-                800: '#1c2436',
-                700: '#28344e',
-              }
+  <title>D-Deck — Desktop To-Do Widget for Windows & Mobile</title>
+  <link rel="icon" type="image/png" href="assets/icon.png" />
+  <meta name="description" content="A lightweight, local-first to-do list widget for Windows with dedicated categories and 3-stage smart reminders." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              yellow: '#F59E0B',
+              gold: '#EAB308',
+              green: '#10B981',
+              emerald: '#059669',
+            },
+            canvas: {
+              950: '#07080A',
+              900: '#0D0E12',
+              850: '#13151A',
+              800: '#1A1D24',
+              700: '#262A34',
             }
           }
         }
       }
-    </script>
-    <style>
-      body {
-        background-color: #07090e;
-        font-family: 'Outfit', sans-serif;
-      }
-      .panel-border {
-        border: 1px solid rgba(255, 255, 255, 0.08);
-      }
-    </style>
-  </head>
-  <body class="text-slate-100 min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
+    }
+  </script>
+  <style>
+    body {
+      background-color: #07080A;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .panel-border {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-glow {
+      box-shadow: 0 0 35px -5px rgba(234, 179, 8, 0.08);
+    }
+  </style>
+</head>
+<body class="text-zinc-100 min-h-screen flex flex-col justify-between selection:bg-amber-400 selection:text-black">
+  
+  <!-- Navigation Header -->
+  <header class="border-b border-white/[0.06] bg-canvas-950/90 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="assets/icon.png" alt="D-Deck Icon" class="w-7 h-7 object-contain rounded-md" />
+        <span class="font-bold text-white tracking-tight text-sm font-mono">
+          D-Deck
+        </span>
+        <span class="text-[10px] font-mono text-amber-300 px-2 py-0.5 rounded bg-amber-400/10 border border-amber-400/25">
+          v1.0.0 Stable
+        </span>
+      </div>
+
+      <div class="flex items-center gap-3 text-xs font-mono">
+        <a 
+          href="https://github.com/Dharsh606/D-Deck" 
+          target="_blank" 
+          class="text-zinc-400 hover:text-amber-300 transition-colors px-3 py-1.5 rounded-xl border border-white/[0.08] hover:border-amber-400/30 bg-canvas-900"
+        >
+          GitHub
+        </a>
+        <a 
+          href="#download" 
+          class="px-4 py-1.5 rounded-xl bg-emerald-500 text-zinc-950 font-bold hover:bg-emerald-400 transition-all shadow-sm shadow-emerald-500/20 active:scale-95"
+        >
+          Download
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="flex-1 max-w-5xl mx-auto px-6 py-12 flex flex-col items-center text-center">
     
-    <!-- Navigation -->
-    <header class="border-b border-slate-800/80 bg-deck-950/90 sticky top-0 z-50">
-      <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <img src="assets/icon.png" alt="D-Deck Icon" class="w-7 h-7 object-contain" />
-          <span class="font-bold text-slate-100 tracking-wide text-sm font-mono">
-            D-Deck
-          </span>
-          <span class="text-[10px] font-mono text-slate-400 px-1.5 py-0.5 rounded bg-deck-900 border border-slate-800">
-            v1.0.0
-          </span>
-        </div>
+    <!-- Big Official Branding Logo -->
+    <div class="mb-6 flex justify-center">
+      <img src="assets/logo.png" alt="D-Deck Logo" class="h-32 md:h-44 w-auto object-contain drop-shadow-2xl" />
+    </div>
 
-        <div class="flex items-center gap-3 text-xs font-mono">
-          <a 
-            href="https://github.com/Dharsh606/D-Deck" 
-            target="_blank" 
-            class="text-slate-400 hover:text-slate-200 transition-colors px-3 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-deck-900/60"
-          >
-            GitHub
-          </a>
-          <a 
-            href="#download" 
-            class="px-3.5 py-1.5 rounded-lg bg-cyan-500 text-slate-950 font-semibold hover:bg-cyan-400 transition-colors"
-          >
-            Download
-          </a>
-        </div>
-      </div>
-    </header>
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-xs font-mono mb-4">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+      Open-Source Desktop HUD Widget & Personal Command Center
+    </div>
 
-    <!-- Hero Section -->
-    <main class="flex-1 max-w-5xl mx-auto px-6 py-12 flex flex-col items-center text-center">
-      
-      <!-- Full Branding Logo -->
-      <div class="mb-6 flex justify-center">
-        <img src="assets/logo.png" alt="D-Deck Logo" class="h-32 md:h-40 w-auto object-contain drop-shadow-xl" />
-      </div>
-
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-800 bg-deck-900 text-slate-300 text-xs font-mono mb-4">
-        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-        Open-source desktop widget for Windows
-      </div>
-
-    <h1 class="text-3xl md:text-5xl font-bold tracking-tight max-w-2xl text-slate-100">
-      A desktop to-do widget with separate lists and water tracking.
+    <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight max-w-2xl text-white">
+      Your agenda on your desktop. <br/><span class="text-amber-400">Zero distraction, 100% offline.</span>
     </h1>
 
-    <p class="text-sm md:text-base text-slate-400 max-w-xl mt-4 leading-relaxed">
-      D-Deck stays on your Windows desktop as a draggable widget. Add tasks in two clicks, track your daily 3.5L water target, and keep coding, gaming, projects, and movies in distinct lists.
+    <p class="text-sm md:text-base text-zinc-400 max-w-xl mt-4 leading-relaxed font-normal">
+      D-Deck is a compact, floating Windows widget and command deck crafted for developers, gamers, and focused creators. Segregate your coding sprints, project backlogs, gaming sessions, and daily routines with 3-stage precision reminders.
     </p>
 
     <!-- Download Section -->
@@ -97,7 +110,7 @@
       <a 
         href="https://github.com/Dharsh606/D-Deck/releases" 
         target="_blank"
-        class="flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold transition-all shadow-lg shadow-cyan-500/10"
+        class="flex items-center gap-2.5 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold transition-all shadow-lg shadow-emerald-500/20 active:scale-95"
       >
         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
         Download for Windows (.exe)
@@ -106,70 +119,80 @@
       <a 
         href="https://github.com/Dharsh606/D-Deck" 
         target="_blank"
-        class="flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-deck-900 border border-slate-800 hover:border-slate-700 text-slate-300 transition-colors"
+        class="flex items-center gap-2.5 px-6 py-3 rounded-xl bg-canvas-900 border border-white/[0.08] hover:border-amber-400/40 text-zinc-300 hover:text-amber-300 transition-colors"
       >
         Source Code (GitHub)
       </a>
     </div>
 
-    <!-- Core Details -->
+    <!-- Core Highlights Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-16 text-left w-full">
       
-      <div class="p-5 rounded-2xl bg-deck-900/60 panel-border">
-        <h3 class="text-sm font-semibold text-slate-200 font-mono">Desktop Widget</h3>
-        <p class="text-xs text-slate-400 mt-2 leading-relaxed">
-          Stays on your desktop or floats above windows. Click the plus button to quickly add a task without opening heavy applications.
+      <div class="p-5 rounded-2xl bg-canvas-900/80 panel-border hover:border-amber-400/30 transition-all">
+        <div class="w-8 h-8 rounded-lg bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-300 font-mono text-xs font-bold mb-3">
+          HUD
+        </div>
+        <h3 class="text-sm font-semibold text-white font-mono">Ultra-Compact Widget</h3>
+        <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
+          Floats quietly in any screen corner with persistent desktop coordinates. Add tasks in two clicks without interrupting what you're doing.
         </p>
       </div>
 
-      <div class="p-5 rounded-2xl bg-deck-900/60 panel-border">
-        <h3 class="text-sm font-semibold text-slate-200 font-mono">Categorized Lists</h3>
-        <p class="text-xs text-slate-400 mt-2 leading-relaxed">
-          Pre-built spaces for Coding, Projects, Gaming backlog, Movie watchlist, Daily errands, and Fitness.
+      <div class="p-5 rounded-2xl bg-canvas-900/80 panel-border hover:border-emerald-400/30 transition-all">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-300 font-mono text-xs font-bold mb-3">
+          3x
+        </div>
+        <h3 class="text-sm font-semibold text-white font-mono">3-Stage Smart Reminders</h3>
+        <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
+          Monitors task times at 5 minutes before, at the exact time, and 5 minutes after if still pending. Automatically stops when marked complete.
         </p>
       </div>
 
-      <div class="p-5 rounded-2xl bg-deck-900/60 panel-border">
-        <h3 class="text-sm font-semibold text-slate-200 font-mono">Local Storage</h3>
-        <p class="text-xs text-slate-400 mt-2 leading-relaxed">
-          100% offline. Stored in your local AppData directory as JSON. Zero cloud databases, accounts, or telemetry.
+      <div class="p-5 rounded-2xl bg-canvas-900/80 panel-border hover:border-white/20 transition-all">
+        <div class="w-8 h-8 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-white font-mono text-xs font-bold mb-3">
+          100%
+        </div>
+        <h3 class="text-sm font-semibold text-white font-mono">Local-First Privacy</h3>
+        <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
+          Zero cloud databases, zero telemetry, zero monthly subscriptions. Your entire backlog is saved in your local Windows AppData directory as JSON.
         </p>
       </div>
 
     </div>
 
-    <!-- Architecture & Features Checklist -->
-    <div class="mt-12 w-full p-6 rounded-2xl bg-deck-900/40 panel-border text-left">
-      <h4 class="text-xs font-mono font-semibold uppercase text-slate-400 tracking-wider mb-4">
-        Technical Details
+    <!-- Technical Architecture Spec -->
+    <div class="mt-12 w-full p-6 rounded-2xl bg-canvas-900/60 panel-border text-left">
+      <h4 class="text-xs font-mono font-semibold uppercase text-amber-300 tracking-wider mb-4 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+        Developer Specifications
       </h4>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300 font-mono">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-zinc-300 font-mono">
         <div class="flex items-center gap-2">
-          <span class="text-cyan-400">✓</span> Auto-start with Windows on login
+          <span class="text-emerald-400 font-bold">✓</span> Windows auto-start on desktop login
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-cyan-400">✓</span> Native Windows toast notifications
+          <span class="text-emerald-400 font-bold">✓</span> Native Windows toast notifications
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-cyan-400">✓</span> 3.5L daily water goal with quick logging
+          <span class="text-emerald-400 font-bold">✓</span> Time-scheduled task monitoring
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-cyan-400">✓</span> Single JSON file backup & export
+          <span class="text-emerald-400 font-bold">✓</span> Single JSON file backup & 1-click export
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-cyan-400">✓</span> Minimal CPU and RAM usage
+          <span class="text-emerald-400 font-bold">✓</span> Lightweight RAM & CPU footprint
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-cyan-400">✓</span> Dual widget and full-view modes
+          <span class="text-emerald-400 font-bold">✓</span> Dual compact widget and full-view deck
         </div>
       </div>
     </div>
 
   </main>
 
-  <!-- Footer -->
-  <footer class="border-t border-slate-800/80 bg-deck-950 py-6 text-center text-xs text-slate-500 font-mono">
-    <p>D-Deck • Built by Dharshan V (Software Developer) • MIT License</p>
+  <!-- Developer Footer -->
+  <footer class="border-t border-white/[0.06] bg-canvas-950 py-6 text-center text-xs text-zinc-500 font-mono">
+    <p>D-Deck • Software Developer: <span class="text-zinc-300 font-semibold">Dharshan V</span> • MIT License (Open Source)</p>
   </footer>
 
 </body>

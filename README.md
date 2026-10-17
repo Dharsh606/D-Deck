@@ -4,58 +4,61 @@
 
 # D-Deck
 
-A lightweight desktop to-do widget for Windows with dedicated lists and a local water intake tracker.
+A lightweight, local-first desktop to-do widget for Windows with dedicated category backlogs and 3-stage precision reminders.
 
-**Software Developer:** Dharshan V
+**SOFTWARE DEVELOPER - Dharshan V**
 
 ## Background
 
-Most to-do software today is either trapped inside a browser tab or locked behind cloud accounts and subscriptions. On mobile, home screen widgets are common, but on Windows, having a simple widget that stays on the desktop or floats when needed is surprisingly difficult to find without installing heavy third-party shells or Chrome extensions.
+Most task management tools today are trapped inside heavy browser tabs or locked behind recurring subscription models and cloud telemetry. On mobile, home screen widgets are common, but on Windows, having a dedicated floating widget that stays on your desktop without requiring third-party shells or memory-heavy browser extensions is surprisingly rare.
 
-I built D-Deck for my own daily workflow. I watch movies, play games, write code, work on personal projects, and try to drink 3 to 4 liters of water every day. Mixing all of that into one generic checklist never worked well, so D-Deck splits everything into separate lists while keeping an interactive widget on the desktop for quick access.
+I built D-Deck for my own daily setup. As a developer, I write code, manage project milestones, play games, watch movies, hit the gym, and handle daily errands. Lumping all of that into a single generic to-do list doesn't work. D-Deck provides distinct, purpose-built lists with an ultra-compact, persistent desktop HUD widget that is always within reach.
 
 ## Features
 
-### Desktop Widget
-- Stays on the desktop or can be pinned on top of other windows.
-- Frameless, draggable, and opens a quick-add dialog directly from the widget.
-- Can be collapsed to a compact HUD or expanded to a full management view when organizing larger lists.
+### Ultra-Compact Desktop Widget
+- 50% smaller visual footprint than standard utility windows (280px × 380px).
+- Sits unobtrusively on your desktop or stays pinned on top of active applications.
+- Draggable with permanent screen position memory across restarts.
+- 2-click task capture with quick-category assignment and subtask checklists.
+- 1-click toggle between compact floating widget and the full command deck.
 
-### Separate Lists
-Instead of one long dump of tasks, D-Deck provides dedicated categories:
-- **Coding**: Bugs, features, repo tasks, and technical notes.
-- **Projects**: Multi-day milestones with duration tracking and deadlines.
-- **Gaming**: Backlog, currently playing, and completed games with platform tags.
-- **Movies**: Watchlist with personal ratings (1-5 stars) and viewing status.
-- **Daily**: Day-to-day errands and recurring chores.
-- **Fitness**: Workouts, cardio, and physical goals.
+### 3-Stage Smart Reminders
+Unlike basic to-do apps with a single ping, D-Deck monitors your scheduled tasks at three critical moments:
+1. **T - 5 minutes**: Advance heads-up notification before your task or session begins.
+2. **T (Exact time)**: Prompt alert when the scheduled time arrives.
+3. **T + 5 minutes**: Follow-up notification if the task remains uncompleted, ensuring you don't sleep through or miss your schedule.
+- When you check off a task, subsequent reminders automatically stop.
 
-### Water Tracker
-- Configurable daily water intake goal (defaults to 3.5 liters).
-- Quick add buttons for 250ml (glass) and 500ml (bottle) directly on the widget.
-- Visual intake progress without needing to open a separate tracking app.
-- Optional reminder notifications if intake falls behind during the day.
+### Dedicated Category Boards
+- **Coding**: Sprint tasks, bug fixes, repo actions, and technical notes.
+- **Projects**: Multi-day initiatives with duration spans and milestone tracking.
+- **Gaming**: Backlog, currently playing titles, and platform tags.
+- **Movies**: Watchlist with viewing status and personal ratings.
+- **Daily**: Chores, hydration reminders, and day-to-day routines.
+- **Fitness**: Training splits, workouts, and cardio sessions.
 
-### Windows Integration
+### Windows Native Integration
 - Starts with Windows on user login (toggleable in settings).
-- Sends native Windows notifications on startup for any overdue tasks or missed water goals.
-- Runs in the system tray when closed or minimized.
+- Sends native Windows toast notifications for upcoming tasks, scheduled times, and overdue items.
+- Silent minimize to system tray icon.
 
-### Storage and Privacy
-- 100% offline. No cloud databases, no user accounts, and no telemetry.
-- All tasks and water logs are written directly to a local JSON file in `%APPDATA%/d-deck/`.
-- Built-in JSON export so you can back up or move your data anytime.
+### Local-First Privacy
+- 100% offline. No cloud databases, no user accounts, and zero telemetry.
+- All tasks and preferences are saved directly to a single JSON file in `%APPDATA%/d-deck/d-deck-data.json`.
+- 1-click JSON backup and data export.
 
 ## Availability
 
-D-Deck is not published to the Microsoft Store or Google Play. It is distributed directly as an open-source project:
-- **Windows**: Standalone executable and installer available on GitHub Releases and personal website downloads.
-- **Android**: Companion build in progress to share the same local storage structure with an Android home-screen widget.
+D-Deck is not distributed through commercial app stores. It is available as a free, open-source release:
+- **Windows**: NSIS installer and standalone portable build available via GitHub Releases and official website.
+- **Android**: Companion APK in progress using the same offline local data model.
 
 ## Developer
 
-**Software Developer:** Dharshan V  
-GitHub: [https://github.com/Dharsh606](https://github.com/Dharsh606)
+**SOFTWARE DEVELOPER - Dharshan V**  
+GitHub: [https://github.com/Dharsh606](https://github.com/Dharsh606)  
+Project Repository: [https://github.com/Dharsh606/D-Deck](https://github.com/Dharsh606/D-Deck)
 
 ## License
 

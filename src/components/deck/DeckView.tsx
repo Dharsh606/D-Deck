@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import type { Task, TaskCategory, DailyWaterData, AppSettings } from '../../types';
+import type { Task, TaskCategory, AppSettings } from '../../types';
 import { CATEGORIES, getCategoryTheme } from '../../constants/categories';
 import { DDeckLogo } from '../common/DDeckLogo';
 import { TaskItem } from '../widget/TaskItem';
-import { WaterBar } from '../widget/WaterBar';
 import { QuickAddModal } from '../widget/QuickAddModal';
+import logoImg from '../../assets/logo.png';
 import { 
   LayoutDashboard, 
   Code2, 
   FolderGit2, 
   Gamepad2, 
   Film, 
-  Droplets, 
   Flame, 
   CheckSquare, 
   Settings as SettingsIcon, 
+  Info,
   Minimize2, 
   Plus, 
   Search, 
@@ -23,21 +23,22 @@ import {
   Volume2, 
   Power,
   Minus,
-  X
+  X,
+  Globe,
+  ExternalLink,
+  Clock,
+  Sparkles
 } from 'lucide-react';
 import { sfx } from '../../services/audio';
 import { exportDataAsJSON } from '../../services/storage';
 
 interface DeckViewProps {
   tasks: Task[];
-  waterData?: DailyWaterData;
   settings: AppSettings;
   onAddTask: (task: Omit<Task, 'id' | 'createdAt' | 'completed'>) => void;
   onToggleTask: (taskId: string) => void;
   onDeleteTask: (taskId: string) => void;
   onToggleSubtask?: (taskId: string, subtaskId: string) => void;
-  onAddWater: (amountMl: number) => void;
-  onResetWater?: () => void;
   onUpdateSettings: (newSettings: Partial<AppSettings>) => void;
   onSwitchToWidget: () => void;
   onMinimize: () => void;
@@ -46,14 +47,11 @@ interface DeckViewProps {
 
 export const DeckView: React.FC<DeckViewProps> = ({
   tasks,
-  waterData,
   settings,
   onAddTask,
   onToggleTask,
   onDeleteTask,
   onToggleSubtask,
-  onAddWater,
-  onResetWater,
   onUpdateSettings,
   onSwitchToWidget,
   onMinimize,
@@ -70,6 +68,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
   const pendingTasksCount = tasks.filter(t => !t.completed).length;
   const urgentTasksCount = tasks.filter(t => !t.completed && t.priority === 'urgent').length;
   const overdueTasksCount = tasks.filter(t => !t.completed && t.dueDate && t.dueDate < todayStr).length;
+  const todayTasksCount = tasks.filter(t => !t.completed && t.dueDate === todayStr).length;
 
   const filteredTasks = tasks.filter(t => {
     if (searchQuery.trim()) {
@@ -82,7 +81,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
 
     if (activeTab === 'overview') return true;
     if (activeTab === 'settings') return true;
-    if (activeTab === 'water') return false;
+    if (activeTab === 'about') return true;
     return t.category === activeTab;
   });
 
@@ -94,12 +93,12 @@ export const DeckView: React.FC<DeckViewProps> = ({
     { id: 'movies', label: 'Movies', icon: Film },
     { id: 'daily', label: 'Daily', icon: CheckSquare },
     { id: 'fitness', label: 'Fitness', icon: Flame },
-    { id: 'water', label: 'Water Tracker', icon: Droplets },
     { id: 'settings', label: 'Settings', icon: SettingsIcon },
+    { id: 'about', label: 'About D-Deck', icon: Info },
   ];
 
   return (
-    <div className="w-[1080px] h-[740px] flex glass-surface rounded-2xl overflow-hidden font-sans select-none">
+    <div className="w-[1080px] h-[740px] flex glass-surface rounded-2xl overflow-hidden font-sans select-none shadow-2xl">
       
       {/* Sidebar */}
       <div className="w-56 bg-canvas-950/90 border-r border-white/[0.06] flex flex-col justify-between p-3.5">
@@ -114,7 +113,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
               const isActive = activeTab === item.id;
               const count = item.id === 'overview' 
                 ? pendingTasksCount 
-                : item.id === 'water' || item.id === 'settings' 
+                : item.id === 'settings' || item.id === 'about'
                 ? null 
                 : tasks.filter(t => t.category === item.id && !t.completed).length;
 
@@ -127,7 +126,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
                   }}
                   className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs transition-all ${
                     isActive
-                      ? 'bg-zinc-800 text-zinc-100 font-semibold border border-white/[0.08]'
+                      ? 'bg-zinc-800 text-amber-300 font-semibold border border-amber-400/25 shadow-sm'
                       : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60'
                   }`}
                 >
@@ -242,29 +241,21 @@ export const DeckView: React.FC<DeckViewProps> = ({
                 </div>
 
                 <div className="p-4 rounded-xl bg-canvas-850/80 border border-white/[0.06]">
-                  <span className="text-[10px] font-mono text-sky-400 uppercase tracking-wider">Water</span>
-                  <div className="text-2xl font-semibold font-mono text-zinc-100 mt-1">
-                    {waterData?.currentMl || 0} <span className="text-xs text-zinc-500 font-normal">ml</span>
+                  <span className="text-[10px] font-mono text-amber-400 uppercase tracking-wider">Scheduled Today</span>
+                  <div className="text-2xl font-semibold font-mono text-amber-300 mt-1">
+                    {todayTasksCount} <span className="text-xs text-zinc-500 font-normal">tasks</span>
                   </div>
-                  <div className="text-[11px] text-zinc-500 mt-1">Goal: {(settings.waterTargetMl / 1000).toFixed(1)}L</div>
+                  <div className="text-[11px] text-zinc-500 mt-1">Active for today</div>
                 </div>
 
                 <div className="p-4 rounded-xl bg-canvas-850/80 border border-white/[0.06]">
                   <span className="text-[10px] font-mono text-emerald-400 uppercase tracking-wider">Progress</span>
-                  <div className="text-2xl font-semibold font-mono text-zinc-100 mt-1">
+                  <div className="text-2xl font-semibold font-mono text-emerald-300 mt-1">
                     {totalTasks > 0 ? Math.round((completedTasksCount / totalTasks) * 100) : 0}%
                   </div>
                   <div className="text-[11px] text-zinc-500 mt-1">{totalTasks} total tasks</div>
                 </div>
               </div>
-
-              {/* Water Card */}
-              <WaterBar
-                currentMl={waterData?.currentMl || 0}
-                targetMl={settings.waterTargetMl || 3500}
-                onAddWater={onAddWater}
-                onResetWater={onResetWater}
-              />
 
               {/* Tasks List */}
               <div>
@@ -294,7 +285,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
           )}
 
           {/* Category Tabs */}
-          {activeTab !== 'overview' && activeTab !== 'water' && activeTab !== 'settings' && (
+          {activeTab !== 'overview' && activeTab !== 'settings' && activeTab !== 'about' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -304,7 +295,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
                 </div>
                 <button
                   onClick={() => setIsQuickAddOpen(true)}
-                  className="px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-200 border border-white/[0.08] text-xs font-mono hover:bg-zinc-700 transition-all flex items-center gap-1.5"
+                  className="px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-200 border border-white/[0.08] text-xs font-mono hover:bg-zinc-700 hover:border-amber-400/40 hover:text-amber-300 transition-all flex items-center gap-1.5"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   Add to {getCategoryTheme(activeTab).label}
@@ -331,37 +322,101 @@ export const DeckView: React.FC<DeckViewProps> = ({
             </div>
           )}
 
-          {/* Water Tracker Tab */}
-          {activeTab === 'water' && (
-            <div className="space-y-5">
-              <div>
-                <h2 className="text-base font-semibold text-zinc-100">Water Tracker</h2>
-                <p className="text-xs text-zinc-400 mt-0.5">Daily water intake log and history.</p>
-              </div>
-
-              <WaterBar
-                currentMl={waterData?.currentMl || 0}
-                targetMl={settings.waterTargetMl || 3500}
-                onAddWater={onAddWater}
-                onResetWater={onResetWater}
-              />
-
-              <div className="p-4 rounded-xl bg-canvas-850/80 border border-white/[0.06] space-y-3">
-                <h4 className="text-xs font-semibold text-zinc-300 font-mono uppercase tracking-wider">
-                  Today's Logs ({waterData?.entries?.length || 0})
-                </h4>
-                {(!waterData?.entries || waterData.entries.length === 0) ? (
-                  <p className="text-xs text-zinc-500">No water logged yet today.</p>
-                ) : (
-                  <div className="grid grid-cols-4 gap-2">
-                    {waterData.entries.map((entry, idx) => (
-                      <div key={entry.id || idx} className="p-2 rounded-lg bg-canvas-950 border border-white/[0.06] text-xs flex items-center justify-between">
-                        <span className="font-mono text-sky-400">+{entry.amountMl}ml</span>
-                        <span className="text-[10px] text-zinc-500 font-mono">{entry.time}</span>
-                      </div>
-                    ))}
+          {/* About Tab */}
+          {activeTab === 'about' && (
+            <div className="space-y-6 max-w-2xl">
+              <div className="p-6 rounded-2xl bg-canvas-850/80 border border-white/[0.08] space-y-4">
+                <div className="flex items-center gap-4">
+                  <img 
+                    src={logoImg} 
+                    alt="D-Deck" 
+                    className="h-20 w-auto object-contain drop-shadow-lg" 
+                  />
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-xl font-bold text-zinc-100">D-Deck</h2>
+                      <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-amber-400/15 text-amber-300 border border-amber-400/30">
+                        v1.0.0 Stable
+                      </span>
+                    </div>
+                    <p className="text-xs text-zinc-400 mt-1 font-mono">
+                      Personal Command HUD & Desktop Widget for Windows & Mobile
+                    </p>
+                    <div className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-emerald-300 text-[11px] font-mono">
+                      <Sparkles className="w-3 h-3" />
+                      <span>Software Developer — Dharshan V</span>
+                    </div>
                   </div>
-                )}
+                </div>
+
+                <p className="text-xs text-zinc-300 leading-relaxed pt-2 border-t border-white/[0.06]">
+                  D-Deck is a distraction-free, open-source personal command center built specifically for developers, gamers, and focused multitaskers. Designed to solve the friction of traditional to-do apps, it operates 100% locally on your machine with zero cloud databases, zero monthly subscriptions, and zero telemetry.
+                </p>
+
+                {/* Release Specs */}
+                <div className="grid grid-cols-2 gap-2.5 pt-2 font-mono text-xs">
+                  <div className="p-2.5 rounded-xl bg-canvas-950 border border-white/[0.04]">
+                    <span className="text-[10px] text-zinc-500 uppercase">Version History</span>
+                    <p className="text-zinc-200 mt-0.5">1 Release (v1.0.0)</p>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-canvas-950 border border-white/[0.04]">
+                    <span className="text-[10px] text-zinc-500 uppercase">Architecture</span>
+                    <p className="text-zinc-200 mt-0.5">Electron 35 • React 19 • TS</p>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-canvas-950 border border-white/[0.04]">
+                    <span className="text-[10px] text-zinc-500 uppercase">Local Storage Engine</span>
+                    <p className="text-zinc-200 mt-0.5">Local JSON (%APPDATA%)</p>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-canvas-950 border border-white/[0.04]">
+                    <span className="text-[10px] text-zinc-500 uppercase">License</span>
+                    <p className="text-zinc-200 mt-0.5">MIT License (Free Forever)</p>
+                  </div>
+                </div>
+
+                {/* Direct Action Links */}
+                <div className="flex items-center gap-3 pt-3 border-t border-white/[0.06] font-mono text-xs">
+                  <button
+                    onClick={() => {
+                      if (window.electronAPI) {
+                        window.electronAPI.openExternal('https://github.com/Dharsh606/D-Deck');
+                      } else {
+                        window.open('https://github.com/Dharsh606/D-Deck', '_blank');
+                      }
+                    }}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/[0.08] hover:border-amber-400/40 hover:text-amber-300 transition-all active:scale-95"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>GitHub Repository</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      if (window.electronAPI) {
+                        window.electronAPI.openExternal('https://dharsh606.github.io/D-Deck/');
+                      } else {
+                        window.open('https://dharsh606.github.io/D-Deck/', '_blank');
+                      }
+                    }}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/[0.08] hover:border-emerald-400/40 hover:text-emerald-300 transition-all active:scale-95"
+                  >
+                    <Globe className="w-3.5 h-3.5" />
+                    <span>Official Website</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      if (window.electronAPI) {
+                        window.electronAPI.openExternal('https://github.com/Dharsh606/D-Deck/releases');
+                      } else {
+                        window.open('https://github.com/Dharsh606/D-Deck/releases', '_blank');
+                      }
+                    }}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold transition-all active:scale-95"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Releases</span>
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -371,7 +426,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
             <div className="space-y-5 max-w-xl">
               <div>
                 <h2 className="text-base font-semibold text-zinc-100">Settings</h2>
-                <p className="text-xs text-zinc-400 mt-0.5">General preferences and local data management.</p>
+                <p className="text-xs text-zinc-400 mt-0.5">Preferences and local data management.</p>
               </div>
 
               <div className="space-y-3 font-sans">
@@ -389,7 +444,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
                     type="checkbox"
                     checked={settings.startupOnBoot}
                     onChange={e => onUpdateSettings({ startupOnBoot: e.target.checked })}
-                    className="w-4 h-4 accent-indigo-500 rounded cursor-pointer"
+                    className="w-4 h-4 accent-amber-400 rounded cursor-pointer"
                   />
                 </div>
 
@@ -400,14 +455,14 @@ export const DeckView: React.FC<DeckViewProps> = ({
                     </div>
                     <div>
                       <h4 className="text-xs font-semibold text-zinc-200">Desktop Notifications</h4>
-                      <p className="text-[11px] text-zinc-400">Alert for overdue tasks and water reminders.</p>
+                      <p className="text-[11px] text-zinc-400">3-Stage task reminder alerts (-5m, exact, +5m) & startup agenda.</p>
                     </div>
                   </div>
                   <input
                     type="checkbox"
                     checked={settings.notificationsEnabled}
                     onChange={e => onUpdateSettings({ notificationsEnabled: e.target.checked })}
-                    className="w-4 h-4 accent-indigo-500 rounded cursor-pointer"
+                    className="w-4 h-4 accent-amber-400 rounded cursor-pointer"
                   />
                 </div>
 
@@ -418,14 +473,14 @@ export const DeckView: React.FC<DeckViewProps> = ({
                     </div>
                     <div>
                       <h4 className="text-xs font-semibold text-zinc-200">Audio Feedback</h4>
-                      <p className="text-[11px] text-zinc-400">Short sound effect on completion and water logs.</p>
+                      <p className="text-[11px] text-zinc-400">Short sound effect on completion and clicks.</p>
                     </div>
                   </div>
                   <input
                     type="checkbox"
                     checked={settings.soundEnabled}
                     onChange={e => onUpdateSettings({ soundEnabled: e.target.checked })}
-                    className="w-4 h-4 accent-indigo-500 rounded cursor-pointer"
+                    className="w-4 h-4 accent-amber-400 rounded cursor-pointer"
                   />
                 </div>
 
@@ -436,12 +491,12 @@ export const DeckView: React.FC<DeckViewProps> = ({
                     </div>
                     <div>
                       <h4 className="text-xs font-semibold text-zinc-200">Export Local Data</h4>
-                      <p className="text-[11px] text-zinc-400">Export tasks and water logs to JSON.</p>
+                      <p className="text-[11px] text-zinc-400">Export all tasks and configurations to JSON.</p>
                     </div>
                   </div>
                   <button
-                    onClick={() => exportDataAsJSON({ tasks, waterHistory: { [todayStr]: waterData || { date: todayStr, currentMl: 0, targetMl: 3500, entries: [] } }, settings })}
-                    className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-white/[0.08] text-xs font-mono transition-all"
+                    onClick={() => exportDataAsJSON({ tasks, settings })}
+                    className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-white/[0.08] hover:border-amber-400/40 hover:text-amber-300 text-xs font-mono transition-all"
                   >
                     Export JSON
                   </button>

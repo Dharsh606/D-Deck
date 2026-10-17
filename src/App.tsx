@@ -37,12 +37,6 @@ export const App: React.FC = () => {
   };
 
   const todayStr = new Date().toISOString().split('T')[0];
-  const todayWater = deckData?.waterHistory[todayStr] || {
-    date: todayStr,
-    targetMl: deckData?.settings.waterTargetMl || 3500,
-    currentMl: 0,
-    entries: []
-  };
 
   const handleSwitchMode = async (mode: ViewMode) => {
     setViewMode(mode);
@@ -127,61 +121,6 @@ export const App: React.FC = () => {
     updateData({ ...deckData, tasks: updatedTasks });
   };
 
-  const handleAddWater = (amountMl: number) => {
-    if (!deckData) return;
-    const now = new Date();
-    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-    
-    const currentEntry = deckData.waterHistory[todayStr] || {
-      date: todayStr,
-      targetMl: deckData.settings.waterTargetMl,
-      currentMl: 0,
-      entries: []
-    };
-
-    const updatedWater = {
-      ...currentEntry,
-      currentMl: currentEntry.currentMl + amountMl,
-      entries: [
-        ...currentEntry.entries,
-        { id: 'w-' + Date.now(), time: timeStr, amountMl }
-      ]
-    };
-
-    updateData({
-      ...deckData,
-      waterHistory: {
-        ...deckData.waterHistory,
-        [todayStr]: updatedWater
-      }
-    });
-  };
-
-  const handleResetWater = () => {
-    if (!deckData) return;
-    sfx.playClick();
-    const currentEntry = deckData.waterHistory[todayStr] || {
-      date: todayStr,
-      targetMl: deckData.settings.waterTargetMl,
-      currentMl: 0,
-      entries: []
-    };
-
-    const updatedWater = {
-      ...currentEntry,
-      currentMl: 0,
-      entries: []
-    };
-
-    updateData({
-      ...deckData,
-      waterHistory: {
-        ...deckData.waterHistory,
-        [todayStr]: updatedWater
-      }
-    });
-  };
-
   const handleMinimize = () => {
     if (window.electronAPI) {
       window.electronAPI.minimizeWindow();
@@ -196,10 +135,10 @@ export const App: React.FC = () => {
 
   if (isLoading || !deckData) {
     return (
-      <div className="w-[370px] h-[580px] flex items-center justify-center glass-surface text-zinc-400 font-mono text-xs rounded-2xl">
+      <div className="w-[280px] h-[380px] flex items-center justify-center glass-surface text-zinc-400 font-mono text-xs rounded-2xl shadow-2xl">
         <div className="flex flex-col items-center gap-2">
-          <div className="w-5 h-5 border-2 border-zinc-400 border-t-transparent rounded-full animate-spin" />
-          <span>Loading D-Deck...</span>
+          <div className="w-5 h-5 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
+          <span className="text-zinc-300">Loading D-Deck...</span>
         </div>
       </div>
     );
@@ -210,14 +149,11 @@ export const App: React.FC = () => {
       {viewMode === 'widget' ? (
         <WidgetView
           tasks={deckData.tasks}
-          waterData={todayWater}
           settings={deckData.settings}
           onAddTask={handleAddTask}
           onToggleTask={handleToggleTask}
           onDeleteTask={handleDeleteTask}
           onToggleSubtask={handleToggleSubtask}
-          onAddWater={handleAddWater}
-          onResetWater={handleResetWater}
           onExpandToDeck={() => handleSwitchMode('deck')}
           onToggleAlwaysOnTop={handleToggleAlwaysOnTop}
           onMinimize={handleMinimize}
@@ -226,14 +162,11 @@ export const App: React.FC = () => {
       ) : (
         <DeckView
           tasks={deckData.tasks}
-          waterData={todayWater}
           settings={deckData.settings}
           onAddTask={handleAddTask}
           onToggleTask={handleToggleTask}
           onDeleteTask={handleDeleteTask}
           onToggleSubtask={handleToggleSubtask}
-          onAddWater={handleAddWater}
-          onResetWater={handleResetWater}
           onUpdateSettings={handleUpdateSettings}
           onSwitchToWidget={() => handleSwitchMode('widget')}
           onMinimize={handleMinimize}

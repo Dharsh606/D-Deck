@@ -5,7 +5,6 @@ export type TaskCategory =
   | 'projects'
   | 'daily'
   | 'fitness'
-  | 'water'
   | string;
 
 export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent';
@@ -24,6 +23,12 @@ export interface TaskMeta {
   tag?: string;
 }
 
+export interface ReminderStages {
+  pre5?: boolean;  // 5 minutes before
+  exact?: boolean; // at the exact time
+  post5?: boolean; // 5 minutes after if not marked completed
+}
+
 export interface Task {
   id: string;
   title: string;
@@ -34,24 +39,12 @@ export interface Task {
   createdAt: string;
   completedAt?: string;
   dueDate?: string; // YYYY-MM-DD
-  dueTime?: string; // HH:mm
+  dueTime?: string; // HH:mm (e.g. 11:30)
   durationDays?: number; // How many days task lasts
   reminderEnabled: boolean;
+  reminderStages?: ReminderStages;
   subtasks: Subtask[];
   meta?: TaskMeta;
-}
-
-export interface WaterEntry {
-  id: string;
-  time: string; // HH:mm
-  amountMl: number;
-}
-
-export interface DailyWaterData {
-  date: string; // YYYY-MM-DD
-  targetMl: number; // e.g. 3500 ml (3.5 L)
-  currentMl: number;
-  entries: WaterEntry[];
 }
 
 export interface AppSettings {
@@ -60,8 +53,6 @@ export interface AppSettings {
   notificationsEnabled: boolean;
   soundEnabled: boolean;
   widgetOpacity: number;
-  waterTargetMl: number; // default 3500 (3.5L)
-  waterReminderIntervalMin: number; // e.g. 90 mins
   widgetX?: number;
   widgetY?: number;
   deckX?: number;
@@ -70,7 +61,6 @@ export interface AppSettings {
 
 export interface DeckData {
   tasks: Task[];
-  waterHistory: Record<string, DailyWaterData>;
   settings: AppSettings;
 }
 

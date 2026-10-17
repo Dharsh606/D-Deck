@@ -8,13 +8,10 @@ export const DEFAULT_SETTINGS: AppSettings = {
   notificationsEnabled: true,
   soundEnabled: true,
   widgetOpacity: 0.95,
-  waterTargetMl: 3500,
-  waterReminderIntervalMin: 90,
 };
 
 export const INITIAL_DATA: DeckData = {
-  tasks: [], // Clean empty list - no preloaded dummy tasks
-  waterHistory: {},
+  tasks: [], // Clean slate - no preloaded dummy tasks
   settings: DEFAULT_SETTINGS
 };
 

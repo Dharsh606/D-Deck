@@ -48,11 +48,11 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
           title={alwaysOnTop ? "Pinned (Always on top)" : "Unpinned"}
           className={`p-1.5 rounded-lg transition-all ${
             alwaysOnTop 
-              ? 'text-indigo-400 bg-indigo-500/10 border border-indigo-500/20' 
+              ? 'text-amber-400 bg-amber-400/10 border border-amber-400/25' 
               : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800'
           }`}
         >
-          {alwaysOnTop ? <Pin className="w-3.5 h-3.5 fill-indigo-400/20" /> : <PinOff className="w-3.5 h-3.5" />}
+          {alwaysOnTop ? <Pin className="w-3.5 h-3.5 fill-amber-400/20" /> : <PinOff className="w-3.5 h-3.5" />}
         </button>
 
         {/* Full View */}

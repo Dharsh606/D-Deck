@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Plus, Calendar } from 'lucide-react';
+import { X, Plus, Calendar, Clock } from 'lucide-react';
 import type { Task, TaskCategory, TaskPriority } from '../../types';
 import { CATEGORIES } from '../../constants/categories';
 import { sfx } from '../../services/audio';
@@ -22,6 +22,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
   const [category, setCategory] = useState<TaskCategory>(initialCategory);
   const [priority, setPriority] = useState<TaskPriority>('medium');
   const [dueDate, setDueDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [dueTime, setDueTime] = useState<string>('11:30');
   const [durationDays, setDurationDays] = useState<number>(1);
   const [subtaskInput, setSubtaskInput] = useState('');
   const [subtasks, setSubtasks] = useState<{ id: string; title: string; completed: boolean }[]>([]);
@@ -54,6 +55,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
       category,
       priority,
       dueDate,
+      dueTime: dueTime.trim() || undefined,
       durationDays,
       reminderEnabled: true,
       subtasks,
@@ -61,6 +63,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
 
     setTitle('');
     setDescription('');
+    setDueTime('11:30');
     setSubtasks([]);
     onClose();
   };
@@ -151,9 +154,11 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
                         ? p === 'urgent'
                           ? 'bg-rose-500/20 text-rose-300 border-rose-500/40 font-bold'
                           : p === 'high'
-                          ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 font-bold'
+                          ? 'bg-amber-400/20 text-amber-300 border-amber-400/40 font-bold'
+                          : p === 'medium'
+                          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 font-bold'
                           : 'bg-zinc-200 text-zinc-950 border-zinc-200 font-bold'
-                        : 'bg-canvas-950 text-zinc-500 border-white/[0.04]'
+                        : 'bg-canvas-950 text-zinc-500 border-white/[0.04] hover:text-zinc-300'
                     }`}
                   >
                     {p.slice(0, 3)}
@@ -174,8 +179,8 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
                     onClick={() => setDurationDays(d)}
                     className={`flex-1 py-1 rounded-md text-[9px] font-mono border transition-all ${
                       durationDays === d
-                        ? 'bg-zinc-200 text-zinc-950 border-zinc-200 font-bold'
-                        : 'bg-canvas-950 text-zinc-500 border-white/[0.04]'
+                        ? 'bg-amber-400 text-zinc-950 border-amber-400 font-bold'
+                        : 'bg-canvas-950 text-zinc-500 border-white/[0.04] hover:text-zinc-300'
                     }`}
                   >
                     {d}d
@@ -185,15 +190,66 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
             </div>
           </div>
 
-          {/* Due Date */}
-          <div className="flex items-center gap-2">
-            <Calendar className="w-3.5 h-3.5 text-zinc-500" />
-            <input
-              type="date"
-              value={dueDate}
-              onChange={e => setDueDate(e.target.value)}
-              className="bg-canvas-950 border border-white/[0.08] rounded-lg px-2 py-1 text-[11px] text-zinc-200 focus:outline-none focus:border-zinc-500"
-            />
+          {/* Date & Time Schedule */}
+          <div className="space-y-1.5 p-2 rounded-xl bg-canvas-950 border border-white/[0.06]">
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <label className="block text-[10px] font-mono text-zinc-400 mb-1 uppercase flex items-center gap-1">
+                  <Calendar className="w-3 h-3 text-zinc-400" />
+                  Due Date
+                </label>
+                <input
+                  type="date"
+                  value={dueDate}
+                  onChange={e => setDueDate(e.target.value)}
+                  className="w-full bg-zinc-900/90 border border-white/[0.08] rounded-lg px-2 py-1 text-[11px] text-zinc-200 focus:outline-none focus:border-amber-400/50"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-mono text-zinc-400 mb-1 uppercase flex items-center gap-1">
+                  <Clock className="w-3 h-3 text-amber-400" />
+                  Time (HH:mm)
+                </label>
+                <input
+                  type="time"
+                  value={dueTime}
+                  onChange={e => setDueTime(e.target.value)}
+                  className="w-full bg-zinc-900/90 border border-white/[0.08] rounded-lg px-2 py-1 text-[11px] text-zinc-200 focus:outline-none focus:border-amber-400/50"
+                />
+              </div>
+            </div>
+
+            {/* Quick Time Presets */}
+            <div className="flex items-center justify-between pt-1 text-[9px] font-mono">
+              <span className="text-zinc-500">Quick time:</span>
+              <div className="flex items-center gap-1">
+                {['11:30', '14:00', '18:30', '21:00'].map(preset => (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => setDueTime(preset)}
+                    className={`px-1.5 py-0.5 rounded border transition-all ${
+                      dueTime === preset 
+                        ? 'bg-amber-400/20 text-amber-300 border-amber-400/40 font-semibold' 
+                        : 'bg-zinc-900 text-zinc-400 border-white/[0.04] hover:text-zinc-200'
+                    }`}
+                  >
+                    {preset}
+                  </button>
+                ))}
+                {dueTime && (
+                  <button
+                    type="button"
+                    onClick={() => setDueTime('')}
+                    className="text-zinc-500 hover:text-rose-400 px-1"
+                    title="No specific time"
+                  >
+                    None
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* Subtasks */}
@@ -243,14 +299,14 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-3 py-1.5 rounded-lg text-xs text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-all"
+              className="px-3 py-1.5 rounded-lg text-xs text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-all font-mono"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={!title.trim()}
-              className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-zinc-100 hover:bg-white text-zinc-950 disabled:opacity-40 transition-all active:scale-95"
+              className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 hover:bg-emerald-400 text-zinc-950 disabled:opacity-40 transition-all active:scale-95 font-mono shadow-sm shadow-emerald-500/20"
             >
               Add Task
             </button>

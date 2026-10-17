@@ -36,12 +36,48 @@ export const TaskItem: React.FC<TaskItemProps> = ({
   };
 
   const getDueLabel = () => {
-    if (!task.dueDate) return null;
-    if (isOverdue) return <span className="text-rose-400 flex items-center gap-1"><AlertCircle className="w-3 h-3" /> Overdue</span>;
-    if (isDueToday) return <span className="text-amber-400 flex items-center gap-1"><Clock className="w-3 h-3" /> Today</span>;
-    
-    const diffDays = Math.ceil((new Date(task.dueDate).getTime() - new Date(todayStr).getTime()) / (1000 * 60 * 60 * 24));
-    return <span className="text-zinc-500 font-mono">{diffDays}d left</span>;
+    if (!task.dueDate && !task.dueTime) return null;
+
+    const timeBadge = task.dueTime ? (
+      <span className="inline-flex items-center gap-1 font-mono text-[9px] text-amber-300 bg-amber-400/10 px-1.5 py-0.5 rounded border border-amber-400/25">
+        <Clock className="w-2.5 h-2.5 text-amber-400" />
+        {task.dueTime}
+      </span>
+    ) : null;
+
+    if (isOverdue) {
+      return (
+        <span className="inline-flex items-center gap-1.5">
+          <span className="text-rose-400 flex items-center gap-1 text-[9px] font-mono">
+            <AlertCircle className="w-2.5 h-2.5" /> Overdue
+          </span>
+          {timeBadge}
+        </span>
+      );
+    }
+
+    if (isDueToday) {
+      return (
+        <span className="inline-flex items-center gap-1.5">
+          <span className="text-emerald-400 font-mono text-[9px]">
+            Today
+          </span>
+          {timeBadge}
+        </span>
+      );
+    }
+
+    if (task.dueDate) {
+      const diffDays = Math.ceil((new Date(task.dueDate).getTime() - new Date(todayStr).getTime()) / (1000 * 60 * 60 * 24));
+      return (
+        <span className="inline-flex items-center gap-1.5">
+          <span className="text-zinc-400 font-mono text-[9px]">{diffDays}d left</span>
+          {timeBadge}
+        </span>
+      );
+    }
+
+    return timeBadge;
   };
 
   return (
@@ -54,18 +90,18 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           : 'bg-canvas-850/70 border-white/[0.06] hover:border-white/[0.12] hover:bg-canvas-800/80'
       }`}
     >
-      <div className="p-3">
-        <div className="flex items-start gap-2.5">
+      <div className="p-2.5">
+        <div className="flex items-start gap-2">
           {/* Minimalist Checkbox */}
           <button
             onClick={handleCheckboxClick}
-            className={`mt-0.5 flex-shrink-0 w-4 h-4 rounded-md border flex items-center justify-center transition-all ${
+            className={`mt-0.5 flex-shrink-0 w-3.5 h-3.5 rounded-md border flex items-center justify-center transition-all ${
               task.completed 
-                ? 'bg-zinc-200 border-zinc-200 text-zinc-950' 
-                : 'border-zinc-700 hover:border-zinc-500 bg-zinc-900/60'
+                ? 'bg-emerald-400 border-emerald-400 text-zinc-950 font-bold' 
+                : 'border-zinc-700 hover:border-amber-400/60 bg-zinc-900/60'
             }`}
           >
-            {task.completed && <Check className="w-3 h-3 stroke-[3]" />}
+            {task.completed && <Check className="w-2.5 h-2.5 stroke-[3]" />}
           </button>
 
           {/* Task Info */}

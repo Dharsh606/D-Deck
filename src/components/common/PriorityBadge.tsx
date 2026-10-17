@@ -9,23 +9,23 @@ interface PriorityBadgeProps {
 export const PriorityBadge: React.FC<PriorityBadgeProps> = ({ priority, showText = true }) => {
   const configs = {
     urgent: {
-      color: 'bg-rose-500/10 text-rose-300 border-rose-500/20',
+      color: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
       dot: 'bg-rose-400',
       label: 'Urgent',
     },
     high: {
-      color: 'bg-amber-500/10 text-amber-300 border-amber-500/20',
+      color: 'bg-amber-400/15 text-amber-300 border-amber-400/30',
       dot: 'bg-amber-400',
       label: 'High',
     },
     medium: {
-      color: 'bg-blue-500/10 text-blue-300 border-blue-500/20',
-      dot: 'bg-blue-400',
+      color: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+      dot: 'bg-emerald-400',
       label: 'Med',
     },
     low: {
-      color: 'bg-zinc-500/10 text-zinc-400 border-zinc-500/20',
-      dot: 'bg-zinc-500',
+      color: 'bg-zinc-400/10 text-zinc-300 border-zinc-500/20',
+      dot: 'bg-zinc-400',
       label: 'Low',
     },
   };
