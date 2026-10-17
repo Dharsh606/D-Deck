@@ -80,8 +80,8 @@ export const WaterBar: React.FC<WaterBarProps> = ({
             <h4 className="text-xs font-bold text-slate-200 tracking-wide flex items-center gap-2">
               Daily Hydration
               {isGoalReached && (
-                <span className="px-1.5 py-0.2 rounded text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">
-                  GOAL REACHED! 🎉
+                <span className="px-1.5 py-0.5 rounded text-[9px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-mono">
+                  Goal reached
                 </span>
               )}
             </h4>

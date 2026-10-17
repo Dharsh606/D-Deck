@@ -131,15 +131,15 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
                 <Sparkles className="w-6 h-6 animate-pulse" />
               </div>
               <div>
-                <p className="text-xs font-medium text-slate-400">All tasks completed!</p>
-                <p className="text-[10px] text-slate-500 mt-0.5">Click + to add a new task or habit.</p>
+                <p className="text-xs font-medium text-slate-400">No pending tasks</p>
+                <p className="text-[10px] text-slate-500 mt-0.5">Use + to add a task to this list.</p>
               </div>
               <button
                 onClick={() => setIsQuickAddOpen(true)}
                 className="px-3 py-1.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/25 text-xs font-mono hover:bg-cyan-500/20 transition-all flex items-center gap-1.5"
               >
                 <Plus className="w-3.5 h-3.5" />
-                Quick Add Task
+                Add Task
               </button>
             </div>
           ) : (
@@ -188,7 +188,7 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
             <span>{pendingTasks.length} pending</span>
           </div>
           <div className="flex items-center gap-2">
-            <span>{completionRate}% focus done</span>
+            <span>{completionRate}% completed</span>
           </div>
         </div>
       </div>

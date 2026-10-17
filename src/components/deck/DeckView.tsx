@@ -91,15 +91,15 @@ export const DeckView: React.FC<DeckViewProps> = ({
   });
 
   const navItems = [
-    { id: 'overview', label: 'Command Overview', icon: LayoutDashboard, color: '#00f2fe' },
+    { id: 'overview', label: 'Overview', icon: LayoutDashboard, color: '#00f2fe' },
     { id: 'coding', label: 'Coding & Tech', icon: Code2, color: '#00f2fe' },
-    { id: 'projects', label: 'Projects Space', icon: FolderGit2, color: '#f43f5e' },
+    { id: 'projects', label: 'Projects', icon: FolderGit2, color: '#f43f5e' },
     { id: 'gaming', label: 'Gaming Backlog', icon: Gamepad2, color: '#b827fc' },
-    { id: 'movies', label: 'Movies & Cinema', icon: Film, color: '#fbbf24' },
+    { id: 'movies', label: 'Movies', icon: Film, color: '#fbbf24' },
     { id: 'daily', label: 'Daily Activities', icon: CheckSquare, color: '#6366f1' },
     { id: 'fitness', label: 'Fitness & Health', icon: Flame, color: '#10b981' },
-    { id: 'water', label: 'Hydration Station', icon: Droplets, color: '#38bdf8' },
-    { id: 'settings', label: 'System Settings', icon: SettingsIcon, color: '#94a3b8' },
+    { id: 'water', label: 'Water Tracker', icon: Droplets, color: '#38bdf8' },
+    { id: 'settings', label: 'Settings', icon: SettingsIcon, color: '#94a3b8' },
   ];
 
   return (
@@ -111,7 +111,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
           {/* Logo */}
           <div className="titlebar-drag pb-4 mb-4 border-b border-slate-800/80 cursor-move">
             <DDeckLogo size="md" />
-            <p className="text-[11px] text-slate-400 mt-1 pl-1">Personal Life Command Center</p>
+            <p className="text-[11px] text-slate-400 mt-1 pl-1">Desktop Tasks & Habits</p>
           </div>
 
           {/* Navigation Links */}
@@ -247,13 +247,13 @@ export const DeckView: React.FC<DeckViewProps> = ({
                 </div>
 
                 <div className="p-4 rounded-2xl bg-deck-900/60 border border-rose-500/20 shadow-[0_4px_16px_rgba(244,63,94,0.08)]">
-                  <span className="text-[11px] font-mono text-rose-400 uppercase tracking-wider">Urgent Priorities</span>
+                  <span className="text-[11px] font-mono text-rose-400 uppercase tracking-wider">Urgent Tasks</span>
                   <div className="text-2xl font-bold font-mono text-slate-100 mt-1">{urgentTasksCount}</div>
                   <div className="text-[11px] text-rose-400/80 mt-1">{overdueTasksCount} overdue tasks</div>
                 </div>
 
                 <div className="p-4 rounded-2xl bg-deck-900/60 border border-sky-500/20 shadow-[0_4px_16px_rgba(56,189,248,0.08)]">
-                  <span className="text-[11px] font-mono text-sky-400 uppercase tracking-wider">Hydration Level</span>
+                  <span className="text-[11px] font-mono text-sky-400 uppercase tracking-wider">Water Logged</span>
                   <div className="text-2xl font-bold font-mono text-slate-100 mt-1">
                     {waterData?.currentMl || 0} <span className="text-sm text-slate-400 font-normal">ml</span>
                   </div>
@@ -261,11 +261,11 @@ export const DeckView: React.FC<DeckViewProps> = ({
                 </div>
 
                 <div className="p-4 rounded-2xl bg-deck-900/60 border border-emerald-500/20 shadow-[0_4px_16px_rgba(16,185,129,0.08)]">
-                  <span className="text-[11px] font-mono text-emerald-400 uppercase tracking-wider">Focus Rate</span>
+                  <span className="text-[11px] font-mono text-emerald-400 uppercase tracking-wider">Completion Rate</span>
                   <div className="text-2xl font-bold font-mono text-slate-100 mt-1">
                     {totalTasks > 0 ? Math.round((completedTasksCount / totalTasks) * 100) : 0}%
                   </div>
-                  <div className="text-[11px] text-emerald-400/80 mt-1">All categories active</div>
+                  <div className="text-[11px] text-emerald-400/80 mt-1">Overall tasks</div>
                 </div>
               </div>
 
@@ -281,7 +281,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-sm font-bold text-slate-200 tracking-wide">
-                    Priority Agenda ({filteredTasks.filter(t => !t.completed).length})
+                    Active Tasks ({filteredTasks.filter(t => !t.completed).length})
                   </h3>
                 </div>
 
@@ -341,12 +341,12 @@ export const DeckView: React.FC<DeckViewProps> = ({
             </div>
           )}
 
-          {/* Hydration Station Full Tab */}
+          {/* Water Tab */}
           {activeTab === 'water' && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-lg font-bold text-slate-100">Hydration Station</h2>
-                <p className="text-xs text-slate-400 mt-0.5">Track your 3 to 4 liters daily water goal to stay sharp and energized.</p>
+                <h2 className="text-lg font-bold text-slate-100">Water Tracker</h2>
+                <p className="text-xs text-slate-400 mt-0.5">Daily water intake log and history.</p>
               </div>
 
               <WaterBar
@@ -362,7 +362,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
                   Today's Logs ({waterData?.entries?.length || 0})
                 </h4>
                 {(!waterData?.entries || waterData.entries.length === 0) ? (
-                  <p className="text-xs text-slate-500">No water logged yet today. Click +250ml or +500ml above!</p>
+                  <p className="text-xs text-slate-500">No water logged yet today.</p>
                 ) : (
                   <div className="grid grid-cols-4 gap-2">
                     {waterData.entries.map((entry, idx) => (
@@ -381,8 +381,8 @@ export const DeckView: React.FC<DeckViewProps> = ({
           {activeTab === 'settings' && (
             <div className="space-y-6 max-w-xl">
               <div>
-                <h2 className="text-lg font-bold text-slate-100">Preferences & Native Settings</h2>
-                <p className="text-xs text-slate-400 mt-0.5">Configure startup hooks, notifications, sound effects, and local backups.</p>
+                <h2 className="text-lg font-bold text-slate-100">Settings</h2>
+                <p className="text-xs text-slate-400 mt-0.5">General preferences and local data management.</p>
               </div>
 
               <div className="space-y-4">
@@ -412,8 +412,8 @@ export const DeckView: React.FC<DeckViewProps> = ({
                       <Bell className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="text-xs font-bold text-slate-200">Windows Toast Notifications</h4>
-                      <p className="text-[11px] text-slate-400">Alert for missed tasks, agenda, and hydration prompts.</p>
+                      <h4 className="text-xs font-bold text-slate-200">Desktop Notifications</h4>
+                      <p className="text-[11px] text-slate-400">Show notifications for overdue tasks and daily water reminders.</p>
                     </div>
                   </div>
                   <input
@@ -431,8 +431,8 @@ export const DeckView: React.FC<DeckViewProps> = ({
                       <Volume2 className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="text-xs font-bold text-slate-200">Futuristic Sound Effects</h4>
-                      <p className="text-[11px] text-slate-400">Audio feedback on completion, hydration, and clicks.</p>
+                      <h4 className="text-xs font-bold text-slate-200">Audio Feedback</h4>
+                      <p className="text-[11px] text-slate-400">Play short click and completion tones.</p>
                     </div>
                   </div>
                   <input
@@ -450,8 +450,8 @@ export const DeckView: React.FC<DeckViewProps> = ({
                       <Download className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="text-xs font-bold text-slate-200">Export / Backup Local Data</h4>
-                      <p className="text-[11px] text-slate-400">Download your personal tasks and logs as a portable JSON file.</p>
+                      <h4 className="text-xs font-bold text-slate-200">Export Local Data</h4>
+                      <p className="text-[11px] text-slate-400">Save current tasks and logs to a JSON file.</p>
                     </div>
                   </div>
                   <button

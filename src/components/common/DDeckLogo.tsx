@@ -31,8 +31,8 @@ export const DDeckLogo: React.FC<DDeckLogoProps> = ({ size = 'md', animated = tr
           <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 tracking-wider font-['Outfit']">
             D-DECK
           </span>
-          <span className="text-[9px] uppercase tracking-widest font-mono px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-            HUD
+          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-deck-900 text-slate-400 border border-slate-700/60">
+            v1.0
           </span>
         </div>
       </div>

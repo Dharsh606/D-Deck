@@ -1,11 +1,9 @@
-// Futuristic Web Audio Synthesizer for UI Feedback
+// Simple Web Audio feedback without external audio assets
 class SoundEffects {
   private ctx: AudioContext | null = null;
   private enabled: boolean = true;
 
-  constructor() {
-    // Lazy initialize on first interaction
-  }
+  constructor() {}
 
   private initCtx() {
     if (!this.ctx && typeof window !== 'undefined') {
@@ -23,7 +21,6 @@ class SoundEffects {
     this.enabled = flag;
   }
 
-  // Futuristic crisp tick when clicking tasks
   public playClick() {
     if (!this.enabled) return;
     try {
@@ -44,12 +41,9 @@ class SoundEffects {
 
       osc.start();
       osc.stop(this.ctx.currentTime + 0.04);
-    } catch {
-      // AudioContext muted/unsupported
-    }
+    } catch {}
   }
 
-  // Melodic chime when checking off a task
   public playComplete() {
     if (!this.enabled) return;
     try {
@@ -57,7 +51,7 @@ class SoundEffects {
       if (!this.ctx) return;
       const now = this.ctx.currentTime;
 
-      const freqs = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+      const freqs = [523.25, 659.25, 783.99, 1046.50];
       freqs.forEach((freq, idx) => {
         if (!this.ctx) return;
         const osc = this.ctx.createOscillator();
@@ -75,12 +69,9 @@ class SoundEffects {
         osc.start(now + idx * 0.05);
         osc.stop(now + idx * 0.05 + 0.22);
       });
-    } catch {
-      // AudioContext muted/unsupported
-    }
+    } catch {}
   }
 
-  // Fluid bubble / drop sound for water logging
   public playWaterDrop() {
     if (!this.enabled) return;
     try {

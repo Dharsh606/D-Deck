@@ -17,8 +17,8 @@ export const INITIAL_DATA: DeckData = {
   tasks: [
     {
       id: 'task-1',
-      title: 'Build D-Deck Desktop Widget Interface',
-      description: 'Frameless glassmorphic widget with instant quick-add popup.',
+      title: 'Fix responsive layout bug on mobile viewport',
+      description: 'Check navbar padding and horizontal scroll issue on small screens.',
       category: 'coding',
       priority: 'high',
       completed: true,
@@ -27,15 +27,15 @@ export const INITIAL_DATA: DeckData = {
       durationDays: 1,
       reminderEnabled: true,
       subtasks: [
-        { id: 'sub-1', title: 'Desktop drag handle and pin toggle', completed: true },
-        { id: 'sub-2', title: 'Local storage offline database', completed: true }
+        { id: 'sub-1', title: 'Inspect media queries', completed: true },
+        { id: 'sub-2', title: 'Test on phone browser', completed: true }
       ],
-      meta: { tag: 'Frontend' }
+      meta: { tag: 'Bugfix' }
     },
     {
       id: 'task-2',
-      title: 'Drink 3.5 to 4 Liters of Water',
-      description: 'Log each glass (250ml) to hit the daily hydration target.',
+      title: 'Drink water (3.5L daily target)',
+      description: 'Track daily water intake throughout the day.',
       category: 'daily',
       priority: 'urgent',
       completed: false,
@@ -44,12 +44,12 @@ export const INITIAL_DATA: DeckData = {
       durationDays: 1,
       reminderEnabled: true,
       subtasks: [],
-      meta: { tag: 'Hydration' }
+      meta: { tag: 'Water' }
     },
     {
       id: 'task-3',
-      title: 'Design Darshan Portfolio Distribution Page',
-      description: 'Create landing section with one-click installer download.',
+      title: 'Finish portfolio project writeup and release',
+      description: 'Upload latest screenshots and write clear summary.',
       category: 'projects',
       priority: 'medium',
       completed: false,
@@ -61,8 +61,8 @@ export const INITIAL_DATA: DeckData = {
     },
     {
       id: 'task-4',
-      title: 'Cyberpunk 2077 / Story Campaign',
-      description: 'Continue main storyline quest after work session.',
+      title: 'Witcher 3 DLC / Cyberpunk session',
+      description: 'Finish side quest storyline.',
       category: 'gaming',
       priority: 'low',
       completed: false,
@@ -73,8 +73,8 @@ export const INITIAL_DATA: DeckData = {
     },
     {
       id: 'task-5',
-      title: 'Watch Oppenheimer & Inception',
-      description: 'Cinema weekend backlog with friends.',
+      title: 'Watch Dune: Part Two',
+      description: 'Weekend movie queue.',
       category: 'movies',
       priority: 'low',
       completed: false,
@@ -85,8 +85,8 @@ export const INITIAL_DATA: DeckData = {
     },
     {
       id: 'task-6',
-      title: 'Evening 5K Run & Core Workout',
-      description: 'Stretch for 10 minutes then 30 minute cardio.',
+      title: 'Evening 5K run',
+      description: 'Stretching and 30-minute run.',
       category: 'fitness',
       priority: 'medium',
       completed: false,

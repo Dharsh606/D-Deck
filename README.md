@@ -1,90 +1,51 @@
-# ⚡ D-Deck
-### *The Open-Source Desktop Widget & Personal Life Command Center*
+# D-Deck
 
-> **"Most to-do apps want your email, your credit card, and 15 seconds of loading time just to write down one thought. I built D-Deck because I needed something that lives right on my desktop screen, respects my privacy, and gets out of my way in 2 seconds."**  
-> — *Dharshan*
+A lightweight desktop to-do widget for Windows with dedicated lists and a local water intake tracker.
 
----
+## Background
 
-## 🧭 Why D-Deck Exists
+Most to-do software today is either trapped inside a browser tab or locked behind cloud accounts and subscriptions. On mobile, home screen widgets are common, but on Windows, having a simple widget that stays on the desktop or floats when needed is surprisingly difficult to find without installing heavy third-party shells or Chrome extensions.
 
-In modern operating systems, desktop widgets are almost nonexistent or locked behind clunky browser extensions. Whenever you want to check off a daily habit or jot down an urgent coding bug, opening a heavy tab or a slow electron app breaks your focus.
+I built D-Deck for my own daily workflow. I watch movies, play games, write code, work on personal projects, and try to drink 3 to 4 liters of water every day. Mixing all of that into one generic checklist never worked well, so D-Deck splits everything into separate lists while keeping an interactive widget on the desktop for quick access.
 
-**D-Deck** was created as a free, lightweight, and independent piece of software for anyone who balances multiple passions every day — from writing code and shipping projects to tracking games, watching cinema, and hitting personal health goals.
+## Features
 
-It lives right on your desktop home screen as a **frameless, interactive floating HUD widget**.
+### Desktop Widget
+- Stays on the desktop or can be pinned on top of other windows.
+- Frameless, draggable, and opens a quick-add dialog directly from the widget.
+- Can be collapsed to a compact HUD or expanded to a full management view when organizing larger lists.
 
----
+### Separate Lists
+Instead of one long dump of tasks, D-Deck provides dedicated categories:
+- **Coding**: Bugs, features, repo tasks, and technical notes.
+- **Projects**: Multi-day milestones with duration tracking and deadlines.
+- **Gaming**: Backlog, currently playing, and completed games with platform tags.
+- **Movies**: Watchlist with personal ratings (1-5 stars) and viewing status.
+- **Daily**: Day-to-day errands and recurring chores.
+- **Fitness**: Workouts, cardio, and physical goals.
 
-## ✨ What Makes D-Deck Unique
+### Water Tracker
+- Configurable daily water intake goal (defaults to 3.5 liters).
+- Quick add buttons for 250ml (glass) and 500ml (bottle) directly on the widget.
+- Visual intake progress without needing to open a separate tracking app.
+- Optional reminder notifications if intake falls behind during the day.
 
-### 🖥️ Always-On Desktop Widget (The Core Experience)
-* **Floating Glassmorphic HUD**: Sits cleanly on your desktop without window borders or title bar clutter.
-* **Instant 2-Second Quick-Add**: Click the glowing `+` icon on your widget to type a task and hit Enter. No menus, no waiting.
-* **Pin to Desktop**: Pin it to float above your active windows while working, or dock it unobtrusively to your wallpaper.
-* **Dual-View Switcher**: Collapse it down to a minimalist widget strip, or expand it into the full-screen Command Deck with one click.
+### Windows Integration
+- Starts with Windows on user login (toggleable in settings).
+- Sends native Windows notifications on startup for any overdue tasks or missed water goals.
+- Runs in the system tray when closed or minimized.
 
----
+### Storage and Privacy
+- 100% offline. No cloud databases, no user accounts, and no telemetry.
+- All tasks and water logs are written directly to a local JSON file in `%APPDATA%/d-deck/`.
+- Built-in JSON export so you can back up or move your data anytime.
 
-### 🗂️ Purpose-Built Life Spheres
-Real life isn't just a generic checklist. D-Deck provides dedicated spaces for every area of your daily routine:
+## Availability
 
-* 💻 **Coding & Tech Hub**  
-  Keep track of bugs, features, algorithm challenges, and repo milestones without polluting your personal tasks.
+D-Deck is not published to the Microsoft Store or Google Play. It is distributed directly as an open-source project:
+- **Windows**: Standalone executable and installer available on GitHub Releases and personal website downloads.
+- **Android**: Companion build in progress to share the same local storage structure with an Android home-screen widget.
 
-* 🚀 **Projects & Roadmaps**  
-  Set multi-day durations (1-day sprint, 3-day milestone, 1-week goal) with automatic countdown badges and progress bars.
+## License
 
-* 🎮 **Gaming Backlog**  
-  Manage your queue of games to play, titles in-progress, and completed campaigns with platform tags (PC, Steam, Console).
-
-* 🎬 **Movies & Series Watchlist**  
-  Track your cinema backlog, ongoing series, and give them personal 1-to-5 star ratings.
-
-* 📋 **Daily Errands & Chores**  
-  Quick routine tasks, grocery runs, and everyday priorities that reset cleanly.
-
-* 🏃 **Fitness & Health**  
-  Workout routines, gym sessions, and physical goals with completion tracking.
-
----
-
-### 💧 Smart Hydration Engine (3 to 4 Liters Daily Target)
-Dehydration ruins focus. D-Deck treats water as a core daily priority:
-* **One-Tap Quick Logging**: Log a `+250ml (Glass)` or `+500ml (Bottle)` straight from the widget without opening any menus.
-* **Fluid Wave Gauge**: Real-time animated progress tube showing your exact percentage toward your 3.5L goal.
-* **Celebration Feedback**: Confetti and audio chime when you hit your daily 100% hydration mark.
-* **Missed-Intake Prompts**: Notifies you if your morning or afternoon intake falls behind schedule.
-
----
-
-### 🚀 Windows Startup & Morning Digest
-* **Boots with Windows**: The widget is already waiting on your screen the second you enter your desktop password.
-* **Smart Toast Notifications**: Native Windows alerts immediately inform you of:
-  * ⚠️ Any missed or overdue tasks from previous days.
-  * 📋 Today’s priority agenda count.
-  * 💧 Morning hydration reminder to kickstart your day.
-
----
-
-### 🔒 100% Local Storage & Zero-Cloud Privacy
-* **No Database in the Cloud**: Everything is saved directly onto your personal computer (`%APPDATA%/d-deck/d-deck-data.json`).
-* **Zero Telemetry & Zero Accounts**: No logins, no analytics, no subscription prompts, and no server downtimes.
-* **Total Ownership**: 1-click export to portable JSON anytime from System Settings.
-
----
-
-## 🌐 Platform Availability
-
-| Platform | Status | Distribution |
-| :--- | :--- | :--- |
-| **Windows Desktop** | **Available Now** | Direct Download (`.exe` installer & portable) via Website / GitHub Releases |
-| **Android Companion** | **In Development** | Standalone APK download with home-screen AppWidget |
-
-> *D-Deck is intentionally distributed independently outside of app stores (Microsoft Store / Google Play) to maintain complete open-source freedom, zero tracking, and direct distribution on personal portfolios and GitHub.*
-
----
-
-## 💖 Free & Open Source
-
-D-Deck is free software licensed under the **[MIT License](LICENSE)**. Built for the community, personal productivity, and anyone who wants an honest, beautiful desktop widget.
+MIT License. Free to use, modify, and distribute.

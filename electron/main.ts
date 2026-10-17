@@ -20,8 +20,8 @@ const DEFAULT_DECK_DATA: DeckData = {
   tasks: [
     {
       id: 'task-1',
-      title: 'D-Deck Desktop Widget Architecture',
-      description: 'Test frameless transparency and quick-add widget triggers.',
+      title: 'Fix responsive layout bug on mobile viewport',
+      description: 'Check navbar padding and horizontal scroll issue on small screens.',
       category: 'coding',
       priority: 'high',
       completed: true,
@@ -30,15 +30,15 @@ const DEFAULT_DECK_DATA: DeckData = {
       durationDays: 1,
       reminderEnabled: true,
       subtasks: [
-        { id: 'sub-1', title: 'Frameless drag handles', completed: true },
-        { id: 'sub-2', title: 'Local storage IPC persistence', completed: true },
+        { id: 'sub-1', title: 'Inspect media queries', completed: true },
+        { id: 'sub-2', title: 'Test on phone browser', completed: true },
       ],
-      meta: { tag: 'Architecture' }
+      meta: { tag: 'Bugfix' }
     },
     {
       id: 'task-2',
-      title: 'Drink 3.5 Liters of Pure Water',
-      description: 'Maintain hydration throughout the day for focus and energy.',
+      title: 'Drink water (3.5L daily target)',
+      description: 'Track daily water intake throughout the day.',
       category: 'daily',
       priority: 'urgent',
       completed: false,
@@ -47,12 +47,12 @@ const DEFAULT_DECK_DATA: DeckData = {
       durationDays: 1,
       reminderEnabled: true,
       subtasks: [],
-      meta: { tag: 'Hydration' }
+      meta: { tag: 'Water' }
     },
     {
       id: 'task-3',
-      title: 'Review Project Milestones for Portfolio',
-      description: 'Prepare upcoming release packages and showcase on website.',
+      title: 'Finish portfolio project writeup and release',
+      description: 'Upload latest screenshots and write clear summary.',
       category: 'projects',
       priority: 'medium',
       completed: false,
@@ -64,8 +64,8 @@ const DEFAULT_DECK_DATA: DeckData = {
     },
     {
       id: 'task-4',
-      title: 'Weekend Gaming Session',
-      description: 'Try out new multiplayer campaign with squad.',
+      title: 'Witcher 3 DLC / Cyberpunk session',
+      description: 'Finish side quest storyline.',
       category: 'gaming',
       priority: 'low',
       completed: false,
@@ -78,8 +78,8 @@ const DEFAULT_DECK_DATA: DeckData = {
     },
     {
       id: 'task-5',
-      title: 'Watch Interstellar or Sci-Fi Classic',
-      description: 'Relaxing weekend evening movie backlog.',
+      title: 'Watch Dune: Part Two',
+      description: 'Weekend movie queue.',
       category: 'movies',
       priority: 'low',
       completed: false,
@@ -162,12 +162,12 @@ function checkLoginReminders() {
   setTimeout(() => {
     if (overdueTasks.length > 0) {
       showSystemNotification(
-        'D-Deck Notice: Missed Tasks',
-        `You missed ${overdueTasks.length} task(s) from previous days. Let's conquer them today!`
+        'D-Deck',
+        `You have ${overdueTasks.length} overdue task(s) from earlier.`
       );
     } else if (todaysTasks.length > 0) {
       showSystemNotification(
-        'D-Deck Ready: Daily Agenda',
+        'D-Deck',
         `You have ${todaysTasks.length} task(s) scheduled for today.`
       );
     }
@@ -178,8 +178,8 @@ function checkLoginReminders() {
     if (todayWater < target * 0.3) {
       setTimeout(() => {
         showSystemNotification(
-          'D-Deck Hydration',
-          `Stay energized! You've logged ${todayWater}ml / ${target}ml water today. Grab a glass!`
+          'D-Deck Water Reminder',
+          `Logged ${todayWater}ml of ${target}ml daily goal so far.`
         );
       }, 5000);
     }
@@ -189,7 +189,7 @@ function checkLoginReminders() {
 function startPeriodicReminderLoop() {
   if (periodicReminderTimer) clearInterval(periodicReminderTimer);
 
-  // Check every 30 minutes for water reminder & urgent tasks
+  // Periodic reminder every 90 minutes if behind on water goal
   periodicReminderTimer = setInterval(() => {
     const data = readDeckData();
     if (!data.settings.notificationsEnabled) return;
@@ -199,13 +199,12 @@ function startPeriodicReminderLoop() {
     const target = data.settings.waterTargetMl || 3500;
 
     if (todayWater < target) {
-      const remaining = target - todayWater;
       showSystemNotification(
-        '💧 D-Deck Hydration Check',
-        `Time to hydrate! Drink a glass of water (${remaining}ml remaining to hit your 3.5L goal).`
+        'D-Deck Water Reminder',
+        `Water logged: ${todayWater}ml / ${target}ml.`
       );
     }
-  }, 90 * 60 * 1000); // every 90 minutes
+  }, 90 * 60 * 1000);
 }
 
 function createMainWindow() {
