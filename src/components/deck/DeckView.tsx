@@ -61,6 +61,16 @@ export const DeckView: React.FC<DeckViewProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
 
+  const handleOpenAdd = (category?: string) => {
+    sfx.playClick();
+    const cat = category || (activeTab === 'overview' || activeTab === 'settings' || activeTab === 'about' ? 'coding' : activeTab);
+    if (window.electronAPI?.openQuickAdd) {
+      window.electronAPI.openQuickAdd(cat);
+    } else {
+      setIsQuickAddOpen(true);
+    }
+  };
+
   const todayStr = new Date().toISOString().split('T')[0];
 
   const totalTasks = tasks.length;
@@ -190,11 +200,8 @@ export const DeckView: React.FC<DeckViewProps> = ({
 
           <div className="titlebar-no-drag flex items-center gap-2">
             <button
-              onClick={() => {
-                sfx.playClick();
-                setIsQuickAddOpen(true);
-              }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 font-semibold text-xs transition-all active:scale-95 font-mono"
+              onClick={() => handleOpenAdd()}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold text-xs transition-all active:scale-95 font-mono shadow-sm shadow-emerald-500/20"
             >
               <Plus className="w-3.5 h-3.5" />
               Add Task
@@ -294,7 +301,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
                   </h2>
                 </div>
                 <button
-                  onClick={() => setIsQuickAddOpen(true)}
+                  onClick={() => handleOpenAdd(activeTab)}
                   className="px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-200 border border-white/[0.08] text-xs font-mono hover:bg-zinc-700 hover:border-amber-400/40 hover:text-amber-300 transition-all flex items-center gap-1.5"
                 >
                   <Plus className="w-3.5 h-3.5" />

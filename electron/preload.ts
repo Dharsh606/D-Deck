@@ -14,4 +14,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
   closeWindow: () => ipcRenderer.invoke('window:close'),
   openExternal: (url: string) => ipcRenderer.invoke('app:open-external', url),
   savePosition: (mode: ViewMode, x: number, y: number) => ipcRenderer.invoke('window:save-position', mode, x, y),
+  openQuickAdd: (category?: string) => ipcRenderer.invoke('window:open-quick-add', category),
+  closeQuickAdd: () => ipcRenderer.invoke('window:close-quick-add'),
+  onDataUpdated: (callback: (data: DeckData) => void) => {
+    const handler = (_: any, data: DeckData) => callback(data);
+    ipcRenderer.on('deck:data-updated', handler);
+    return () => {
+      ipcRenderer.removeListener('deck:data-updated', handler);
+    };
+  }
 });

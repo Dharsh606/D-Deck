@@ -3,14 +3,21 @@ import type { Task, DeckData, ViewMode, AppSettings } from './types';
 import { loadDeckData, saveDeckData, DEFAULT_SETTINGS } from './services/storage';
 import { WidgetView } from './components/widget/WidgetView';
 import { DeckView } from './components/deck/DeckView';
+import { QuickAddPopup } from './components/widget/QuickAddPopup';
 import { sfx } from './services/audio';
 
 export const App: React.FC = () => {
+  // Dedicated rectangular QuickAdd popup window mode
+  const isQuickAddPopup = typeof window !== 'undefined' && window.location.hash.startsWith('#quick-add');
+  if (isQuickAddPopup) {
+    return <QuickAddPopup />;
+  }
+
   const [deckData, setDeckData] = useState<DeckData | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>('widget');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load local data on mount
+  // Load local data on mount and listen for external updates
   useEffect(() => {
     async function init() {
       const data = await loadDeckData();
@@ -28,6 +35,13 @@ export const App: React.FC = () => {
       setIsLoading(false);
     }
     init();
+
+    if (window.electronAPI?.onDataUpdated) {
+      const unsubscribe = window.electronAPI.onDataUpdated((data) => {
+        setDeckData(data);
+      });
+      return unsubscribe;
+    }
   }, []);
 
   // Sync and save changes

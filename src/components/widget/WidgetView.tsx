@@ -43,10 +43,18 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
   const pendingTasks = filteredTasks.filter(t => !t.completed);
   const completedTasks = filteredTasks.filter(t => t.completed);
 
+  const handleOpenAdd = () => {
+    if (window.electronAPI?.openQuickAdd) {
+      window.electronAPI.openQuickAdd(selectedCategory === 'all' ? 'coding' : selectedCategory);
+    } else {
+      setIsQuickAddOpen(true);
+    }
+  };
+
   return (
     <div className="w-[280px] h-[380px] flex flex-col glass-surface rounded-2xl overflow-hidden font-sans select-none shadow-2xl">
       <WidgetHeader
-        onQuickAdd={() => setIsQuickAddOpen(true)}
+        onQuickAdd={handleOpenAdd}
         onExpandToDeck={onExpandToDeck}
         alwaysOnTop={settings.alwaysOnTop}
         onToggleAlwaysOnTop={onToggleAlwaysOnTop}
@@ -107,7 +115,7 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
             <div className="h-full flex flex-col items-center justify-center text-center p-4 text-zinc-500 space-y-2">
               <p className="text-[11px] text-zinc-400">No tasks in this list.</p>
               <button
-                onClick={() => setIsQuickAddOpen(true)}
+                onClick={handleOpenAdd}
                 className="px-2.5 py-1 rounded-lg bg-zinc-800/80 hover:bg-zinc-700 hover:border-emerald-400/30 text-zinc-300 hover:text-emerald-300 border border-white/[0.08] text-[11px] font-mono transition-all flex items-center gap-1"
               >
                 <Plus className="w-3 h-3" />

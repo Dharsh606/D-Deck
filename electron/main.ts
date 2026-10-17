@@ -4,12 +4,15 @@ import fs from 'fs';
 import type { DeckData, ViewMode } from '../src/types';
 
 let mainWindow: BrowserWindow | null = null;
+let quickAddWindow: BrowserWindow | null = null;
 let tray: Tray | null = null;
 let currentMode: ViewMode = 'widget';
 let reminderIntervalTimer: NodeJS.Timeout | null = null;
 
 const WIDGET_WIDTH = 280;
 const WIDGET_HEIGHT = 380;
+const POPUP_WIDTH = 380;
+const POPUP_HEIGHT = 540;
 const DECK_WIDTH = 1080;
 const DECK_HEIGHT = 740;
 
@@ -237,6 +240,66 @@ function createMainWindow() {
   });
 }
 
+function createQuickAddWindow(category: string = 'coding') {
+  if (quickAddWindow && !quickAddWindow.isDestroyed()) {
+    if (quickAddWindow.isMinimized()) quickAddWindow.restore();
+    quickAddWindow.show();
+    quickAddWindow.focus();
+    return;
+  }
+
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width: screenWidth, height: screenHeight } = primaryDisplay.workAreaSize;
+
+  let x = Math.floor((screenWidth - POPUP_WIDTH) / 2);
+  let y = Math.floor((screenHeight - POPUP_HEIGHT) / 2);
+
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    const [wx, wy] = mainWindow.getPosition();
+    if (wx > screenWidth / 2) {
+      x = Math.max(16, wx - POPUP_WIDTH - 12);
+    } else {
+      x = Math.min(screenWidth - POPUP_WIDTH - 16, wx + WIDGET_WIDTH + 12);
+    }
+    y = Math.max(24, Math.min(wy, screenHeight - POPUP_HEIGHT - 24));
+  }
+
+  const appIconPath = path.join(app.getAppPath(), 'public', 'icon.png');
+
+  quickAddWindow = new BrowserWindow({
+    width: POPUP_WIDTH,
+    height: POPUP_HEIGHT,
+    x,
+    y,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
+    resizable: false,
+    hasShadow: true,
+    backgroundColor: '#00000000',
+    icon: fs.existsSync(appIconPath) ? appIconPath : undefined,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: false,
+      contextIsolation: true,
+      sandbox: false,
+    }
+  });
+
+  const isDev = !app.isPackaged && process.env.NODE_ENV === 'development';
+  if (isDev) {
+    quickAddWindow.loadURL(`http://localhost:5173/#quick-add?cat=${encodeURIComponent(category)}`).catch(() => {
+      quickAddWindow?.loadFile(path.join(app.getAppPath(), 'dist/index.html'), { hash: `quick-add?cat=${encodeURIComponent(category)}` });
+    });
+  } else {
+    quickAddWindow.loadFile(path.join(app.getAppPath(), 'dist/index.html'), { hash: `quick-add?cat=${encodeURIComponent(category)}` });
+  }
+
+  quickAddWindow.on('closed', () => {
+    quickAddWindow = null;
+  });
+}
+
 function setupTray() {
   const iconPath = path.join(app.getAppPath(), 'public', 'icon.png');
   const icon = fs.existsSync(iconPath)
@@ -255,6 +318,11 @@ function setupTray() {
         }
       }
     },
+    {
+      label: 'Add New Task (+)',
+      click: () => createQuickAddWindow()
+    },
+    { type: 'separator' },
     {
       label: 'Switch to Full View',
       click: () => setWindowMode('deck')
@@ -309,7 +377,24 @@ function setWindowMode(mode: ViewMode) {
 
 // IPC Handlers
 ipcMain.handle('deck:get-data', () => readDeckData());
-ipcMain.handle('deck:save-data', (_, data: DeckData) => writeDeckData(data));
+ipcMain.handle('deck:save-data', (_, data: DeckData) => {
+  const ok = writeDeckData(data);
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.webContents.send('deck:data-updated', data);
+  }
+  if (quickAddWindow && !quickAddWindow.isDestroyed()) {
+    quickAddWindow.close();
+  }
+  return ok;
+});
+ipcMain.handle('window:open-quick-add', (_, category?: string) => {
+  createQuickAddWindow(category || 'coding');
+});
+ipcMain.handle('window:close-quick-add', () => {
+  if (quickAddWindow && !quickAddWindow.isDestroyed()) {
+    quickAddWindow.close();
+  }
+});
 ipcMain.handle('window:set-mode', (_, mode: ViewMode) => setWindowMode(mode));
 ipcMain.handle('window:get-mode', () => currentMode);
 ipcMain.handle('window:set-always-on-top', (_, flag: boolean) => {

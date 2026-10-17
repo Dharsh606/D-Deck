@@ -78,6 +78,9 @@ export interface ElectronAPI {
   closeWindow: () => Promise<void>;
   openExternal: (url: string) => Promise<void>;
   savePosition: (mode: ViewMode, x: number, y: number) => Promise<void>;
+  openQuickAdd?: (category?: string) => Promise<void>;
+  closeQuickAdd?: () => Promise<void>;
+  onDataUpdated?: (callback: (data: DeckData) => void) => () => void;
 }
 
 declare global {

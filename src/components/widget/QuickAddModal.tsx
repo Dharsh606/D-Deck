@@ -70,11 +70,11 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 bg-black/60 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 bg-black/75 backdrop-blur-md overflow-y-auto"
       onClick={onClose}
     >
       <div 
-        className="w-full max-w-sm bg-canvas-900 border border-white/[0.1] rounded-2xl shadow-2xl p-4 overflow-hidden relative"
+        className="w-full max-w-sm max-h-[94vh] bg-canvas-900 border border-white/[0.1] rounded-2xl shadow-2xl p-3.5 overflow-y-auto relative scrollbar-none"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
