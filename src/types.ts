@@ -59,11 +59,13 @@ export interface AppSettings {
   alwaysOnTop: boolean;
   notificationsEnabled: boolean;
   soundEnabled: boolean;
-  widgetOpacity: number; // 0.8 to 1.0
+  widgetOpacity: number;
   waterTargetMl: number; // default 3500 (3.5L)
   waterReminderIntervalMin: number; // e.g. 90 mins
-  activeTheme: 'cyber' | 'stealth' | 'aurora' | 'emerald';
-  lastWaterReminderTimestamp?: number;
+  widgetX?: number;
+  widgetY?: number;
+  deckX?: number;
+  deckY?: number;
 }
 
 export interface DeckData {
@@ -73,16 +75,6 @@ export interface DeckData {
 }
 
 export type ViewMode = 'widget' | 'deck';
-
-export interface CategoryConfig {
-  id: TaskCategory;
-  label: string;
-  icon: string;
-  color: string;
-  borderColor: string;
-  bgGlow: string;
-  description: string;
-}
 
 export interface ElectronAPI {
   getDeckData: () => Promise<DeckData>;
@@ -95,6 +87,7 @@ export interface ElectronAPI {
   minimizeWindow: () => Promise<void>;
   closeWindow: () => Promise<void>;
   openExternal: (url: string) => Promise<void>;
+  savePosition: (mode: ViewMode, x: number, y: number) => Promise<void>;
 }
 
 declare global {

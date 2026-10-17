@@ -6,89 +6,18 @@ import type { DeckData, ViewMode } from '../src/types';
 let mainWindow: BrowserWindow | null = null;
 let tray: Tray | null = null;
 let currentMode: ViewMode = 'widget';
-let periodicReminderTimer: NodeJS.Timeout | null = null;
+let reminderIntervalTimer: NodeJS.Timeout | null = null;
 
-const WIDGET_WIDTH = 380;
-const WIDGET_HEIGHT = 600;
-const DECK_WIDTH = 1120;
-const DECK_HEIGHT = 760;
+const WIDGET_WIDTH = 370;
+const WIDGET_HEIGHT = 580;
+const DECK_WIDTH = 1080;
+const DECK_HEIGHT = 740;
 
 const DATA_FILE_PATH = path.join(app.getPath('userData'), 'd-deck-data.json');
 
-// Default starter data
+// Default initial storage - clean empty slate
 const DEFAULT_DECK_DATA: DeckData = {
-  tasks: [
-    {
-      id: 'task-1',
-      title: 'Fix responsive layout bug on mobile viewport',
-      description: 'Check navbar padding and horizontal scroll issue on small screens.',
-      category: 'coding',
-      priority: 'high',
-      completed: true,
-      createdAt: new Date().toISOString(),
-      dueDate: new Date().toISOString().split('T')[0],
-      durationDays: 1,
-      reminderEnabled: true,
-      subtasks: [
-        { id: 'sub-1', title: 'Inspect media queries', completed: true },
-        { id: 'sub-2', title: 'Test on phone browser', completed: true },
-      ],
-      meta: { tag: 'Bugfix' }
-    },
-    {
-      id: 'task-2',
-      title: 'Drink water (3.5L daily target)',
-      description: 'Track daily water intake throughout the day.',
-      category: 'daily',
-      priority: 'urgent',
-      completed: false,
-      createdAt: new Date().toISOString(),
-      dueDate: new Date().toISOString().split('T')[0],
-      durationDays: 1,
-      reminderEnabled: true,
-      subtasks: [],
-      meta: { tag: 'Water' }
-    },
-    {
-      id: 'task-3',
-      title: 'Finish portfolio project writeup and release',
-      description: 'Upload latest screenshots and write clear summary.',
-      category: 'projects',
-      priority: 'medium',
-      completed: false,
-      createdAt: new Date().toISOString(),
-      dueDate: new Date(Date.now() + 86400000).toISOString().split('T')[0],
-      durationDays: 3,
-      reminderEnabled: true,
-      subtasks: [],
-    },
-    {
-      id: 'task-4',
-      title: 'Witcher 3 DLC / Cyberpunk session',
-      description: 'Finish side quest storyline.',
-      category: 'gaming',
-      priority: 'low',
-      completed: false,
-      createdAt: new Date().toISOString(),
-      dueDate: new Date(Date.now() + 2 * 86400000).toISOString().split('T')[0],
-      durationDays: 1,
-      reminderEnabled: false,
-      subtasks: [],
-      meta: { platform: 'PC / Steam' }
-    },
-    {
-      id: 'task-5',
-      title: 'Watch Dune: Part Two',
-      description: 'Weekend movie queue.',
-      category: 'movies',
-      priority: 'low',
-      completed: false,
-      createdAt: new Date().toISOString(),
-      reminderEnabled: false,
-      subtasks: [],
-      meta: { rating: 5, status: 'planned' }
-    }
-  ],
+  tasks: [],
   waterHistory: {},
   settings: {
     startupOnBoot: true,
@@ -98,7 +27,6 @@ const DEFAULT_DECK_DATA: DeckData = {
     widgetOpacity: 0.95,
     waterTargetMl: 3500,
     waterReminderIntervalMin: 90,
-    activeTheme: 'cyber'
   }
 };
 
@@ -114,10 +42,11 @@ function readDeckData(): DeckData {
     return {
       ...DEFAULT_DECK_DATA,
       ...parsed,
+      tasks: Array.isArray(parsed.tasks) ? parsed.tasks : [],
       settings: { ...DEFAULT_DECK_DATA.settings, ...parsed.settings }
     };
   } catch (err) {
-    console.error('Failed to read local data:', err);
+    console.error('Failed reading data:', err);
     return DEFAULT_DECK_DATA;
   }
 }
@@ -128,7 +57,7 @@ function writeDeckData(data: DeckData): boolean {
     fs.writeFileSync(DATA_FILE_PATH, JSON.stringify(data, null, 2), 'utf-8');
     return true;
   } catch (err) {
-    console.error('Failed to write local data:', err);
+    console.error('Failed writing data:', err);
     return false;
   }
 }
@@ -150,80 +79,75 @@ function showSystemNotification(title: string, body: string, silent: boolean = f
   notification.show();
 }
 
-function checkLoginReminders() {
+function checkTaskAndWaterReminders() {
   const data = readDeckData();
   if (!data.settings.notificationsEnabled) return;
 
   const today = new Date().toISOString().split('T')[0];
   const overdueTasks = data.tasks.filter(t => !t.completed && t.dueDate && t.dueDate < today);
-  const todaysTasks = data.tasks.filter(t => !t.completed && t.dueDate === today);
-  const urgentTasks = data.tasks.filter(t => !t.completed && t.priority === 'urgent');
+  const dueTodayTasks = data.tasks.filter(t => !t.completed && t.dueDate === today);
 
-  setTimeout(() => {
-    if (overdueTasks.length > 0) {
-      showSystemNotification(
-        'D-Deck',
-        `You have ${overdueTasks.length} overdue task(s) from earlier.`
-      );
-    } else if (todaysTasks.length > 0) {
-      showSystemNotification(
-        'D-Deck',
-        `You have ${todaysTasks.length} task(s) scheduled for today.`
-      );
-    }
+  // Overdue tasks reminder
+  if (overdueTasks.length > 0) {
+    const taskSample = overdueTasks.slice(0, 2).map(t => `"${t.title}"`).join(', ');
+    showSystemNotification(
+      'D-Deck',
+      `${overdueTasks.length} task(s) are overdue: ${taskSample}`
+    );
+  } else if (dueTodayTasks.length > 0) {
+    showSystemNotification(
+      'D-Deck',
+      `You have ${dueTodayTasks.length} task(s) scheduled for today.`
+    );
+  }
 
-    // Hydration check
-    const todayWater = data.waterHistory[today]?.currentMl || 0;
-    const target = data.settings.waterTargetMl || 3500;
-    if (todayWater < target * 0.3) {
-      setTimeout(() => {
-        showSystemNotification(
-          'D-Deck Water Reminder',
-          `Logged ${todayWater}ml of ${target}ml daily goal so far.`
-        );
-      }, 5000);
-    }
-  }, 2000);
-}
-
-function startPeriodicReminderLoop() {
-  if (periodicReminderTimer) clearInterval(periodicReminderTimer);
-
-  // Periodic reminder every 90 minutes if behind on water goal
-  periodicReminderTimer = setInterval(() => {
-    const data = readDeckData();
-    if (!data.settings.notificationsEnabled) return;
-
-    const today = new Date().toISOString().split('T')[0];
-    const todayWater = data.waterHistory[today]?.currentMl || 0;
-    const target = data.settings.waterTargetMl || 3500;
-
-    if (todayWater < target) {
+  // Water check
+  const todayWater = data.waterHistory[today]?.currentMl || 0;
+  const target = data.settings.waterTargetMl || 3500;
+  if (todayWater < target) {
+    setTimeout(() => {
       showSystemNotification(
         'D-Deck Water Reminder',
-        `Water logged: ${todayWater}ml / ${target}ml.`
+        `Logged: ${todayWater}ml / ${target}ml. Don't forget to stay hydrated.`
       );
-    }
-  }, 90 * 60 * 1000);
+    }, 4000);
+  }
+}
+
+function startReminderLoop() {
+  if (reminderIntervalTimer) clearInterval(reminderIntervalTimer);
+
+  // Check every 30 minutes for overdue tasks and water intake
+  reminderIntervalTimer = setInterval(() => {
+    checkTaskAndWaterReminders();
+  }, 30 * 60 * 1000);
 }
 
 function createMainWindow() {
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width: screenWidth, height: screenHeight } = primaryDisplay.workAreaSize;
 
-  // Position widget on the top-right desktop area by default
-  const defaultX = screenWidth - WIDGET_WIDTH - 24;
-  const defaultY = 48;
+  const savedData = readDeckData();
+  const savedX = savedData.settings.widgetX;
+  const savedY = savedData.settings.widgetY;
+
+  // Restore saved position or default to top-right
+  const initialX = (savedX !== undefined && savedX >= 0 && savedX < screenWidth)
+    ? savedX
+    : screenWidth - WIDGET_WIDTH - 24;
+  const initialY = (savedY !== undefined && savedY >= 0 && savedY < screenHeight)
+    ? savedY
+    : 48;
 
   mainWindow = new BrowserWindow({
     width: WIDGET_WIDTH,
     height: WIDGET_HEIGHT,
-    x: defaultX,
-    y: defaultY,
+    x: initialX,
+    y: initialY,
     frame: false,
     transparent: true,
     resizable: true,
-    alwaysOnTop: true,
+    alwaysOnTop: savedData.settings.alwaysOnTop ?? true,
     skipTaskbar: false,
     hasShadow: true,
     backgroundColor: '#00000000',
@@ -244,16 +168,30 @@ function createMainWindow() {
     mainWindow.loadFile(path.join(app.getAppPath(), 'dist/index.html'));
   }
 
+  // Persist window position permanently whenever the user moves it
+  mainWindow.on('moved', () => {
+    if (!mainWindow) return;
+    const [x, y] = mainWindow.getPosition();
+    const data = readDeckData();
+    if (currentMode === 'widget') {
+      data.settings.widgetX = x;
+      data.settings.widgetY = y;
+    } else {
+      data.settings.deckX = x;
+      data.settings.deckY = y;
+    }
+    writeDeckData(data);
+  });
+
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
 }
 
 function setupTray() {
-  // Simple transparent/circle icon representation or default icon
   const icon = nativeImage.createEmpty();
   tray = new Tray(icon);
-  tray.setToolTip('D-Deck: Desktop Task & Habit Hub');
+  tray.setToolTip('D-Deck');
 
   const contextMenu = Menu.buildFromTemplate([
     {
@@ -266,24 +204,19 @@ function setupTray() {
       }
     },
     {
-      label: 'Switch to Full Command Center',
-      click: () => {
-        setWindowMode('deck');
-      }
+      label: 'Switch to Full View',
+      click: () => setWindowMode('deck')
     },
     {
-      label: 'Switch to Compact Widget',
-      click: () => {
-        setWindowMode('widget');
-      }
+      label: 'Switch to Widget',
+      click: () => setWindowMode('widget')
     },
     { type: 'separator' },
     {
-      label: '💧 Log 250ml Water',
+      label: 'Log 250ml Water',
       click: () => {
         const data = readDeckData();
         const today = new Date().toISOString().split('T')[0];
-        const current = data.waterHistory[today]?.currentMl || 0;
         const now = new Date();
         const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
         
@@ -299,16 +232,14 @@ function setupTray() {
           data.waterHistory[today].entries.push({ id: 'w-' + Date.now(), time: timeStr, amountMl: 250 });
         }
         writeDeckData(data);
-        showSystemNotification('💧 Water Logged', `+250ml recorded! Total today: ${current + 250}ml.`);
+        showSystemNotification('D-Deck', `+250ml logged. Total: ${data.waterHistory[today].currentMl}ml`);
         if (mainWindow) mainWindow.webContents.send('deck:data-updated', data);
       }
     },
     { type: 'separator' },
     {
       label: 'Quit D-Deck',
-      click: () => {
-        app.quit();
-      }
+      click: () => app.quit()
     }
   ]);
 
@@ -328,52 +259,35 @@ function setWindowMode(mode: ViewMode) {
   if (!mainWindow) return;
   currentMode = mode;
 
-  const [currentX, currentY] = mainWindow.getPosition();
+  const data = readDeckData();
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width: screenWidth, height: screenHeight } = primaryDisplay.workAreaSize;
 
   if (mode === 'widget') {
-    // Resize to compact widget
-    mainWindow.setAlwaysOnTop(true);
+    mainWindow.setAlwaysOnTop(data.settings.alwaysOnTop ?? true);
     mainWindow.setSize(WIDGET_WIDTH, WIDGET_HEIGHT, true);
-    // Keep near top right
-    const x = Math.min(currentX, screenWidth - WIDGET_WIDTH - 20);
-    const y = Math.min(currentY, screenHeight - WIDGET_HEIGHT - 20);
+
+    const x = data.settings.widgetX ?? Math.min(mainWindow.getPosition()[0], screenWidth - WIDGET_WIDTH - 20);
+    const y = data.settings.widgetY ?? Math.min(mainWindow.getPosition()[1], screenHeight - WIDGET_HEIGHT - 20);
     mainWindow.setPosition(x, y, true);
   } else {
-    // Resize to full deck command center
     mainWindow.setAlwaysOnTop(false);
     mainWindow.setSize(DECK_WIDTH, DECK_HEIGHT, true);
-    // Center on screen
-    const x = Math.max(0, Math.floor((screenWidth - DECK_WIDTH) / 2));
-    const y = Math.max(0, Math.floor((screenHeight - DECK_HEIGHT) / 2));
+
+    const x = data.settings.deckX ?? Math.max(0, Math.floor((screenWidth - DECK_WIDTH) / 2));
+    const y = data.settings.deckY ?? Math.max(0, Math.floor((screenHeight - DECK_HEIGHT) / 2));
     mainWindow.setPosition(x, y, true);
   }
 }
 
 // IPC Handlers
-ipcMain.handle('deck:get-data', () => {
-  return readDeckData();
-});
-
-ipcMain.handle('deck:save-data', (_, data: DeckData) => {
-  return writeDeckData(data);
-});
-
-ipcMain.handle('window:set-mode', (_, mode: ViewMode) => {
-  setWindowMode(mode);
-});
-
-ipcMain.handle('window:get-mode', () => {
-  return currentMode;
-});
-
+ipcMain.handle('deck:get-data', () => readDeckData());
+ipcMain.handle('deck:save-data', (_, data: DeckData) => writeDeckData(data));
+ipcMain.handle('window:set-mode', (_, mode: ViewMode) => setWindowMode(mode));
+ipcMain.handle('window:get-mode', () => currentMode);
 ipcMain.handle('window:set-always-on-top', (_, flag: boolean) => {
-  if (mainWindow) {
-    mainWindow.setAlwaysOnTop(flag);
-  }
+  if (mainWindow) mainWindow.setAlwaysOnTop(flag);
 });
-
 ipcMain.handle('app:set-startup', (_, flag: boolean) => {
   app.setLoginItemSettings({
     openAtLogin: flag,
@@ -382,31 +296,31 @@ ipcMain.handle('app:set-startup', (_, flag: boolean) => {
   });
   return true;
 });
-
 ipcMain.handle('app:notify', (_, title: string, body: string, options?: { silent?: boolean }) => {
   showSystemNotification(title, body, options?.silent ?? false);
 });
-
-ipcMain.handle('window:minimize', () => {
-  if (mainWindow) mainWindow.minimize();
-});
-
-ipcMain.handle('window:close', () => {
-  if (mainWindow) mainWindow.close();
-});
-
-ipcMain.handle('app:open-external', (_, url: string) => {
-  shell.openExternal(url);
+ipcMain.handle('window:minimize', () => mainWindow?.minimize());
+ipcMain.handle('window:close', () => mainWindow?.close());
+ipcMain.handle('app:open-external', (_, url: string) => shell.openExternal(url));
+ipcMain.handle('window:save-position', (_, mode: ViewMode, x: number, y: number) => {
+  const data = readDeckData();
+  if (mode === 'widget') {
+    data.settings.widgetX = x;
+    data.settings.widgetY = y;
+  } else {
+    data.settings.deckX = x;
+    data.settings.deckY = y;
+  }
+  writeDeckData(data);
 });
 
 // App Lifecycle
 app.whenReady().then(() => {
   createMainWindow();
   setupTray();
-  checkLoginReminders();
-  startPeriodicReminderLoop();
+  checkTaskAndWaterReminders();
+  startReminderLoop();
 
-  // Configure auto-launch setting if enabled
   const initialData = readDeckData();
   if (initialData.settings.startupOnBoot) {
     app.setLoginItemSettings({

@@ -196,10 +196,10 @@ export const App: React.FC = () => {
 
   if (isLoading || !deckData) {
     return (
-      <div className="w-[380px] h-[600px] flex items-center justify-center bg-deck-950 text-cyan-400 font-mono text-xs rounded-2xl border border-slate-800">
+      <div className="w-[370px] h-[580px] flex items-center justify-center glass-surface text-zinc-400 font-mono text-xs rounded-2xl">
         <div className="flex flex-col items-center gap-2">
-          <div className="w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
-          <span>INITIALIZING D-DECK...</span>
+          <div className="w-5 h-5 border-2 border-zinc-400 border-t-transparent rounded-full animate-spin" />
+          <span>Loading D-Deck...</span>
         </div>
       </div>
     );

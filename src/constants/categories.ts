@@ -1,72 +1,74 @@
-import type { CategoryConfig, TaskCategory } from '../types';
+import type { TaskCategory, TaskPriority } from '../types';
 
-export const CATEGORIES: CategoryConfig[] = [
+export interface CategoryTheme {
+  id: TaskCategory;
+  label: string;
+  badge: string;
+  accent: string;
+  border: string;
+  dot: string;
+}
+
+export const CATEGORIES: CategoryTheme[] = [
   {
     id: 'coding',
-    label: 'Coding & Tech',
-    icon: 'Code2',
-    color: '#00f2fe',
-    borderColor: 'border-cyan-500/40',
-    bgGlow: 'bg-cyan-500/10 text-cyan-300 shadow-[0_0_12px_rgba(0,242,254,0.2)]',
-    description: 'Bugs, features, algorithms, code reviews'
+    label: 'Coding',
+    badge: 'bg-indigo-500/10 text-indigo-300 border-indigo-500/20',
+    accent: '#6366f1',
+    border: 'hover:border-indigo-500/30',
+    dot: 'bg-indigo-400',
   },
   {
     id: 'projects',
     label: 'Projects',
-    icon: 'FolderGit2',
-    color: '#f43f5e',
-    borderColor: 'border-rose-500/40',
-    bgGlow: 'bg-rose-500/10 text-rose-300 shadow-[0_0_12px_rgba(244,63,94,0.2)]',
-    description: 'Milestones, apps, architectures, and client deliverables'
+    badge: 'bg-rose-500/10 text-rose-300 border-rose-500/20',
+    accent: '#f43f5e',
+    border: 'hover:border-rose-500/30',
+    dot: 'bg-rose-400',
   },
   {
     id: 'gaming',
     label: 'Gaming',
-    icon: 'Gamepad2',
-    color: '#b827fc',
-    borderColor: 'border-purple-500/40',
-    bgGlow: 'bg-purple-500/10 text-purple-300 shadow-[0_0_12px_rgba(184,39,252,0.2)]',
-    description: 'Backlog, campaigns, multiplayer sessions & updates'
+    badge: 'bg-purple-500/10 text-purple-300 border-purple-500/20',
+    accent: '#a855f7',
+    border: 'hover:border-purple-500/30',
+    dot: 'bg-purple-400',
   },
   {
     id: 'movies',
-    label: 'Movies & Series',
-    icon: 'Film',
-    color: '#fbbf24',
-    borderColor: 'border-amber-500/40',
-    bgGlow: 'bg-amber-500/10 text-amber-300 shadow-[0_0_12px_rgba(251,191,36,0.2)]',
-    description: 'Watchlist, anime, cinema, and recommended series'
+    label: 'Movies',
+    badge: 'bg-amber-500/10 text-amber-300 border-amber-500/20',
+    accent: '#f59e0b',
+    border: 'hover:border-amber-500/30',
+    dot: 'bg-amber-400',
   },
   {
     id: 'daily',
-    label: 'Daily Activities',
-    icon: 'CheckSquare',
-    color: '#6366f1',
-    borderColor: 'border-indigo-500/40',
-    bgGlow: 'bg-indigo-500/10 text-indigo-300 shadow-[0_0_12px_rgba(99,102,241,0.2)]',
-    description: 'Everyday routines, errands, and priority chores'
+    label: 'Daily',
+    badge: 'bg-blue-500/10 text-blue-300 border-blue-500/20',
+    accent: '#3b82f6',
+    border: 'hover:border-blue-500/30',
+    dot: 'bg-blue-400',
   },
   {
     id: 'fitness',
-    label: 'Fitness & Health',
-    icon: 'Flame',
-    color: '#10b981',
-    borderColor: 'border-emerald-500/40',
-    bgGlow: 'bg-emerald-500/10 text-emerald-300 shadow-[0_0_12px_rgba(16,185,129,0.2)]',
-    description: 'Workouts, cardio, stretching, and physical goals'
-  }
+    label: 'Fitness',
+    badge: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
+    accent: '#10b981',
+    border: 'hover:border-emerald-500/30',
+    dot: 'bg-emerald-400',
+  },
 ];
 
-export function getCategoryConfig(id: TaskCategory): CategoryConfig {
-  const match = CATEGORIES.find(c => c.id === id);
-  if (match) return match;
+export function getCategoryTheme(id: TaskCategory): CategoryTheme {
+  const found = CATEGORIES.find(c => c.id === id);
+  if (found) return found;
   return {
     id,
     label: id.charAt(0).toUpperCase() + id.slice(1),
-    icon: 'Tag',
-    color: '#94a3b8',
-    borderColor: 'border-slate-500/40',
-    bgGlow: 'bg-slate-500/10 text-slate-300',
-    description: 'Custom category'
+    badge: 'bg-zinc-500/10 text-zinc-300 border-zinc-500/20',
+    accent: '#71717a',
+    border: 'hover:border-zinc-500/30',
+    dot: 'bg-zinc-400',
   };
 }
