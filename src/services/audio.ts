@@ -72,7 +72,26 @@ class SoundEffects {
     } catch {}
   }
 
-
+  public playReminderChime() {
+    if (!this.enabled) return;
+    try {
+      const candidatePaths = [
+        './sounds/reminder.mp3',
+        './sounds/reminder.wav',
+        './reminder.mp3',
+        './reminder.wav'
+      ];
+      const tryPlay = (index: number) => {
+        if (index >= candidatePaths.length) return;
+        const audio = new Audio(candidatePaths[index]);
+        audio.volume = 0.95;
+        audio.play().catch(() => {
+          tryPlay(index + 1);
+        });
+      };
+      tryPlay(0);
+    } catch {}
+  }
 }
 
 export const sfx = new SoundEffects();

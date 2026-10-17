@@ -8,6 +8,7 @@ let quickAddWindow: BrowserWindow | null = null;
 let tray: Tray | null = null;
 let currentMode: ViewMode = 'widget';
 let reminderIntervalTimer: NodeJS.Timeout | null = null;
+let isQuitting = false;
 
 const WIDGET_WIDTH = 280;
 const WIDGET_HEIGHT = 380;
@@ -64,9 +65,11 @@ function writeDeckData(data: DeckData): boolean {
 
 function showSystemNotification(title: string, body: string, silent: boolean = false) {
   if (!Notification.isSupported()) return;
+  const appIconPath = path.join(app.getAppPath(), 'public', 'icon.png');
   const notification = new Notification({
     title,
     body,
+    icon: fs.existsSync(appIconPath) ? appIconPath : undefined,
     silent
   });
   notification.on('click', () => {
@@ -79,7 +82,10 @@ function showSystemNotification(title: string, body: string, silent: boolean = f
   notification.show();
 }
 
-// 3-Stage Precise Reminder Engine (-5m, exact, +5m)
+// 3-Stage Precise Reminder Engine:
+// Stage 1: 1 minute before scheduled time (T - 1m)
+// Stage 2: Exact scheduled time (T)
+// Stage 3: 1 minute after scheduled time (T + 1m) if still pending
 function checkThreeStageReminders() {
   const data = readDeckData();
   if (!data.settings.notificationsEnabled) return;
@@ -94,48 +100,59 @@ function checkThreeStageReminders() {
     if (task.dueTime) {
       const [y, m, d] = task.dueDate.split('-').map(Number);
       const [hh, mm] = task.dueTime.split(':').map(Number);
+      if (isNaN(y) || isNaN(m) || isNaN(d) || isNaN(hh) || isNaN(mm)) continue;
+
       const targetDate = new Date(y, m - 1, d, hh, mm, 0);
-      const diffMinutes = (targetDate.getTime() - now.getTime()) / (60 * 1000);
+      const diffSec = Math.round((targetDate.getTime() - now.getTime()) / 1000);
 
       if (!task.reminderStages) {
         task.reminderStages = {};
       }
 
-      // Stage 1: 5 minutes before (diff between 3.5 and 5.5 min)
-      if (diffMinutes <= 5.5 && diffMinutes >= 3.5 && !task.reminderStages.pre5) {
-        task.reminderStages.pre5 = true;
+      // Stage 1: 1 minute before (diffSec between 20s and 70s)
+      if (diffSec <= 70 && diffSec >= 20 && !task.reminderStages.pre1) {
+        task.reminderStages.pre1 = true;
         changed = true;
         showSystemNotification(
-          'D-Deck (Upcoming in 5m)',
+          'D-Deck (Upcoming in 1m)',
           `Scheduled at ${task.dueTime}: "${task.title}"`
         );
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('deck:play-reminder-sound');
+        }
       }
 
-      // Stage 2: Exact due time (diff between -1.5 and 0.5 min)
-      if (diffMinutes <= 0.5 && diffMinutes >= -1.5 && !task.reminderStages.exact) {
+      // Stage 2: Exact due time (diffSec between -35s and 15s)
+      if (diffSec <= 15 && diffSec >= -35 && !task.reminderStages.exact) {
         task.reminderStages.exact = true;
         changed = true;
         showSystemNotification(
           'D-Deck Reminder',
           `Time for: "${task.title}" (${task.dueTime})`
         );
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('deck:play-reminder-sound');
+        }
       }
 
-      // Stage 3: 5 minutes after if still pending (diff between -7.0 and -4.5 min)
-      if (diffMinutes <= -4.5 && diffMinutes >= -7.0 && !task.reminderStages.post5 && !task.completed) {
-        task.reminderStages.post5 = true;
+      // Stage 3: 1 minute after if still pending (diffSec between -50s and -120s)
+      if (diffSec <= -50 && diffSec >= -120 && !task.reminderStages.post1 && !task.completed) {
+        task.reminderStages.post1 = true;
         changed = true;
         showSystemNotification(
-          'D-Deck Follow-up (+5m)',
+          'D-Deck Follow-up (+1m)',
           `"${task.title}" is still pending. Don't forget to mark it done!`
         );
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('deck:play-reminder-sound');
+        }
       }
     }
   }
 
   if (changed) {
     writeDeckData(data);
-    if (mainWindow) {
+    if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.webContents.send('deck:data-updated', data);
     }
   }
@@ -166,10 +183,10 @@ function checkStartupAgenda() {
 function startReminderLoop() {
   if (reminderIntervalTimer) clearInterval(reminderIntervalTimer);
 
-  // Monitor reminders every 20 seconds for precise -5m, exact, and +5m trigger
+  // Monitor reminders every 5 seconds for pinpoint ±1m accuracy
   reminderIntervalTimer = setInterval(() => {
     checkThreeStageReminders();
-  }, 20 * 1000);
+  }, 5 * 1000);
 }
 
 function createMainWindow() {
@@ -208,6 +225,7 @@ function createMainWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       sandbox: false,
+      backgroundThrottling: false,
     },
   });
 
@@ -233,6 +251,17 @@ function createMainWindow() {
       data.settings.deckY = y;
     }
     writeDeckData(data);
+  });
+
+  // Hide to system tray instead of terminating when close is clicked
+  mainWindow.on('close', (e) => {
+    if (!isQuitting) {
+      e.preventDefault();
+      if (quickAddWindow && !quickAddWindow.isDestroyed()) {
+        quickAddWindow.close();
+      }
+      mainWindow?.hide();
+    }
   });
 
   mainWindow.on('closed', () => {
@@ -313,6 +342,8 @@ function setupTray() {
       label: 'Open D-Deck Widget',
       click: () => {
         if (mainWindow) {
+          setWindowMode('widget');
+          if (mainWindow.isMinimized()) mainWindow.restore();
           mainWindow.show();
           mainWindow.focus();
         }
@@ -325,27 +356,54 @@ function setupTray() {
     { type: 'separator' },
     {
       label: 'Switch to Full View',
-      click: () => setWindowMode('deck')
+      click: () => {
+        setWindowMode('deck');
+        if (mainWindow) {
+          if (mainWindow.isMinimized()) mainWindow.restore();
+          mainWindow.show();
+          mainWindow.focus();
+        }
+      }
     },
     {
       label: 'Switch to Widget',
-      click: () => setWindowMode('widget')
+      click: () => {
+        setWindowMode('widget');
+        if (mainWindow) {
+          if (mainWindow.isMinimized()) mainWindow.restore();
+          mainWindow.show();
+          mainWindow.focus();
+        }
+      }
     },
     { type: 'separator' },
     {
       label: 'Quit D-Deck',
-      click: () => app.quit()
+      click: () => {
+        isQuitting = true;
+        app.quit();
+      }
     }
   ]);
 
   tray.setContextMenu(contextMenu);
   tray.on('click', () => {
     if (mainWindow) {
-      if (mainWindow.isVisible()) {
-        mainWindow.focus();
-      } else {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      if (!mainWindow.isVisible()) {
         mainWindow.show();
       }
+      mainWindow.focus();
+    }
+  });
+
+  tray.on('double-click', () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      if (!mainWindow.isVisible()) {
+        mainWindow.show();
+      }
+      mainWindow.focus();
     }
   });
 }
@@ -412,7 +470,12 @@ ipcMain.handle('app:notify', (_, title: string, body: string, options?: { silent
   showSystemNotification(title, body, options?.silent ?? false);
 });
 ipcMain.handle('window:minimize', () => mainWindow?.minimize());
-ipcMain.handle('window:close', () => mainWindow?.close());
+ipcMain.handle('window:close', () => {
+  if (quickAddWindow && !quickAddWindow.isDestroyed()) {
+    quickAddWindow.close();
+  }
+  mainWindow?.hide();
+});
 ipcMain.handle('app:open-external', (_, url: string) => shell.openExternal(url));
 ipcMain.handle('window:save-position', (_, mode: ViewMode, x: number, y: number) => {
   const data = readDeckData();
@@ -447,8 +510,13 @@ app.whenReady().then(() => {
   });
 });
 
+app.on('before-quit', () => {
+  isQuitting = true;
+});
+
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  if (isQuitting) {
     app.quit();
   }
 });
+

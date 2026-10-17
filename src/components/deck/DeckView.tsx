@@ -462,7 +462,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
                     </div>
                     <div>
                       <h4 className="text-xs font-semibold text-zinc-200">Desktop Notifications</h4>
-                      <p className="text-[11px] text-zinc-400">3-Stage task reminder alerts (-5m, exact, +5m) & startup agenda.</p>
+                      <p className="text-[11px] text-zinc-400">3-Stage task reminder alerts (-1m, exact, +1m) & startup agenda.</p>
                     </div>
                   </div>
                   <input
@@ -518,7 +518,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
         isOpen={isQuickAddOpen}
         onClose={() => setIsQuickAddOpen(false)}
         onAddTask={onAddTask}
-        initialCategory={activeTab === 'overview' || activeTab === 'water' || activeTab === 'settings' ? 'coding' : activeTab}
+        initialCategory={activeTab === 'overview' || activeTab === 'about' || activeTab === 'settings' ? 'coding' : activeTab}
       />
     </div>
   );

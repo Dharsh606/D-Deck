@@ -24,9 +24,11 @@ export interface TaskMeta {
 }
 
 export interface ReminderStages {
-  pre5?: boolean;  // 5 minutes before
+  pre1?: boolean;  // 1 minute before
   exact?: boolean; // at the exact time
-  post5?: boolean; // 5 minutes after if not marked completed
+  post1?: boolean; // 1 minute after if not marked completed
+  pre5?: boolean;
+  post5?: boolean;
 }
 
 export interface Task {
@@ -81,6 +83,7 @@ export interface ElectronAPI {
   openQuickAdd?: (category?: string) => Promise<void>;
   closeQuickAdd?: () => Promise<void>;
   onDataUpdated?: (callback: (data: DeckData) => void) => () => void;
+  onReminderSound?: (callback: () => void) => () => void;
 }
 
 declare global {

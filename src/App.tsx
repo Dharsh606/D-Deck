@@ -36,12 +36,25 @@ export const App: React.FC = () => {
     }
     init();
 
+    let unsubData: (() => void) | undefined;
+    let unsubSound: (() => void) | undefined;
+
     if (window.electronAPI?.onDataUpdated) {
-      const unsubscribe = window.electronAPI.onDataUpdated((data) => {
+      unsubData = window.electronAPI.onDataUpdated((data) => {
         setDeckData(data);
       });
-      return unsubscribe;
     }
+
+    if (window.electronAPI?.onReminderSound) {
+      unsubSound = window.electronAPI.onReminderSound(() => {
+        sfx.playReminderChime();
+      });
+    }
+
+    return () => {
+      if (unsubData) unsubData();
+      if (unsubSound) unsubSound();
+    };
   }, []);
 
   // Sync and save changes

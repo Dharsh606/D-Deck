@@ -22,5 +22,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
     return () => {
       ipcRenderer.removeListener('deck:data-updated', handler);
     };
+  },
+  onReminderSound: (callback: () => void) => {
+    const handler = () => callback();
+    ipcRenderer.on('deck:play-reminder-sound', handler);
+    return () => {
+      ipcRenderer.removeListener('deck:play-reminder-sound', handler);
+    };
   }
 });
