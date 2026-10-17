@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Notification, Tray, Menu, shell, screen, nativeImage } from 'electron';
+import { app, BrowserWindow, ipcMain, Notification, Tray, Menu, shell, screen, nativeImage, globalShortcut } from 'electron';
 import path from 'path';
 import fs from 'fs';
 import type { DeckData, ViewMode } from '../src/types';
@@ -30,6 +30,30 @@ const DEFAULT_DECK_DATA: DeckData = {
     widgetOpacity: 0.95,
   }
 };
+
+function getTrayIconPath(): string {
+  const candidates = [
+    path.join(process.resourcesPath, 'public', 'icon.ico'),
+    path.join(process.resourcesPath, 'public', 'icon.png'),
+    path.join(process.resourcesPath, 'icon.ico'),
+    path.join(process.resourcesPath, 'icon.png'),
+    path.join(app.getAppPath(), 'public', 'icon.ico'),
+    path.join(app.getAppPath(), 'public', 'icon.png'),
+    path.join(app.getAppPath(), 'dist', 'icon.ico'),
+    path.join(app.getAppPath(), 'dist', 'icon.png'),
+    path.join(__dirname, '..', '..', 'public', 'icon.ico'),
+    path.join(__dirname, '..', '..', 'public', 'icon.png'),
+    path.join(__dirname, '..', 'public', 'icon.ico'),
+    path.join(__dirname, '..', 'public', 'icon.png'),
+  ];
+
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+  }
+  return '';
+}
 
 function readDeckData(): DeckData {
   try {
@@ -65,11 +89,11 @@ function writeDeckData(data: DeckData): boolean {
 
 function showSystemNotification(title: string, body: string, silent: boolean = false) {
   if (!Notification.isSupported()) return;
-  const appIconPath = path.join(app.getAppPath(), 'public', 'icon.png');
+  const iconPath = getTrayIconPath();
   const notification = new Notification({
     title,
     body,
-    icon: fs.existsSync(appIconPath) ? appIconPath : undefined,
+    icon: iconPath || undefined,
     silent
   });
   notification.on('click', () => {
@@ -82,21 +106,40 @@ function showSystemNotification(title: string, body: string, silent: boolean = f
   notification.show();
 }
 
-// 3-Stage Precise Reminder Engine:
+// 3-Stage & Minute-by-Minute Persistent Reminder Engine:
 // Stage 1: 1 minute before scheduled time (T - 1m)
 // Stage 2: Exact scheduled time (T)
-// Stage 3: 1 minute after scheduled time (T + 1m) if still pending
+// Stage 3: After every minute while task is pending (T + 1m, T + 2m, T + 3m...)
 function checkThreeStageReminders() {
   const data = readDeckData();
-  if (!data.settings.notificationsEnabled) return;
-
   const now = new Date();
+  const todayStr = now.toISOString().split('T')[0];
   let changed = false;
+
+  // Daily Habit Auto-Reset Protocol: Routine tasks reset every midnight
+  for (const task of data.tasks) {
+    if (task.isRoutine && task.completed) {
+      const completedDay = task.completedAt ? task.completedAt.split('T')[0] : task.dueDate;
+      if (completedDay && completedDay < todayStr) {
+        task.completed = false;
+        task.completedAt = undefined;
+        task.lastResetDate = todayStr;
+        task.dueDate = todayStr;
+        task.reminderStages = {};
+        changed = true;
+      }
+    }
+  }
+
+  if (!data.settings.notificationsEnabled) {
+    if (changed) writeDeckData(data);
+    return;
+  }
 
   for (const task of data.tasks) {
     if (task.completed || !task.reminderEnabled || !task.dueDate) continue;
 
-    // Time-based 3-stage notifications
+    // Time-based continuous reminders
     if (task.dueTime) {
       const [y, m, d] = task.dueDate.split('-').map(Number);
       const [hh, mm] = task.dueTime.split(':').map(Number);
@@ -135,16 +178,20 @@ function checkThreeStageReminders() {
         }
       }
 
-      // Stage 3: 1 minute after if still pending (diffSec between -50s and -120s)
-      if (diffSec <= -50 && diffSec >= -120 && !task.reminderStages.post1 && !task.completed) {
-        task.reminderStages.post1 = true;
-        changed = true;
-        showSystemNotification(
-          'D-Deck Follow-up (+1m)',
-          `"${task.title}" is still pending. Don't forget to mark it done!`
-        );
-        if (mainWindow && !mainWindow.isDestroyed()) {
-          mainWindow.webContents.send('deck:play-reminder-sound');
+      // Stage 3: After every minute if still not marked completed (1m, 2m, 3m...)
+      if (diffSec <= -45 && !task.completed) {
+        const elapsedMinutes = Math.floor(Math.abs(diffSec) / 60);
+        if (elapsedMinutes >= 1 && task.reminderStages.lastMinuteNotified !== elapsedMinutes) {
+          task.reminderStages.lastMinuteNotified = elapsedMinutes;
+          task.reminderStages.post1 = true;
+          changed = true;
+          showSystemNotification(
+            `D-Deck Reminder (+${elapsedMinutes}m)`,
+            `"${task.title}" is pending (${elapsedMinutes}m overdue). Click to mark done!`
+          );
+          if (mainWindow && !mainWindow.isDestroyed()) {
+            mainWindow.webContents.send('deck:play-reminder-sound');
+          }
         }
       }
     }
@@ -330,11 +377,18 @@ function createQuickAddWindow(category: string = 'coding') {
 }
 
 function setupTray() {
-  const iconPath = path.join(app.getAppPath(), 'public', 'icon.png');
-  const icon = fs.existsSync(iconPath)
-    ? nativeImage.createFromPath(iconPath).resize({ width: 18, height: 18 })
-    : nativeImage.createEmpty();
-  tray = new Tray(icon);
+  const iconPath = getTrayIconPath();
+  if (iconPath) {
+    if (process.platform === 'win32' && iconPath.endsWith('.ico')) {
+      tray = new Tray(iconPath);
+    } else {
+      const img = nativeImage.createFromPath(iconPath);
+      tray = new Tray(img.resize({ width: 16, height: 16 }));
+    }
+  } else {
+    tray = new Tray(nativeImage.createEmpty());
+  }
+
   tray.setToolTip('D-Deck');
 
   const contextMenu = Menu.buildFromTemplate([
@@ -496,6 +550,34 @@ app.whenReady().then(() => {
   checkStartupAgenda();
   startReminderLoop();
 
+  // Global Stealth Hotkey: Ctrl+Shift+D toggles HUD over any game or editor
+  try {
+    globalShortcut.register('CommandOrControl+Shift+D', () => {
+      if (!mainWindow) {
+        createMainWindow();
+        return;
+      }
+
+      if (mainWindow.isVisible() && !mainWindow.isMinimized()) {
+        if (mainWindow.isFocused()) {
+          mainWindow.hide();
+        } else {
+          mainWindow.show();
+          mainWindow.focus();
+          mainWindow.setAlwaysOnTop(true);
+        }
+      } else {
+        setWindowMode('widget');
+        if (mainWindow.isMinimized()) mainWindow.restore();
+        mainWindow.show();
+        mainWindow.focus();
+        mainWindow.setAlwaysOnTop(true);
+      }
+    });
+  } catch (err) {
+    console.error('Failed to register global hotkey:', err);
+  }
+
   const initialData = readDeckData();
   if (initialData.settings.startupOnBoot) {
     app.setLoginItemSettings({
@@ -512,6 +594,10 @@ app.whenReady().then(() => {
 
 app.on('before-quit', () => {
   isQuitting = true;
+});
+
+app.on('will-quit', () => {
+  globalShortcut.unregisterAll();
 });
 
 app.on('window-all-closed', () => {

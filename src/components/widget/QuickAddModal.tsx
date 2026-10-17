@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Plus, Calendar, Clock } from 'lucide-react';
+import { X, Plus, Calendar, Clock, Repeat } from 'lucide-react';
 import type { Task, TaskCategory, TaskPriority } from '../../types';
 import { CATEGORIES } from '../../constants/categories';
 import { sfx } from '../../services/audio';
@@ -24,6 +24,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
   const [dueDate, setDueDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [dueTime, setDueTime] = useState<string>('11:30');
   const [durationDays, setDurationDays] = useState<number>(1);
+  const [isRoutine, setIsRoutine] = useState<boolean>(false);
   const [subtaskInput, setSubtaskInput] = useState('');
   const [subtasks, setSubtasks] = useState<{ id: string; title: string; completed: boolean }[]>([]);
 
@@ -33,6 +34,7 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 80);
       setCategory(initialCategory);
+      setIsRoutine(false);
     }
   }, [isOpen, initialCategory]);
 
@@ -57,6 +59,8 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
       dueDate,
       dueTime: dueTime.trim() || undefined,
       durationDays,
+      isRoutine,
+      lastResetDate: isRoutine ? dueDate : undefined,
       reminderEnabled: true,
       subtasks,
     });
@@ -249,6 +253,23 @@ export const QuickAddModal: React.FC<QuickAddModalProps> = ({
                   </button>
                 )}
               </div>
+            </div>
+
+            {/* Daily Routine Auto-Reset Toggle */}
+            <div className="pt-2 border-t border-white/[0.04] flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <Repeat className={`w-3.5 h-3.5 ${isRoutine ? 'text-emerald-400' : 'text-zinc-500'}`} />
+                <span className="text-[10px] text-zinc-300 font-mono">Daily Routine</span>
+              </div>
+              <label className="flex items-center gap-1.5 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={isRoutine}
+                  onChange={e => setIsRoutine(e.target.checked)}
+                  className="w-3.5 h-3.5 accent-emerald-400 rounded cursor-pointer"
+                />
+                <span className="text-[9px] text-zinc-400 font-mono">Auto-resets at midnight</span>
+              </label>
             </div>
           </div>
 

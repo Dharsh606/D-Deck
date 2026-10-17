@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import type { Task, TaskCategory, AppSettings } from '../../types';
+import type { Task, TaskCategory, AppSettings, StreakMetrics } from '../../types';
 import { CATEGORIES } from '../../constants/categories';
 import { WidgetHeader } from './WidgetHeader';
 import { TaskItem } from './TaskItem';
 import { QuickAddModal } from './QuickAddModal';
-import { Plus } from 'lucide-react';
+import { Plus, Flame } from 'lucide-react';
 import { sfx } from '../../services/audio';
 
 interface WidgetViewProps {
   tasks: Task[];
   settings: AppSettings;
+  streak?: StreakMetrics;
   onAddTask: (task: Omit<Task, 'id' | 'createdAt' | 'completed'>) => void;
   onToggleTask: (taskId: string) => void;
   onDeleteTask: (taskId: string) => void;
@@ -23,6 +24,7 @@ interface WidgetViewProps {
 export const WidgetView: React.FC<WidgetViewProps> = ({
   tasks,
   settings,
+  streak,
   onAddTask,
   onToggleTask,
   onDeleteTask,
@@ -159,14 +161,16 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
           )}
         </div>
 
-        {/* Footer Status */}
+        {/* Footer Status with Consistency & Velocity Streak */}
         <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[10px] text-zinc-500 font-mono">
-          <div className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            <span>{pendingTasks.length} pending</span>
+          <div className="flex items-center gap-1.5" title="Local Streak Counter: 100% offline & private">
+            <Flame className="w-3 h-3 text-amber-400 fill-amber-400/20" />
+            <span className="text-zinc-300 font-semibold">{streak?.currentStreak ?? 0}d streak</span>
+            <span className="text-zinc-600">•</span>
+            <span className="text-emerald-400">{streak?.weeklyVelocity ?? 0}/wk</span>
           </div>
           <div>
-            <span>{completedTasks.length} completed</span>
+            <span>{pendingTasks.length} pending</span>
           </div>
         </div>
       </div>

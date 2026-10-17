@@ -1,4 +1,6 @@
-// Simple Web Audio feedback without external audio assets
+import reminderSoundUrl from '../assets/reminder.mp3';
+
+// Audio feedback system
 class SoundEffects {
   private ctx: AudioContext | null = null;
   private enabled: boolean = true;
@@ -76,18 +78,23 @@ class SoundEffects {
     if (!this.enabled) return;
     try {
       const candidatePaths = [
+        reminderSoundUrl,
         './sounds/reminder.mp3',
-        './sounds/reminder.wav',
         './reminder.mp3',
+        './sounds/reminder.wav',
         './reminder.wav'
-      ];
+      ].filter(Boolean) as string[];
+
       const tryPlay = (index: number) => {
         if (index >= candidatePaths.length) return;
         const audio = new Audio(candidatePaths[index]);
         audio.volume = 0.95;
-        audio.play().catch(() => {
-          tryPlay(index + 1);
-        });
+        const promise = audio.play();
+        if (promise !== undefined) {
+          promise.catch(() => {
+            tryPlay(index + 1);
+          });
+        }
       };
       tryPlay(0);
     } catch {}

@@ -31,10 +31,12 @@ import {
 } from 'lucide-react';
 import { sfx } from '../../services/audio';
 import { exportDataAsJSON } from '../../services/storage';
+import type { StreakMetrics } from '../../types';
 
 interface DeckViewProps {
   tasks: Task[];
   settings: AppSettings;
+  streak?: StreakMetrics;
   onAddTask: (task: Omit<Task, 'id' | 'createdAt' | 'completed'>) => void;
   onToggleTask: (taskId: string) => void;
   onDeleteTask: (taskId: string) => void;
@@ -48,6 +50,7 @@ interface DeckViewProps {
 export const DeckView: React.FC<DeckViewProps> = ({
   tasks,
   settings,
+  streak,
   onAddTask,
   onToggleTask,
   onDeleteTask,
@@ -264,6 +267,51 @@ export const DeckView: React.FC<DeckViewProps> = ({
                 </div>
               </div>
 
+              {/* Local Velocity & Consistency Streak Engine */}
+              <div className="p-4 rounded-xl bg-canvas-850/80 border border-white/[0.06] flex items-center justify-between">
+                <div className="flex items-center gap-3.5">
+                  <div className="p-2.5 rounded-xl bg-amber-400/10 border border-amber-400/25 text-amber-400">
+                    <Flame className="w-5 h-5 fill-amber-400/20" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-xs font-semibold text-zinc-100 font-mono">
+                        Consistency & Velocity Engine
+                      </h4>
+                      <span className="text-[9px] font-mono px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/25 text-emerald-300">
+                        100% Offline • Private
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-zinc-400 mt-0.5">
+                      Personal streak counter measuring consecutive active days and 7-day completion cadence.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-6 font-mono text-right">
+                  <div>
+                    <span className="text-[9px] text-zinc-500 uppercase">Current Streak</span>
+                    <div className="text-lg font-bold text-amber-300">
+                      {streak?.currentStreak ?? 0} <span className="text-[10px] font-normal text-zinc-500">days</span>
+                    </div>
+                  </div>
+                  <div className="h-7 w-px bg-white/[0.08]" />
+                  <div>
+                    <span className="text-[9px] text-zinc-500 uppercase">Best Record</span>
+                    <div className="text-lg font-bold text-zinc-200">
+                      {streak?.bestStreak ?? 0} <span className="text-[10px] font-normal text-zinc-500">days</span>
+                    </div>
+                  </div>
+                  <div className="h-7 w-px bg-white/[0.08]" />
+                  <div>
+                    <span className="text-[9px] text-zinc-500 uppercase">7-Day Velocity</span>
+                    <div className="text-lg font-bold text-emerald-400">
+                      {streak?.weeklyVelocity ?? 0} <span className="text-[10px] font-normal text-zinc-500">done/wk</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Tasks List */}
               <div>
                 <h3 className="text-xs font-semibold text-zinc-300 font-mono uppercase tracking-wider mb-2.5">
@@ -462,7 +510,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
                     </div>
                     <div>
                       <h4 className="text-xs font-semibold text-zinc-200">Desktop Notifications</h4>
-                      <p className="text-[11px] text-zinc-400">3-Stage task reminder alerts (-1m, exact, +1m) & startup agenda.</p>
+                      <p className="text-[11px] text-zinc-400">Continuous reminders: -1m before, exact time, and every minute until completed.</p>
                     </div>
                   </div>
                   <input
@@ -471,6 +519,21 @@ export const DeckView: React.FC<DeckViewProps> = ({
                     onChange={e => onUpdateSettings({ notificationsEnabled: e.target.checked })}
                     className="w-4 h-4 accent-amber-400 rounded cursor-pointer"
                   />
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-canvas-850/80 border border-white/[0.06] flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-zinc-800 text-amber-400">
+                      <Sparkles className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-semibold text-zinc-200">Global Stealth Hotkey</h4>
+                      <p className="text-[11px] text-zinc-400">Toggle HUD widget instantly over games and IDEs.</p>
+                    </div>
+                  </div>
+                  <kbd className="px-2.5 py-1 rounded-md bg-zinc-900 border border-white/[0.1] text-amber-300 font-mono text-[11px]">
+                    Ctrl + Shift + D
+                  </kbd>
                 </div>
 
                 <div className="p-3.5 rounded-xl bg-canvas-850/80 border border-white/[0.06] flex items-center justify-between">

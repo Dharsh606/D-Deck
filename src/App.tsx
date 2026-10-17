@@ -104,6 +104,8 @@ export const App: React.FC = () => {
       id: 'task-' + Date.now(),
       createdAt: new Date().toISOString(),
       completed: false,
+      reminderStages: {},
+      lastResetDate: taskInput.isRoutine ? (taskInput.dueDate || new Date().toISOString().split('T')[0]) : undefined,
     };
     updateData({
       ...deckData,
@@ -177,6 +179,7 @@ export const App: React.FC = () => {
         <WidgetView
           tasks={deckData.tasks}
           settings={deckData.settings}
+          streak={deckData.streak}
           onAddTask={handleAddTask}
           onToggleTask={handleToggleTask}
           onDeleteTask={handleDeleteTask}
@@ -190,6 +193,7 @@ export const App: React.FC = () => {
         <DeckView
           tasks={deckData.tasks}
           settings={deckData.settings}
+          streak={deckData.streak}
           onAddTask={handleAddTask}
           onToggleTask={handleToggleTask}
           onDeleteTask={handleDeleteTask}

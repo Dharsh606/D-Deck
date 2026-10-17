@@ -26,7 +26,8 @@ export interface TaskMeta {
 export interface ReminderStages {
   pre1?: boolean;  // 1 minute before
   exact?: boolean; // at the exact time
-  post1?: boolean; // 1 minute after if not marked completed
+  post1?: boolean; // legacy
+  lastMinuteNotified?: number; // Minutes overdue that was last notified (+1m, +2m, +3m...)
   pre5?: boolean;
   post5?: boolean;
 }
@@ -43,6 +44,8 @@ export interface Task {
   dueDate?: string; // YYYY-MM-DD
   dueTime?: string; // HH:mm (e.g. 11:30)
   durationDays?: number; // How many days task lasts
+  isRoutine?: boolean; // Daily Routine: automatically resets at midnight
+  lastResetDate?: string; // Track day of last routine reset (YYYY-MM-DD)
   reminderEnabled: boolean;
   reminderStages?: ReminderStages;
   subtasks: Subtask[];
@@ -61,9 +64,18 @@ export interface AppSettings {
   deckY?: number;
 }
 
+export interface StreakMetrics {
+  currentStreak: number;
+  bestStreak: number;
+  lastActiveDate?: string; // YYYY-MM-DD
+  totalCompleted: number;
+  weeklyVelocity: number; // completed tasks in last 7 days
+}
+
 export interface DeckData {
   tasks: Task[];
   settings: AppSettings;
+  streak?: StreakMetrics;
 }
 
 export type ViewMode = 'widget' | 'deck';

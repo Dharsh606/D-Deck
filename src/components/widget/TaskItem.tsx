@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, Clock, Trash2, ChevronDown, ChevronUp, AlertCircle } from 'lucide-react';
+import { Check, Clock, Trash2, ChevronDown, ChevronUp, AlertCircle, Repeat } from 'lucide-react';
 import type { Task } from '../../types';
 import { getCategoryTheme } from '../../constants/categories';
 import { PriorityBadge } from '../common/PriorityBadge';
@@ -126,6 +126,13 @@ export const TaskItem: React.FC<TaskItemProps> = ({
               <span className={`px-1.5 py-0.5 rounded font-mono border text-[9px] ${categoryTheme.badge}`}>
                 {categoryTheme.label}
               </span>
+
+              {task.isRoutine && (
+                <span className="inline-flex items-center gap-1 text-emerald-400 font-mono text-[9px] bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/25" title="Daily Routine: Automatically resets at midnight">
+                  <Repeat className="w-2.5 h-2.5" />
+                  Routine
+                </span>
+              )}
 
               {getDueLabel()}
 
