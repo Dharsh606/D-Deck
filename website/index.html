@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>D-Deck — Futuristic Desktop Widget & Life Command Center</title>
+  <meta name="description" content="An open-source desktop widget and personal command center for Windows & Android. Local-first, privacy-focused, zero cloud lock-in." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            deck: {
+              950: '#06080d',
+              900: '#0b0f19',
+              850: '#111726',
+              800: '#182035',
+              700: '#232e4a',
+            },
+            cyan: {
+              400: '#00f2fe',
+              500: '#00c6ff',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background: radial-gradient(circle at 50% 0%, #111b33 0%, #06080d 75%);
+      font-family: 'Outfit', sans-serif;
+    }
+    .glass {
+      background: rgba(17, 23, 38, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .neon-glow {
+      box-shadow: 0 0 25px -3px rgba(0, 242, 254, 0.35);
+    }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between">
+  
+  <!-- Navbar -->
+  <header class="border-b border-slate-800/80 bg-deck-950/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-600 to-indigo-700 p-[1.5px] flex items-center justify-center neon-glow">
+          <div class="w-full h-full bg-deck-950 rounded-[10px] flex items-center justify-center font-black text-cyan-400 font-mono text-base">
+            D
+          </div>
+        </div>
+        <div>
+          <span class="font-extrabold text-lg tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-300">
+            D-DECK
+          </span>
+          <span class="text-[10px] font-mono uppercase px-1.5 py-0.5 ml-2 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+            Open Source
+          </span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a 
+          href="https://github.com/Dharsh606/D-Deck" 
+          target="_blank" 
+          class="flex items-center gap-2 text-xs font-mono text-slate-300 hover:text-cyan-400 transition-all px-3 py-1.5 rounded-lg border border-slate-800 hover:border-cyan-500/40 bg-deck-900/60"
+        >
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub Repo
+        </a>
+        <a 
+          href="#download" 
+          class="px-4 py-1.5 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-600 text-deck-950 font-bold text-xs font-mono shadow-[0_0_15px_rgba(0,242,254,0.4)] hover:brightness-110 transition-all"
+        >
+          Get D-Deck
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="flex-1 max-w-6xl mx-auto px-6 py-16 flex flex-col items-center text-center">
+    
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-xs font-mono mb-6 neon-glow">
+      <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+      Windows Desktop Widget & Mobile Command Center
+    </div>
+
+    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight max-w-3xl leading-tight font-['Outfit']">
+      Your Life, Tasks & Habits.
+      <span class="block bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">
+        Always on your Desktop.
+      </span>
+    </h1>
+
+    <p class="text-base md:text-lg text-slate-400 max-w-2xl mt-5 leading-relaxed">
+      D-Deck lives right on your desktop home screen as a sleek, interactive widget. 
+      Add tasks in under 2 seconds, track your 3–4L water goal, manage coding, projects, games, and movie backlogs — with 100% offline local privacy.
+    </p>
+
+    <!-- Download CTAs -->
+    <div id="download" class="mt-8 flex flex-wrap items-center justify-center gap-4">
+      <a 
+        href="https://github.com/Dharsh606/D-Deck/releases" 
+        target="_blank"
+        class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 text-deck-950 font-bold font-mono text-sm shadow-[0_0_25px_rgba(0,242,254,0.35)] hover:scale-105 transition-all"
+      >
+        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+        Download for Windows (.exe)
+      </a>
+
+      <a 
+        href="#android" 
+        class="flex items-center gap-3 px-6 py-3.5 rounded-2xl bg-deck-900 border border-slate-700 hover:border-emerald-500/40 text-slate-300 hover:text-emerald-300 font-mono text-sm transition-all"
+      >
+        <svg class="w-5 h-5 fill-current text-emerald-400" viewBox="0 0 24 24"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4116 13.8533 8.1 12 8.1s-3.5902.3116-5.1367.8497L4.841 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+        Android Edition (APK)
+      </a>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20 text-left w-full">
+      
+      <div class="glass p-6 rounded-3xl border border-cyan-500/20 hover:border-cyan-500/40 transition-all">
+        <div class="w-10 h-10 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-mono text-lg font-bold mb-4">
+          01
+        </div>
+        <h3 class="text-base font-bold text-slate-100 font-['Outfit']">Always-on Desktop Widget</h3>
+        <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+          Frameless, draggable HUD that sits cleanly on your Windows desktop. Click once to quick-add tasks without opening heavy dashboard windows.
+        </p>
+      </div>
+
+      <div class="glass p-6 rounded-3xl border border-blue-500/20 hover:border-blue-500/40 transition-all">
+        <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-mono text-lg font-bold mb-4">
+          02
+        </div>
+        <h3 class="text-base font-bold text-slate-100 font-['Outfit']">Dedicated Life Spheres</h3>
+        <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+          Separate spaces for Coding, Projects, Gaming backlog, Cinema watchlist, Daily errands, and 3-4L Hydration tracker.
+        </p>
+      </div>
+
+      <div class="glass p-6 rounded-3xl border border-purple-500/20 hover:border-purple-500/40 transition-all">
+        <div class="w-10 h-10 rounded-2xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-mono text-lg font-bold mb-4">
+          03
+        </div>
+        <h3 class="text-base font-bold text-slate-100 font-['Outfit']">Windows Startup & Native Alerts</h3>
+        <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+          Launches on Windows boot. Native Toast Notifications alert you immediately if you missed a task or haven't drank enough water.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 bg-deck-950 py-8 text-center text-xs text-slate-500 font-mono">
+    <p>Crafted by Dharshan • Open Source MIT License • Hosted on GitHub & Personal Portfolio</p>
+  </footer>
+
+</body>
+</html>
