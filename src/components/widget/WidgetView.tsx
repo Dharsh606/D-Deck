@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import type { Task, TaskCategory, AppSettings, StreakMetrics } from '../../types';
-import { CATEGORIES } from '../../constants/categories';
+import type { Task, AppSettings, StreakMetrics } from '../../types';
 import { WidgetHeader } from './WidgetHeader';
 import { TaskItem } from './TaskItem';
 import { QuickAddModal } from './QuickAddModal';
-import { Plus, Flame } from 'lucide-react';
-import { sfx } from '../../services/audio';
+import { Plus, Flame, CheckCircle2 } from 'lucide-react';
 
 interface WidgetViewProps {
   tasks: Task[];
@@ -34,20 +32,14 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
   onMinimize,
   onClose,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<TaskCategory | 'all'>('all');
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
 
-  const filteredTasks = tasks.filter(task => {
-    if (selectedCategory === 'all') return true;
-    return task.category === selectedCategory;
-  });
-
-  const pendingTasks = filteredTasks.filter(t => !t.completed);
-  const completedTasks = filteredTasks.filter(t => t.completed);
+  const pendingTasks = tasks.filter(t => !t.completed);
+  const completedTasks = tasks.filter(t => t.completed);
 
   const handleOpenAdd = () => {
     if (window.electronAPI?.openQuickAdd) {
-      window.electronAPI.openQuickAdd(selectedCategory === 'all' ? 'coding' : selectedCategory);
+      window.electronAPI.openQuickAdd();
     } else {
       setIsQuickAddOpen(true);
     }
@@ -64,63 +56,23 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
         onClose={onClose}
       />
 
-      <div className="flex-1 flex flex-col px-2.5 pt-2 pb-2 overflow-hidden space-y-1.5">
-        
-        {/* Category Pill Tabs */}
-        <div className="flex items-center gap-1 overflow-x-auto pb-0.5 scrollbar-none">
-          <button
-            onClick={() => {
-              sfx.playClick();
-              setSelectedCategory('all');
-            }}
-            className={`px-2 py-0.5 rounded-lg text-[9px] font-mono tracking-tight transition-all whitespace-nowrap border ${
-              selectedCategory === 'all'
-                ? 'bg-zinc-800 text-amber-300 border-amber-400/30 font-semibold'
-                : 'bg-transparent text-zinc-500 border-transparent hover:text-zinc-300'
-            }`}
-          >
-            All ({tasks.filter(t => !t.completed).length})
-          </button>
-
-          {CATEGORIES.map(cat => {
-            const count = tasks.filter(t => t.category === cat.id && !t.completed).length;
-            const isSelected = selectedCategory === cat.id;
-
-            return (
-              <button
-                key={cat.id}
-                onClick={() => {
-                  sfx.playClick();
-                  setSelectedCategory(cat.id);
-                }}
-                className={`px-1.5 py-0.5 rounded-lg text-[9px] font-mono tracking-tight transition-all whitespace-nowrap border flex items-center gap-1 ${
-                  isSelected
-                    ? 'bg-zinc-800 text-amber-300 border-amber-400/30 font-semibold'
-                    : 'bg-transparent text-zinc-500 border-transparent hover:text-zinc-300'
-                }`}
-              >
-                <span className={`w-1 h-1 rounded-full ${cat.dot}`}></span>
-                <span>{cat.label}</span>
-                {count > 0 && (
-                  <span className="text-[8px] text-zinc-400">
-                    {count}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
-
+      <div className="flex-1 flex flex-col px-3 pt-2 pb-2.5 overflow-hidden space-y-2">
         {/* Tasks Container */}
-        <div className="flex-1 overflow-y-auto pr-0.5 space-y-1">
-          {filteredTasks.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center p-4 text-zinc-500 space-y-2">
-              <p className="text-[11px] text-zinc-400">No tasks in this list.</p>
+        <div className="flex-1 overflow-y-auto pr-0.5 space-y-1.5 scrollbar-thin">
+          {tasks.length === 0 ? (
+            <div className="h-full flex flex-col items-center justify-center text-center p-4 text-zinc-500 space-y-2.5">
+              <div className="w-9 h-9 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-zinc-400">
+                <CheckCircle2 className="w-4 h-4 text-amber-400/70" />
+              </div>
+              <div className="space-y-0.5">
+                <p className="text-xs font-medium text-zinc-300">All clear</p>
+                <p className="text-[11px] text-zinc-500">Capture what needs to be done</p>
+              </div>
               <button
                 onClick={handleOpenAdd}
-                className="px-2.5 py-1 rounded-lg bg-zinc-800/80 hover:bg-zinc-700 hover:border-emerald-400/30 text-zinc-300 hover:text-emerald-300 border border-white/[0.08] text-[11px] font-mono transition-all flex items-center gap-1"
+                className="px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] hover:border-amber-400/40 text-zinc-200 hover:text-amber-300 border border-white/[0.1] text-xs font-medium transition-all flex items-center gap-1.5 active:scale-95 shadow-sm"
               >
-                <Plus className="w-3 h-3" />
+                <Plus className="w-3.5 h-3.5 text-amber-400" />
                 Add task
               </button>
             </div>
@@ -142,7 +94,7 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
                     <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
                       Done ({completedTasks.length})
                     </span>
-                    <div className="flex-1 h-px bg-white/[0.04]" />
+                    <div className="flex-1 h-px bg-white/[0.06]" />
                   </div>
                   <div className="space-y-1.5">
                     {completedTasks.map(task => (
@@ -162,14 +114,14 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
         </div>
 
         {/* Footer Status with Consistency & Velocity Streak */}
-        <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between text-[10px] text-zinc-500 font-mono">
+        <div className="pt-2 border-t border-white/[0.08] flex items-center justify-between text-[11px] text-zinc-400 font-sans">
           <div className="flex items-center gap-1.5" title="Local Streak Counter: 100% offline & private">
-            <Flame className="w-3 h-3 text-amber-400 fill-amber-400/20" />
-            <span className="text-zinc-300 font-semibold">{streak?.currentStreak ?? 0}d streak</span>
+            <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400/20" />
+            <span className="text-zinc-200 font-semibold">{streak?.currentStreak ?? 0}d streak</span>
             <span className="text-zinc-600">•</span>
-            <span className="text-emerald-400">{streak?.weeklyVelocity ?? 0}/wk</span>
+            <span className="text-emerald-400 font-mono text-[10px]">{streak?.weeklyVelocity ?? 0}/wk</span>
           </div>
-          <div>
+          <div className="text-[10px] text-zinc-400 font-mono">
             <span>{pendingTasks.length} pending</span>
           </div>
         </div>
@@ -179,7 +131,6 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
         isOpen={isQuickAddOpen}
         onClose={() => setIsQuickAddOpen(false)}
         onAddTask={onAddTask}
-        initialCategory={selectedCategory === 'all' ? 'coding' : selectedCategory}
       />
     </div>
   );

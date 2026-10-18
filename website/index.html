@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>D-Deck — Desktop To-Do Widget for Windows & Mobile</title>
+  <title>D-Deck — Futuristic Desktop HUD Widget & Personal Command Center</title>
   <link rel="icon" type="image/png" href="assets/icon.png" />
-  <meta name="description" content="A lightweight, local-first to-do list widget for Windows with dedicated categories and 3-stage smart reminders." />
+  <meta name="description" content="A lightweight, local-first to-do HUD widget for Windows with translucent frosted glassmorphism, continuous reminders, Focus Flow sprints, and daily habit auto-reset." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -16,7 +16,7 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            sans: ['"Inter"', '"Plus Jakarta Sans"', 'sans-serif'],
             mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
@@ -25,13 +25,6 @@
               gold: '#EAB308',
               green: '#10B981',
               emerald: '#059669',
-            },
-            canvas: {
-              950: '#07080A',
-              900: '#0D0E12',
-              850: '#13151A',
-              800: '#1A1D24',
-              700: '#262A34',
             }
           }
         }
@@ -40,28 +33,45 @@
   </script>
   <style>
     body {
-      background-color: #07080A;
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0b0d12;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
+      font-family: 'Inter', sans-serif;
     }
-    .panel-border {
+    .glass-surface {
+      background: rgba(22, 26, 35, 0.72);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .glass-glow {
-      box-shadow: 0 0 35px -5px rgba(234, 179, 8, 0.08);
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.16);
+      transform: translateY(-2px);
     }
   </style>
 </head>
 <body class="text-zinc-100 min-h-screen flex flex-col justify-between selection:bg-amber-400 selection:text-black">
   
   <!-- Navigation Header -->
-  <header class="border-b border-white/[0.06] bg-canvas-950/90 backdrop-blur-md sticky top-0 z-50">
-    <div class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+  <header class="border-b border-white/[0.08] bg-[#0b0d12]/80 backdrop-blur-xl sticky top-0 z-50">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="assets/icon.png" alt="D-Deck Icon" class="w-7 h-7 object-contain rounded-md" />
-        <span class="font-bold text-white tracking-tight text-sm font-mono">
+        <img src="assets/icon.png" alt="D-Deck Icon" class="w-8 h-8 object-contain rounded-lg shadow-sm" />
+        <span class="font-bold text-white tracking-tight text-base font-sans">
           D-Deck
         </span>
-        <span class="text-[10px] font-mono text-amber-300 px-2 py-0.5 rounded bg-amber-400/10 border border-amber-400/25">
+        <span class="text-[10px] font-mono text-amber-300 px-2.5 py-0.5 rounded-full bg-amber-400/10 border border-amber-400/30">
           v1.0.0 Stable
         </span>
       </div>
@@ -70,13 +80,13 @@
         <a 
           href="https://github.com/Dharsh606/D-Deck" 
           target="_blank" 
-          class="text-zinc-400 hover:text-amber-300 transition-colors px-3 py-1.5 rounded-xl border border-white/[0.08] hover:border-amber-400/30 bg-canvas-900"
+          class="text-zinc-300 hover:text-amber-300 transition-colors px-3.5 py-1.5 rounded-xl border border-white/[0.1] hover:border-amber-400/30 glass-card"
         >
           GitHub
         </a>
         <a 
           href="#download" 
-          class="px-4 py-1.5 rounded-xl bg-emerald-500 text-zinc-950 font-bold hover:bg-emerald-400 transition-all shadow-sm shadow-emerald-500/20 active:scale-95"
+          class="px-4 py-1.5 rounded-xl bg-emerald-500 text-zinc-950 font-semibold hover:bg-emerald-400 transition-all shadow-md shadow-emerald-500/20 active:scale-95"
         >
           Download
         </a>
@@ -85,32 +95,32 @@
   </header>
 
   <!-- Hero Section -->
-  <main class="flex-1 max-w-5xl mx-auto px-6 py-12 flex flex-col items-center text-center">
+  <main class="flex-1 max-w-5xl mx-auto px-6 py-14 flex flex-col items-center text-center">
     
     <!-- Big Official Branding Logo -->
     <div class="mb-6 flex justify-center">
       <img src="assets/logo.png" alt="D-Deck Logo" class="h-32 md:h-44 w-auto object-contain drop-shadow-2xl" />
     </div>
 
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-xs font-mono mb-4">
-      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+    <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-xs font-mono mb-5">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
       Open-Source Desktop HUD Widget & Personal Command Center
     </div>
 
     <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight max-w-2xl text-white">
-      Your agenda on your desktop. <br/><span class="text-amber-400">Zero distraction, 100% offline.</span>
+      Your agenda on your desktop. <br/><span class="text-amber-400">Translucent glass, zero friction, 100% offline.</span>
     </h1>
 
-    <p class="text-sm md:text-base text-zinc-400 max-w-xl mt-4 leading-relaxed font-normal">
-      D-Deck is a compact, floating Windows widget and command deck crafted for developers, gamers, and focused creators. Segregate your coding sprints, project backlogs, gaming sessions, and daily routines with 3-stage precision reminders.
+    <p class="text-sm md:text-base text-zinc-400 max-w-2xl mt-4 leading-relaxed font-normal">
+      D-Deck is a compact, floating Windows HUD widget and command deck crafted for developers, gamers, and focused multitaskers. Completely free of preloaded clutter, with custom manual tags, Focus Flow sprint timers, and continuous precision reminders.
     </p>
 
     <!-- Download Section -->
-    <div id="download" class="mt-8 flex flex-wrap items-center justify-center gap-3 font-mono text-xs">
+    <div id="download" class="mt-8 flex flex-wrap items-center justify-center gap-3.5 font-mono text-xs">
       <a 
         href="https://github.com/Dharsh606/D-Deck/releases" 
         target="_blank"
-        class="flex items-center gap-2.5 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold transition-all shadow-lg shadow-emerald-500/20 active:scale-95"
+        class="flex items-center gap-2.5 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold transition-all shadow-lg shadow-emerald-500/25 active:scale-95"
       >
         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
         Download for Windows (.exe)
@@ -119,7 +129,7 @@
       <a 
         href="https://github.com/Dharsh606/D-Deck" 
         target="_blank"
-        class="flex items-center gap-2.5 px-6 py-3 rounded-xl bg-canvas-900 border border-white/[0.08] hover:border-amber-400/40 text-zinc-300 hover:text-amber-300 transition-colors"
+        class="flex items-center gap-2.5 px-6 py-3 rounded-xl glass-card text-zinc-300 hover:text-amber-300 hover:border-amber-400/40 transition-colors"
       >
         Source Code (GitHub)
       </a>
@@ -128,62 +138,92 @@
     <!-- Core Highlights Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-16 text-left w-full">
       
-      <div class="p-5 rounded-2xl bg-canvas-900/80 panel-border hover:border-amber-400/30 transition-all">
-        <div class="w-8 h-8 rounded-lg bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-300 font-mono text-xs font-bold mb-3">
+      <div class="p-6 rounded-2xl glass-card">
+        <div class="w-9 h-9 rounded-xl bg-amber-400/10 border border-amber-400/25 flex items-center justify-center text-amber-300 font-mono text-xs font-bold mb-3.5">
           HUD
         </div>
-        <h3 class="text-sm font-semibold text-white font-mono">Ultra-Compact Widget</h3>
+        <h3 class="text-sm font-semibold text-white">50% Smaller Floating HUD</h3>
         <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
-          Floats quietly in any screen corner with persistent desktop coordinates. Add tasks in two clicks without interrupting what you're doing.
+          Streamlined translucent frosted glass widget that stays discreetly on top. Toggle instantly anywhere on Windows with global stealth hotkey <code class="text-amber-300 font-mono">Ctrl+Shift+D</code>.
         </p>
       </div>
 
-      <div class="p-5 rounded-2xl bg-canvas-900/80 panel-border hover:border-emerald-400/30 transition-all">
-        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-300 font-mono text-xs font-bold mb-3">
-          3x
+      <div class="p-6 rounded-2xl glass-card">
+        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-300 font-mono text-xs font-bold mb-3.5">
+          1m
         </div>
-        <h3 class="text-sm font-semibold text-white font-mono">3-Stage Smart Reminders</h3>
+        <h3 class="text-sm font-semibold text-white">Continuous Precision Reminders</h3>
         <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
-          Monitors task times at 5 minutes before, at the exact time, and 5 minutes after if still pending. Automatically stops when marked complete.
+          Alerts 1 minute before task time, at the scheduled minute, and repeats every minute until completed. Accompanied by custom audio notification chime.
         </p>
       </div>
 
-      <div class="p-5 rounded-2xl bg-canvas-900/80 panel-border hover:border-white/20 transition-all">
-        <div class="w-8 h-8 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-white font-mono text-xs font-bold mb-3">
+      <div class="p-6 rounded-2xl glass-card">
+        <div class="w-9 h-9 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white font-mono text-xs font-bold mb-3.5">
+          25m
+        </div>
+        <h3 class="text-sm font-semibold text-white">Focus Flow HUD Sprint Timer</h3>
+        <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
+          1-click countdown sprint timer embedded in the widget titlebar (15m, 25m, 45m, 60m). Soft glowing feedback with audio completion chime.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-2xl glass-card">
+        <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-300 font-mono text-xs font-bold mb-3.5">
+          24h
+        </div>
+        <h3 class="text-sm font-semibold text-white">Daily Habit Auto-Reset</h3>
+        <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
+          Toggle everyday routine tasks (workout, gaming, coding review). At midnight, completed routines automatically reset to unchecked for the new day.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-2xl glass-card">
+        <div class="w-9 h-9 rounded-xl bg-amber-400/10 border border-amber-400/25 flex items-center justify-center text-amber-300 font-mono text-xs font-bold mb-3.5">
+          TAG
+        </div>
+        <h3 class="text-sm font-semibold text-white">Custom Manual Tags</h3>
+        <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
+          No hardcoded categories or dummy presets. Tag tasks freely (e.g. Gaming, Coding, Project, Workout) and filter backlogs dynamically.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-2xl glass-card">
+        <div class="w-9 h-9 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white font-mono text-xs font-bold mb-3.5">
           100%
         </div>
-        <h3 class="text-sm font-semibold text-white font-mono">Local-First Privacy</h3>
+        <h3 class="text-sm font-semibold text-white">Offline Velocity & Consistency</h3>
         <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
-          Zero cloud databases, zero telemetry, zero monthly subscriptions. Your entire backlog is saved in your local Windows AppData directory as JSON.
+          Built-in streak counter measuring active days and 7-day velocity. Zero telemetry, zero cloud trackers, saved strictly on your local PC in <code class="text-zinc-300 font-mono">%APPDATA%</code>.
         </p>
       </div>
 
     </div>
 
     <!-- Technical Architecture Spec -->
-    <div class="mt-12 w-full p-6 rounded-2xl bg-canvas-900/60 panel-border text-left">
+    <div class="mt-12 w-full p-6 rounded-2xl glass-surface text-left">
       <h4 class="text-xs font-mono font-semibold uppercase text-amber-300 tracking-wider mb-4 flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-        Developer Specifications
+        Technical Architecture & Standards
       </h4>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-zinc-300 font-mono">
         <div class="flex items-center gap-2">
           <span class="text-emerald-400 font-bold">✓</span> Windows auto-start on desktop login
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span> Native Windows toast notifications
+          <span class="text-emerald-400 font-bold">✓</span> Native Windows toast notifications with audio chime
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span> Time-scheduled task monitoring
+          <span class="text-emerald-400 font-bold">✓</span> Global stealth hotkey (Ctrl+Shift+D)
         </div>
         <div class="flex items-center gap-2">
           <span class="text-emerald-400 font-bold">✓</span> Single JSON file backup & 1-click export
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span> Lightweight RAM & CPU footprint
+          <span class="text-emerald-400 font-bold">✓</span> Electron 35 + React 19 + TypeScript + Tailwind
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-emerald-400 font-bold">✓</span> Dual compact widget and full-view deck
+          <span class="text-emerald-400 font-bold">✓</span> Translucent frosted glassmorphism UI
         </div>
       </div>
     </div>
@@ -191,8 +231,8 @@
   </main>
 
   <!-- Developer Footer -->
-  <footer class="border-t border-white/[0.06] bg-canvas-950 py-6 text-center text-xs text-zinc-500 font-mono">
-    <p>D-Deck • Software Developer: <span class="text-zinc-300 font-semibold">Dharshan V</span> • MIT License (Open Source)</p>
+  <footer class="border-t border-white/[0.08] bg-[#0b0d12]/90 py-6 text-center text-xs text-zinc-400 font-mono">
+    <p>D-Deck • Software Developer: <span class="text-zinc-200 font-semibold">Dharshan V</span> • MIT License (Open Source)</p>
   </footer>
 
 </body>

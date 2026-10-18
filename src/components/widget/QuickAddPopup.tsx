@@ -1,29 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Plus, Calendar, Clock, CheckSquare, Repeat } from 'lucide-react';
 import type { Task, TaskCategory, TaskPriority } from '../../types';
-import { CATEGORIES } from '../../constants/categories';
 import { loadDeckData, saveDeckData } from '../../services/storage';
 import { DDeckLogo } from '../common/DDeckLogo';
 import { sfx } from '../../services/audio';
 
 export const QuickAddPopup: React.FC = () => {
-  // Extract initial category from URL if present (#quick-add?cat=gaming)
-  const getInitialCategory = (): TaskCategory => {
-    try {
-      const hash = window.location.hash;
-      const queryIdx = hash.indexOf('?');
-      if (queryIdx !== -1) {
-        const params = new URLSearchParams(hash.substring(queryIdx));
-        const cat = params.get('cat');
-        if (cat) return cat as TaskCategory;
-      }
-    } catch {}
-    return 'coding';
-  };
-
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState<TaskCategory>(getInitialCategory());
+  const [category, setCategory] = useState<string>('');
   const [priority, setPriority] = useState<TaskPriority>('medium');
   const [dueDate, setDueDate] = useState<string>(new Date().toISOString().split('T')[0]);
   const [dueTime, setDueTime] = useState<string>('11:30');
@@ -98,13 +83,13 @@ export const QuickAddPopup: React.FC = () => {
   };
 
   return (
-    <div className="w-[380px] h-[540px] flex flex-col glass-surface rounded-2xl overflow-hidden font-sans select-none shadow-2xl border border-white/[0.1] bg-canvas-950/95">
+    <div className="w-[390px] h-[550px] flex flex-col glass-surface-panel rounded-2xl overflow-hidden font-sans select-none shadow-2xl border border-white/[0.14]">
       
       {/* Draggable Header */}
-      <div className="titlebar-drag flex items-center justify-between px-4 py-3 bg-canvas-900/90 border-b border-white/[0.06] cursor-move">
+      <div className="titlebar-drag flex items-center justify-between px-4 py-3 bg-white/[0.04] border-b border-white/[0.08] cursor-move">
         <div className="flex items-center gap-2">
           <DDeckLogo size="sm" showText={false} />
-          <span className="text-xs font-bold text-zinc-100 font-mono uppercase tracking-wider">
+          <span className="text-xs font-semibold text-zinc-100 tracking-wide">
             New Task
           </span>
         </div>
@@ -132,7 +117,7 @@ export const QuickAddPopup: React.FC = () => {
               value={title}
               onChange={e => setTitle(e.target.value)}
               placeholder="What needs to be done?"
-              className="w-full px-3 py-2 text-xs bg-canvas-900 border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-amber-400/50 transition-all font-medium"
+              className="w-full px-3 py-2 text-xs glass-input rounded-xl text-white placeholder-zinc-500 focus:outline-none transition-all font-medium"
             />
           </div>
 
@@ -143,41 +128,28 @@ export const QuickAddPopup: React.FC = () => {
               value={description}
               onChange={e => setDescription(e.target.value)}
               placeholder="Optional notes or details..."
-              className="w-full px-3 py-1.5 text-[11px] bg-canvas-900 border border-white/[0.08] rounded-xl text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-amber-400/50 resize-none transition-all font-normal"
+              className="w-full px-3 py-1.5 text-[11px] glass-input rounded-xl text-zinc-200 placeholder-zinc-500 focus:outline-none resize-none transition-all font-normal"
             />
           </div>
 
-          {/* Category Chips */}
+          {/* Manual Category / Tag Field */}
           <div>
-            <label className="block text-[10px] font-mono text-zinc-400 mb-1 uppercase tracking-wider">
-              Category
+            <label className="block text-[11px] font-medium text-zinc-300 mb-1 tracking-wide">
+              Category / Tag <span className="text-zinc-500 font-normal text-[10px]">(optional)</span>
             </label>
-            <div className="grid grid-cols-3 gap-1.5">
-              {CATEGORIES.map(cat => {
-                const isSelected = category === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    onClick={() => setCategory(cat.id)}
-                    className={`py-1.5 px-2 rounded-lg text-[10px] font-mono transition-all border flex items-center justify-center gap-1.5 ${
-                      isSelected
-                        ? `${cat.badge} font-bold shadow-sm`
-                        : 'bg-canvas-900 text-zinc-400 border-white/[0.04] hover:border-white/[0.1] hover:text-zinc-200'
-                    }`}
-                  >
-                    <span className={`w-1.5 h-1.5 rounded-full ${cat.dot}`}></span>
-                    <span>{cat.label}</span>
-                  </button>
-                );
-              })}
-            </div>
+            <input
+              type="text"
+              value={category}
+              onChange={e => setCategory(e.target.value)}
+              placeholder="e.g. Gaming, Coding, Project, Workout, Client..."
+              className="w-full px-3 py-2 text-xs glass-input rounded-xl text-zinc-100 placeholder-zinc-500 focus:outline-none transition-all"
+            />
           </div>
 
           {/* Priority & Duration */}
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-[10px] font-mono text-zinc-400 mb-1 uppercase">
+              <label className="block text-[10px] font-semibold text-zinc-400 mb-1 uppercase tracking-wider">
                 Priority
               </label>
               <div className="flex gap-1">
@@ -186,7 +158,7 @@ export const QuickAddPopup: React.FC = () => {
                     key={p}
                     type="button"
                     onClick={() => setPriority(p)}
-                    className={`flex-1 py-1 rounded-md text-[9px] font-mono uppercase transition-all border ${
+                    className={`flex-1 py-1 rounded-lg text-[9px] uppercase transition-all border ${
                       priority === p
                         ? p === 'urgent'
                           ? 'bg-rose-500/20 text-rose-300 border-rose-500/40 font-bold'
@@ -195,7 +167,7 @@ export const QuickAddPopup: React.FC = () => {
                           : p === 'medium'
                           ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 font-bold'
                           : 'bg-zinc-200 text-zinc-950 border-zinc-200 font-bold'
-                        : 'bg-canvas-900 text-zinc-500 border-white/[0.04] hover:text-zinc-300'
+                        : 'bg-white/[0.03] text-zinc-400 border-white/[0.06] hover:bg-white/[0.08] hover:text-zinc-200'
                     }`}
                   >
                     {p.slice(0, 3)}
@@ -205,7 +177,7 @@ export const QuickAddPopup: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-[10px] font-mono text-zinc-400 mb-1 uppercase">
+              <label className="block text-[10px] font-semibold text-zinc-400 mb-1 uppercase tracking-wider">
                 Duration
               </label>
               <div className="flex gap-1">
@@ -214,10 +186,10 @@ export const QuickAddPopup: React.FC = () => {
                     key={d}
                     type="button"
                     onClick={() => setDurationDays(d)}
-                    className={`flex-1 py-1 rounded-md text-[9px] font-mono border transition-all ${
+                    className={`flex-1 py-1 rounded-lg text-[9px] font-mono border transition-all ${
                       durationDays === d
                         ? 'bg-amber-400 text-zinc-950 border-amber-400 font-bold'
-                        : 'bg-canvas-900 text-zinc-500 border-white/[0.04] hover:text-zinc-300'
+                        : 'bg-white/[0.03] text-zinc-400 border-white/[0.06] hover:bg-white/[0.08] hover:text-zinc-200'
                     }`}
                   >
                     {d}d
@@ -228,10 +200,10 @@ export const QuickAddPopup: React.FC = () => {
           </div>
 
           {/* Date & Time Schedule Box */}
-          <div className="space-y-1.5 p-2.5 rounded-xl bg-canvas-900 border border-white/[0.06]">
+          <div className="space-y-2 p-3 rounded-xl glass-card border border-white/[0.08]">
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-[10px] font-mono text-zinc-400 mb-1 uppercase flex items-center gap-1">
+                <label className="block text-[10px] font-semibold text-zinc-400 mb-1 uppercase tracking-wider flex items-center gap-1">
                   <Calendar className="w-3 h-3 text-zinc-400" />
                   Due Date
                 </label>
@@ -239,12 +211,12 @@ export const QuickAddPopup: React.FC = () => {
                   type="date"
                   value={dueDate}
                   onChange={e => setDueDate(e.target.value)}
-                  className="w-full bg-canvas-950 border border-white/[0.08] rounded-lg px-2 py-1 text-[11px] text-zinc-200 focus:outline-none focus:border-amber-400/50"
+                  className="w-full glass-input rounded-lg px-2.5 py-1 text-[11px] text-zinc-200 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-mono text-zinc-400 mb-1 uppercase flex items-center gap-1">
+                <label className="block text-[10px] font-semibold text-zinc-400 mb-1 uppercase tracking-wider flex items-center gap-1">
                   <Clock className="w-3 h-3 text-amber-400" />
                   Time (HH:mm)
                 </label>
@@ -252,24 +224,24 @@ export const QuickAddPopup: React.FC = () => {
                   type="time"
                   value={dueTime}
                   onChange={e => setDueTime(e.target.value)}
-                  className="w-full bg-canvas-950 border border-white/[0.08] rounded-lg px-2 py-1 text-[11px] text-zinc-200 focus:outline-none focus:border-amber-400/50"
+                  className="w-full glass-input rounded-lg px-2.5 py-1 text-[11px] text-zinc-200 focus:outline-none"
                 />
               </div>
             </div>
 
             {/* Quick Time Presets */}
-            <div className="flex items-center justify-between pt-1 text-[9px] font-mono">
-              <span className="text-zinc-500">Quick time:</span>
-              <div className="flex items-center gap-1">
+            <div className="flex items-center justify-between pt-1 text-[10px]">
+              <span className="text-zinc-400">Quick time:</span>
+              <div className="flex items-center gap-1 font-mono">
                 {['11:30', '14:00', '18:30', '21:00'].map(preset => (
                   <button
                     key={preset}
                     type="button"
                     onClick={() => setDueTime(preset)}
-                    className={`px-1.5 py-0.5 rounded border transition-all ${
+                    className={`px-1.5 py-0.5 rounded-md border text-[9px] transition-all ${
                       dueTime === preset 
                         ? 'bg-amber-400/20 text-amber-300 border-amber-400/40 font-semibold' 
-                        : 'bg-canvas-950 text-zinc-400 border-white/[0.04] hover:text-zinc-200'
+                        : 'bg-white/[0.03] text-zinc-400 border-white/[0.06] hover:bg-white/[0.08] hover:text-zinc-200'
                     }`}
                   >
                     {preset}
@@ -279,7 +251,7 @@ export const QuickAddPopup: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setDueTime('')}
-                    className="text-zinc-500 hover:text-rose-400 px-1"
+                    className="text-zinc-400 hover:text-rose-400 px-1 text-[10px]"
                     title="No specific time"
                   >
                     None
@@ -289,10 +261,10 @@ export const QuickAddPopup: React.FC = () => {
             </div>
 
             {/* Daily Routine Auto-Reset Toggle */}
-            <div className="pt-2 border-t border-white/[0.04] flex items-center justify-between">
+            <div className="pt-2 border-t border-white/[0.06] flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <Repeat className={`w-3.5 h-3.5 ${isRoutine ? 'text-emerald-400' : 'text-zinc-500'}`} />
-                <span className="text-[10px] text-zinc-300 font-mono">Daily Routine</span>
+                <span className="text-[11px] text-zinc-200 font-medium">Daily Routine</span>
               </div>
               <label className="flex items-center gap-1.5 cursor-pointer">
                 <input
@@ -301,7 +273,7 @@ export const QuickAddPopup: React.FC = () => {
                   onChange={e => setIsRoutine(e.target.checked)}
                   className="w-3.5 h-3.5 accent-emerald-400 rounded cursor-pointer"
                 />
-                <span className="text-[9px] text-zinc-400 font-mono">Auto-resets at midnight</span>
+                <span className="text-[10px] text-zinc-400">Auto-resets at midnight</span>
               </label>
             </div>
           </div>
@@ -320,12 +292,12 @@ export const QuickAddPopup: React.FC = () => {
                   }
                 }}
                 placeholder="+ Add subtask (press Enter)..."
-                className="flex-1 px-2.5 py-1 text-[11px] bg-canvas-900 border border-white/[0.08] rounded-lg text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-amber-400/40"
+                className="flex-1 px-3 py-1.5 text-[11px] glass-input rounded-xl text-zinc-200 placeholder-zinc-500 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={handleAddSubtask}
-                className="px-2.5 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-lg text-xs"
+                className="px-3 py-1.5 bg-white/[0.08] hover:bg-white/[0.14] text-zinc-200 rounded-xl text-xs transition-all"
               >
                 <Plus className="w-3.5 h-3.5" />
               </button>
@@ -333,15 +305,15 @@ export const QuickAddPopup: React.FC = () => {
             {subtasks.length > 0 && (
               <div className="mt-1.5 space-y-1 max-h-16 overflow-y-auto pr-1">
                 {subtasks.map(s => (
-                  <div key={s.id} className="text-[10px] text-zinc-300 flex items-center justify-between bg-canvas-900 px-2 py-0.5 rounded border border-white/[0.04]">
+                  <div key={s.id} className="text-[10px] text-zinc-200 flex items-center justify-between glass-card px-2.5 py-1 rounded-lg">
                     <span className="flex items-center gap-1.5">
-                      <CheckSquare className="w-2.5 h-2.5 text-zinc-500" />
+                      <CheckSquare className="w-2.5 h-2.5 text-zinc-400" />
                       {s.title}
                     </span>
                     <button 
                       type="button" 
                       onClick={() => setSubtasks(subtasks.filter(item => item.id !== s.id))}
-                      className="text-zinc-500 hover:text-rose-400 text-xs px-1"
+                      className="text-zinc-400 hover:text-rose-400 text-xs px-1 font-mono"
                     >
                       ×
                     </button>
@@ -353,18 +325,18 @@ export const QuickAddPopup: React.FC = () => {
         </div>
 
         {/* Footer Actions */}
-        <div className="pt-3 border-t border-white/[0.06] flex items-center justify-end gap-2.5 font-mono">
+        <div className="pt-3 border-t border-white/[0.08] flex items-center justify-end gap-2.5">
           <button
             type="button"
             onClick={handleClose}
-            className="px-3.5 py-2 rounded-xl text-xs text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/80 transition-all"
+            className="px-3.5 py-2 rounded-xl text-xs text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.06] transition-all"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={!title.trim() || isSubmitting}
-            className="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-zinc-950 disabled:opacity-40 transition-all active:scale-95 shadow-md shadow-emerald-500/20"
+            className="px-5 py-2 rounded-xl text-xs font-semibold bg-emerald-500 hover:bg-emerald-400 text-zinc-950 disabled:opacity-40 transition-all active:scale-95 shadow-md shadow-emerald-500/20"
           >
             Add Task
           </button>

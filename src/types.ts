@@ -1,11 +1,4 @@
-export type TaskCategory = 
-  | 'coding'
-  | 'gaming'
-  | 'movies'
-  | 'projects'
-  | 'daily'
-  | 'fitness'
-  | string;
+export type TaskCategory = string;
 
 export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent';
 
@@ -36,7 +29,7 @@ export interface Task {
   id: string;
   title: string;
   description?: string;
-  category: TaskCategory;
+  category?: TaskCategory;
   priority: TaskPriority;
   completed: boolean;
   createdAt: string;

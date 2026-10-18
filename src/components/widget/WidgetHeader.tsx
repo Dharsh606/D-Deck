@@ -83,7 +83,7 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
   };
 
   return (
-    <div className="titlebar-drag flex items-center justify-between px-3 py-2 bg-canvas-950/95 border-b border-white/[0.06] rounded-t-2xl cursor-move select-none">
+    <div className="titlebar-drag flex items-center justify-between px-3 py-2 bg-white/[0.03] border-b border-white/[0.08] rounded-t-2xl cursor-move select-none">
       <div className="titlebar-no-drag flex items-center gap-2">
         <DDeckLogo size="sm" />
       </div>
@@ -94,7 +94,7 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
           className={`flex items-center gap-1 px-1.5 py-0.5 rounded-lg border transition-all text-[10px] font-mono select-none ${
             isRunning 
               ? 'bg-amber-400/10 border-amber-400/35 text-amber-300 ring-1 ring-amber-400/20 shadow-sm shadow-amber-500/10' 
-              : 'bg-zinc-900/80 border-white/[0.06] text-zinc-400 hover:text-zinc-200'
+              : 'glass-card text-zinc-400 hover:text-zinc-200'
           }`}
           title={isRunning ? "Sprint in Progress - Click to Pause" : "Click time to cycle presets (25m/45m/15m/60m)"}
         >
@@ -135,7 +135,7 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
             onQuickAdd();
           }}
           title="Add Task (+)"
-          className="p-1 rounded-lg bg-zinc-800/80 hover:bg-zinc-700 text-zinc-200 border border-white/[0.08] transition-all active:scale-95"
+          className="p-1 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] text-zinc-200 border border-white/[0.08] transition-all active:scale-95"
         >
           <Plus className="w-3.5 h-3.5" />
         </button>
@@ -149,8 +149,8 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
           title={alwaysOnTop ? "Pinned (Always on top)" : "Unpinned"}
           className={`p-1 rounded-lg transition-all ${
             alwaysOnTop 
-              ? 'text-amber-400 bg-amber-400/10 border border-amber-400/25' 
-              : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800'
+              ? 'text-amber-400 bg-amber-400/15 border border-amber-400/30' 
+              : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.06]'
           }`}
         >
           {alwaysOnTop ? <Pin className="w-3.5 h-3.5 fill-amber-400/20" /> : <PinOff className="w-3.5 h-3.5" />}
@@ -163,7 +163,7 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
             onExpandToDeck();
           }}
           title="Full View"
-          className="p-1 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-all"
+          className="p-1 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.06] transition-all"
         >
           <Maximize2 className="w-3.5 h-3.5" />
         </button>
@@ -175,7 +175,7 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
             onMinimize();
           }}
           title="Minimize"
-          className="p-1 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-all"
+          className="p-1 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.06] transition-all"
         >
           <Minus className="w-3.5 h-3.5" />
         </button>

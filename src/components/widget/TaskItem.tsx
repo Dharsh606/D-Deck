@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Check, Clock, Trash2, ChevronDown, ChevronUp, AlertCircle, Repeat } from 'lucide-react';
 import type { Task } from '../../types';
-import { getCategoryTheme } from '../../constants/categories';
 import { PriorityBadge } from '../common/PriorityBadge';
 import { sfx } from '../../services/audio';
 
@@ -19,7 +18,6 @@ export const TaskItem: React.FC<TaskItemProps> = ({
   onToggleSubtask,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const categoryTheme = getCategoryTheme(task.category);
 
   const todayStr = new Date().toISOString().split('T')[0];
   const isOverdue = !task.completed && task.dueDate && task.dueDate < todayStr;
@@ -84,10 +82,10 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     <div 
       className={`group relative rounded-xl border transition-all duration-150 overflow-hidden ${
         task.completed 
-          ? 'bg-canvas-900/40 border-white/[0.04] opacity-50' 
+          ? 'bg-white/[0.02] border-white/[0.04] opacity-50' 
           : isOverdue
-          ? 'bg-canvas-850/80 border-rose-500/30'
-          : 'bg-canvas-850/70 border-white/[0.06] hover:border-white/[0.12] hover:bg-canvas-800/80'
+          ? 'bg-rose-500/[0.08] border-rose-500/30'
+          : 'glass-card hover:border-white/[0.18]'
       }`}
     >
       <div className="p-2.5">
@@ -98,7 +96,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
             className={`mt-0.5 flex-shrink-0 w-3.5 h-3.5 rounded-md border flex items-center justify-center transition-all ${
               task.completed 
                 ? 'bg-emerald-400 border-emerald-400 text-zinc-950 font-bold' 
-                : 'border-zinc-700 hover:border-amber-400/60 bg-zinc-900/60'
+                : 'border-white/20 hover:border-amber-400/70 bg-white/[0.03]'
             }`}
           >
             {task.completed && <Check className="w-2.5 h-2.5 stroke-[3]" />}
@@ -111,7 +109,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
                 className={`text-xs font-normal leading-snug cursor-pointer transition-all ${
                   task.completed 
                     ? 'line-through text-zinc-500' 
-                    : 'text-zinc-200 hover:text-zinc-100'
+                    : 'text-zinc-100 hover:text-white'
                 }`}
               >
                 {task.title}
@@ -123,9 +121,11 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 
             {/* Badges / Meta row */}
             <div className="flex items-center gap-2 mt-1.5 text-[10px]">
-              <span className={`px-1.5 py-0.5 rounded font-mono border text-[9px] ${categoryTheme.badge}`}>
-                {categoryTheme.label}
-              </span>
+              {task.category && task.category.trim() && (
+                <span className="px-1.5 py-0.5 rounded font-mono border text-[9px] bg-white/[0.05] text-zinc-300 border-white/[0.08]">
+                  {task.category.trim()}
+                </span>
+              )}
 
               {task.isRoutine && (
                 <span className="inline-flex items-center gap-1 text-emerald-400 font-mono text-[9px] bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/25" title="Daily Routine: Automatically resets at midnight">
