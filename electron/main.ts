@@ -262,10 +262,12 @@ function createMainWindow() {
     y: initialY,
     icon: fs.existsSync(appIconPath) ? appIconPath : undefined,
     frame: false,
+    titleBarStyle: 'hidden',
     transparent: true,
     resizable: false,
     thickFrame: false,
     hasShadow: false,
+    autoHideMenuBar: true,
     alwaysOnTop: savedData.settings.alwaysOnTop ?? true,
     skipTaskbar: false,
     backgroundColor: '#00000000',
@@ -277,6 +279,8 @@ function createMainWindow() {
       backgroundThrottling: false,
     },
   });
+
+  mainWindow.setMenuBarVisibility(false);
 
   const isDev = !app.isPackaged && process.env.NODE_ENV === 'development';
   if (isDev) {
@@ -351,11 +355,13 @@ function createQuickAddWindow(category: string = 'coding') {
     x,
     y,
     frame: false,
+    titleBarStyle: 'hidden',
     transparent: true,
     alwaysOnTop: true,
     resizable: false,
     thickFrame: false,
     hasShadow: false,
+    autoHideMenuBar: true,
     backgroundColor: '#00000000',
     icon: fs.existsSync(appIconPath) ? appIconPath : undefined,
     webPreferences: {
@@ -365,6 +371,8 @@ function createQuickAddWindow(category: string = 'coding') {
       sandbox: false,
     }
   });
+
+  quickAddWindow.setMenuBarVisibility(false);
 
   const isDev = !app.isPackaged && process.env.NODE_ENV === 'development';
   if (isDev) {
@@ -550,6 +558,7 @@ ipcMain.handle('window:save-position', (_, mode: ViewMode, x: number, y: number)
 
 // App Lifecycle
 app.whenReady().then(() => {
+  Menu.setApplicationMenu(null);
   createMainWindow();
   setupTray();
   checkStartupAgenda();

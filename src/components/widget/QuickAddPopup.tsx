@@ -83,7 +83,7 @@ export const QuickAddPopup: React.FC = () => {
   };
 
   return (
-    <div className="w-[390px] h-[550px] flex flex-col glass-surface-panel rounded-2xl overflow-hidden font-sans select-none shadow-2xl border border-white/[0.14]">
+    <div className="w-full h-full flex flex-col glass-surface-panel rounded-2xl overflow-hidden font-sans select-none shadow-2xl border border-white/[0.14]">
       
       {/* Draggable Header */}
       <div className="titlebar-drag flex items-center justify-between px-4 py-3 bg-white/[0.04] border-b border-white/[0.08] cursor-move">

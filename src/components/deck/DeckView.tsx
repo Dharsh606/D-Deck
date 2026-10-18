@@ -118,7 +118,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
   ];
 
   return (
-    <div className="w-[1080px] h-[740px] flex glass-surface rounded-2xl overflow-hidden font-sans select-none shadow-2xl border border-white/[0.12]">
+    <div className="w-full h-full flex glass-surface rounded-2xl overflow-hidden font-sans select-none shadow-2xl border border-white/[0.12]">
       
       {/* Sidebar */}
       <div className="w-60 glass-surface-panel border-r border-white/[0.08] flex flex-col justify-between p-4">

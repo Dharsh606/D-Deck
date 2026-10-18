@@ -46,7 +46,7 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
   };
 
   return (
-    <div className="w-[280px] h-[380px] flex flex-col glass-surface rounded-2xl overflow-hidden font-sans select-none shadow-2xl">
+    <div className="w-full h-full flex flex-col glass-surface rounded-2xl overflow-hidden font-sans select-none shadow-2xl">
       <WidgetHeader
         onQuickAdd={handleOpenAdd}
         onExpandToDeck={onExpandToDeck}
