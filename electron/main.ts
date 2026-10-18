@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Notification, Tray, Menu, shell, screen, nativeImage, globalShortcut } from 'electron';
+import { app, BrowserWindow, ipcMain, Notification, Tray, Menu, shell, screen, nativeImage, globalShortcut, nativeTheme } from 'electron';
 import path from 'path';
 import fs from 'fs';
 import type { DeckData, ViewMode } from '../src/types';
@@ -262,15 +262,13 @@ function createMainWindow() {
     y: initialY,
     icon: fs.existsSync(appIconPath) ? appIconPath : undefined,
     frame: false,
-    titleBarStyle: 'hidden',
-    transparent: true,
-    resizable: false,
-    thickFrame: false,
+    transparent: false,
+    backgroundMaterial: 'acrylic',
+    roundedCorners: true,
     hasShadow: false,
     autoHideMenuBar: true,
     alwaysOnTop: savedData.settings.alwaysOnTop ?? true,
     skipTaskbar: false,
-    backgroundColor: '#00000000',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -355,14 +353,12 @@ function createQuickAddWindow(category: string = 'coding') {
     x,
     y,
     frame: false,
-    titleBarStyle: 'hidden',
-    transparent: true,
+    transparent: false,
+    backgroundMaterial: 'acrylic',
+    roundedCorners: true,
     alwaysOnTop: true,
-    resizable: false,
-    thickFrame: false,
     hasShadow: false,
     autoHideMenuBar: true,
-    backgroundColor: '#00000000',
     icon: fs.existsSync(appIconPath) ? appIconPath : undefined,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -558,6 +554,7 @@ ipcMain.handle('window:save-position', (_, mode: ViewMode, x: number, y: number)
 
 // App Lifecycle
 app.whenReady().then(() => {
+  nativeTheme.themeSource = 'dark';
   Menu.setApplicationMenu(null);
   createMainWindow();
   setupTray();
