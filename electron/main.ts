@@ -255,6 +255,7 @@ function createMainWindow() {
   const appIconPath = path.join(app.getAppPath(), 'public', 'icon.png');
 
   mainWindow = new BrowserWindow({
+    title: '',
     width: WIDGET_WIDTH,
     height: WIDGET_HEIGHT,
     x: initialX,
@@ -262,10 +263,11 @@ function createMainWindow() {
     icon: fs.existsSync(appIconPath) ? appIconPath : undefined,
     frame: false,
     transparent: true,
-    resizable: true,
+    resizable: false,
+    thickFrame: false,
+    hasShadow: false,
     alwaysOnTop: savedData.settings.alwaysOnTop ?? true,
     skipTaskbar: false,
-    hasShadow: true,
     backgroundColor: '#00000000',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -343,6 +345,7 @@ function createQuickAddWindow(category: string = 'coding') {
   const appIconPath = path.join(app.getAppPath(), 'public', 'icon.png');
 
   quickAddWindow = new BrowserWindow({
+    title: '',
     width: POPUP_WIDTH,
     height: POPUP_HEIGHT,
     x,
@@ -351,7 +354,8 @@ function createQuickAddWindow(category: string = 'coding') {
     transparent: true,
     alwaysOnTop: true,
     resizable: false,
-    hasShadow: true,
+    thickFrame: false,
+    hasShadow: false,
     backgroundColor: '#00000000',
     icon: fs.existsSync(appIconPath) ? appIconPath : undefined,
     webPreferences: {
@@ -465,6 +469,7 @@ function setupTray() {
 function setWindowMode(mode: ViewMode) {
   if (!mainWindow) return;
   currentMode = mode;
+  mainWindow.setTitle('');
 
   const data = readDeckData();
   const primaryDisplay = screen.getPrimaryDisplay();
