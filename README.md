@@ -4,62 +4,65 @@
 
 # D-Deck
 
-A lightweight, local-first desktop to-do widget for Windows with dedicated category backlogs and 3-stage precision reminders.
+A clean, distraction-free desktop to-do widget for Windows with continuous audio reminders, a sprint timer, and daily habit auto-reset.
 
-**SOFTWARE DEVELOPER - Dharshan V**
+**Built by Code & Chaos — We Built Stuff**
 
-## Background
+## Why we built this
 
-Most task management tools today are trapped inside heavy browser tabs or locked behind recurring subscription models and cloud telemetry. On mobile, home screen widgets are common, but on Windows, having a dedicated floating widget that stays on your desktop without requiring third-party shells or memory-heavy browser extensions is surprisingly rare.
+Most task management apps today are trapped inside heavy browser tabs or locked behind monthly subscriptions, cloud accounts, and background tracking. On phones, home screen widgets are everywhere, but on Windows, having a simple floating widget that sits on your desktop without cluttering your taskbar is surprisingly hard to find.
 
-I built D-Deck for my own daily setup. As a developer, I write code, manage project milestones, play games, watch movies, hit the gym, and handle daily errands. Lumping all of that into a single generic to-do list doesn't work. D-Deck provides distinct, purpose-built lists with an ultra-compact, persistent desktop HUD widget that is always within reach.
+We built D-Deck for our own everyday setup. We write code, build projects, play games, hit the gym, and run daily errands. Lumping all of that into bloated cloud apps or relying on phone alarms wasn't working. We just wanted a fast, lightweight floating HUD that stays on the desktop, stays out of Alt+Tab, and actually reminds us when it's time to get things done.
 
-## Features
+## What it does
 
-### Ultra-Compact Desktop Widget
-- 50% smaller visual footprint than standard utility windows (280px × 380px).
-- Sits unobtrusively on your desktop or stays pinned on top of active applications.
-- Draggable with permanent screen position memory across restarts.
-- 2-click task capture with quick-category assignment and subtask checklists.
-- 1-click toggle between compact floating widget and the full command deck.
+### Desktop HUD Widget
+- Sits right on your desktop with zero taskbar clutter. It won't crowd your taskbar or pop up in Alt+Tab while you work or game.
+- Press `Ctrl+Shift+D` anywhere in Windows to quickly bring the widget to the front or hide it.
+- Draggable anywhere on screen, and permanently remembers where you put it even after restarts.
+- 1-click toggle between the compact floating widget and the expanded command deck.
+- Clean frosted acrylic look that blends naturally into Windows.
 
-### 3-Stage Smart Reminders
-Unlike basic to-do apps with a single ping, D-Deck monitors your scheduled tasks at three critical moments:
-1. **T - 5 minutes**: Advance heads-up notification before your task or session begins.
-2. **T (Exact time)**: Prompt alert when the scheduled time arrives.
-3. **T + 5 minutes**: Follow-up notification if the task remains uncompleted, ensuring you don't sleep through or miss your schedule.
-- When you check off a task, subsequent reminders automatically stop.
+### Persistent Audio Reminders
+Most to-do apps send a single quiet notification that is easy to miss. D-Deck keeps reminding you until you actually get it done:
+- **1 minute before**: Quick heads-up audio chime so you can wrap up what you're doing.
+- **On time**: Notification chime right when your task starts.
+- **Every minute after**: Keeps chiming every minute until you mark the task complete or snooze it. Once you check it off, it stops immediately.
 
-### Dedicated Category Boards
-- **Coding**: Sprint tasks, bug fixes, repo actions, and technical notes.
-- **Projects**: Multi-day initiatives with duration spans and milestone tracking.
-- **Gaming**: Backlog, currently playing titles, and platform tags.
-- **Movies**: Watchlist with viewing status and personal ratings.
-- **Daily**: Chores, hydration reminders, and day-to-day routines.
-- **Fitness**: Training splits, workouts, and cardio sessions.
+### Focus Flow Sprint Timer
+- A 1-click countdown timer built right into the widget header (15m, 25m, 45m, 60m).
+- Great for coding sprints, quick gaming sessions, or reading breaks. Soft audio chime when your time is up.
 
-### Windows Native Integration
-- Starts with Windows on user login (toggleable in settings).
-- Sends native Windows toast notifications for upcoming tasks, scheduled times, and overdue items.
-- Silent minimize to system tray icon.
+### Daily Habit Auto-Reset
+- Mark everyday tasks (like workouts, hydration, or daily reviews) as a **Daily Routine**.
+- When you finish them, check them off. At midnight, completed routines automatically reset back to unchecked for the next day, so you never have to re-type them.
 
-### Local-First Privacy
-- 100% offline. No cloud databases, no user accounts, and zero telemetry.
-- All tasks and preferences are saved directly to a single JSON file in `%APPDATA%/d-deck/d-deck-data.json`.
-- 1-click JSON backup and data export.
+### Freeform Tags & Fast Search
+- No rigid folders. Tag your tasks however you want (e.g. `coding`, `gaming`, `gym`, `work`) and filter through them in seconds.
 
-## Availability
+### 100% Offline & Private
+- No cloud accounts, no sign-ups, and zero background telemetry.
+- Everything stays on your machine, saved in `%APPDATA%/d-deck/d-deck-data.json`.
+- Includes 1-click data export and backup anytime you want.
 
-D-Deck is not distributed through commercial app stores. It is available as a free, open-source release:
-- **Windows**: NSIS installer and standalone portable build available via GitHub Releases and official website.
-- **Android**: Companion APK in progress using the same offline local data model.
+## How to get it
 
-## Developer
+No need to clone repositories or build code. Just download the app and enjoy:
 
-**SOFTWARE DEVELOPER - Dharshan V**  
-GitHub: [https://github.com/Dharsh606](https://github.com/Dharsh606)  
-Project Repository: [https://github.com/Dharsh606/D-Deck](https://github.com/Dharsh606/D-Deck)
+1. Head over to the **[GitHub Releases Page](https://github.com/Dharsh606/D-Deck/releases)**.
+2. Download either:
+   - **`D-Deck-Setup-*.exe`**: Recommended installer. Adds desktop and startup shortcuts.
+   - **`D-Deck-Portable-*.exe`**: Standalone portable version. Just double-click and run directly from anywhere (USB drive, Desktop, or Downloads).
+3. Open the app, press `Ctrl+Shift+D` to show or hide it, and you're good to go.
+
+You can also check out our website at [https://dharsh606.github.io/D-Deck/website/](https://dharsh606.github.io/D-Deck/website/).
+
+## Team
+
+**Code & Chaos**  
+*We Built Stuff*  
+Repository: [https://github.com/Dharsh606/D-Deck](https://github.com/Dharsh606/D-Deck)
 
 ## License
 
-MIT License. Free to use, modify, and distribute.
+MIT License. Free to use and share.
