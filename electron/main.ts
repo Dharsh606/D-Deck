@@ -268,7 +268,7 @@ function createMainWindow() {
     hasShadow: false,
     autoHideMenuBar: true,
     alwaysOnTop: savedData.settings.alwaysOnTop ?? true,
-    skipTaskbar: false,
+    skipTaskbar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -357,6 +357,7 @@ function createQuickAddWindow(category: string = 'coding') {
     backgroundMaterial: 'acrylic',
     roundedCorners: true,
     alwaysOnTop: true,
+    skipTaskbar: true,
     hasShadow: false,
     autoHideMenuBar: true,
     icon: fs.existsSync(appIconPath) ? appIconPath : undefined,
@@ -450,23 +451,29 @@ function setupTray() {
 
   tray.setContextMenu(contextMenu);
   tray.on('click', () => {
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore();
-      if (!mainWindow.isVisible()) {
-        mainWindow.show();
+    if (!mainWindow) return;
+    if (mainWindow.isVisible()) {
+      mainWindow.hide();
+    } else {
+      if (currentMode === 'widget') {
+        mainWindow.setSkipTaskbar(true);
       }
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.show();
       mainWindow.focus();
     }
   });
 
   tray.on('double-click', () => {
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore();
-      if (!mainWindow.isVisible()) {
-        mainWindow.show();
-      }
-      mainWindow.focus();
+    if (!mainWindow) return;
+    if (currentMode === 'widget') {
+      mainWindow.setSkipTaskbar(true);
     }
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    if (!mainWindow.isVisible()) {
+      mainWindow.show();
+    }
+    mainWindow.focus();
   });
 }
 
@@ -480,6 +487,7 @@ function setWindowMode(mode: ViewMode) {
   const { width: screenWidth, height: screenHeight } = primaryDisplay.workAreaSize;
 
   if (mode === 'widget') {
+    mainWindow.setSkipTaskbar(true);
     mainWindow.setAlwaysOnTop(data.settings.alwaysOnTop ?? true);
     mainWindow.setSize(WIDGET_WIDTH, WIDGET_HEIGHT, true);
 
@@ -487,6 +495,7 @@ function setWindowMode(mode: ViewMode) {
     const y = data.settings.widgetY ?? Math.min(mainWindow.getPosition()[1], screenHeight - WIDGET_HEIGHT - 20);
     mainWindow.setPosition(x, y, true);
   } else {
+    mainWindow.setSkipTaskbar(false);
     mainWindow.setAlwaysOnTop(false);
     mainWindow.setSize(DECK_WIDTH, DECK_HEIGHT, true);
 
@@ -532,7 +541,13 @@ ipcMain.handle('app:set-startup', (_, flag: boolean) => {
 ipcMain.handle('app:notify', (_, title: string, body: string, options?: { silent?: boolean }) => {
   showSystemNotification(title, body, options?.silent ?? false);
 });
-ipcMain.handle('window:minimize', () => mainWindow?.minimize());
+ipcMain.handle('window:minimize', () => {
+  if (currentMode === 'widget') {
+    mainWindow?.hide();
+  } else {
+    mainWindow?.minimize();
+  }
+});
 ipcMain.handle('window:close', () => {
   if (quickAddWindow && !quickAddWindow.isDestroyed()) {
     quickAddWindow.close();
@@ -569,14 +584,8 @@ app.whenReady().then(() => {
         return;
       }
 
-      if (mainWindow.isVisible() && !mainWindow.isMinimized()) {
-        if (mainWindow.isFocused()) {
-          mainWindow.hide();
-        } else {
-          mainWindow.show();
-          mainWindow.focus();
-          mainWindow.setAlwaysOnTop(true);
-        }
+      if (mainWindow.isVisible()) {
+        mainWindow.hide();
       } else {
         setWindowMode('widget');
         if (mainWindow.isMinimized()) mainWindow.restore();
