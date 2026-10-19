@@ -55,7 +55,11 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
+      "createStartMenuShortcut": true,
+      "artifactName": "D-Deck-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "D-Deck-Portable-${version}.${ext}"
     },
     "files": [
       "dist/**/*",

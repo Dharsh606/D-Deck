@@ -38,16 +38,14 @@ jobs:
         run: npm run build
 
       - name: Package Windows Binaries (Installer & Portable)
-        run: npx electron-builder --win
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx electron-builder --win --publish never
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            release/*.exe
-            release/*.blockmap
+            release/D-Deck-Setup-*.exe
+            release/D-Deck-Portable-*.exe
           generate_release_notes: true
           draft: false
           prerelease: false
