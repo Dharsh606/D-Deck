@@ -471,7 +471,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
                     </p>
                     <div className="inline-flex items-center gap-1.5 mt-2.5 px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-mono">
                       <Sparkles className="w-3.5 h-3.5" />
-                      <span>Software Developer — Dharshan V</span>
+                      <span>Team Code & Chaos • We Built Stuff</span>
                     </div>
                   </div>
                 </div>

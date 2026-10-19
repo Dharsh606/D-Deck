@@ -1,0 +1,81 @@
+name: Automated D-Deck Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: 'Release Version Tag (e.g. v1.0.1)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build & Publish Release
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Compile & Build Frontend + Electron
+        run: npm run build
+
+      - name: Package Windows Binaries (Installer & Portable)
+        run: npx electron-builder --win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/*.exe
+            release/*.blockmap
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+          name: D-Deck ${{ github.ref_name || inputs.release_version }}
+          body: |
+            # 🚀 D-Deck Release ${{ github.ref_name || inputs.release_version }}
+            > **Futuristic Desktop HUD Widget & Personal Command Center**
+            > Built by **Code & Chaos** — *We Built Stuff*
+
+            ---
+
+            ### 📦 Downloads
+            | File | Description | Download |
+            | :--- | :--- | :--- |
+            | **Windows Installer** | Recommended for Windows 10/11 with desktop shortcut & auto-start | `D-Deck Setup *.exe` |
+            | **Windows Portable** | Zero installation single executable, runs immediately from USB or folder | `D-Deck *.exe` |
+
+            ---
+
+            ### ✨ Key Features in this Build
+            - **Pure Desktop HUD**: Floats seamlessly on your desktop with zero taskbar clutter.
+            - **Focus Flow HUD**: 1-click sprint timer directly in the widget titlebar (15m, 25m, 45m, 60m) with gentle chime audio feedback.
+            - **Daily Routine Auto-Reset**: Routine tasks automatically reset at midnight every day.
+            - **Pinpoint Reminders**: Persistent alerts at -1m, on-time, and every minute until marked complete.
+            - **Global Stealth Hotkey**: Press `Ctrl+Shift+D` anywhere on Windows to summon or hide the widget instantly over any game or editor.
+            - **100% Offline & Private**: All data stored locally in `%APPDATA%/d-deck/d-deck-data.json`. Zero telemetry, zero cloud trackers, zero subscriptions.
+
+            ---
+            *Open Source • MIT License • Crafted by Code & Chaos*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
