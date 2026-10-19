@@ -60,8 +60,8 @@ jobs:
             ### 📦 Downloads
             | File | Description | Download |
             | :--- | :--- | :--- |
-            | **Windows Installer** | Recommended for Windows 10/11 with desktop shortcut & auto-start | `D-Deck Setup *.exe` |
-            | **Windows Portable** | Zero installation single executable, runs immediately from USB or folder | `D-Deck *.exe` |
+            | **Windows Installer** | Recommended for Windows 10/11 with desktop shortcut & auto-start | `D-Deck-Setup-*.exe` |
+            | **Windows Portable** | Zero installation single executable, runs immediately from USB or folder | `D-Deck-Portable-*.exe` |
 
             ---
 
