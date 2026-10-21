@@ -11,7 +11,7 @@ let reminderIntervalTimer: NodeJS.Timeout | null = null;
 let isQuitting = false;
 
 const WIDGET_WIDTH = 280;
-const WIDGET_HEIGHT = 380;
+const WIDGET_DEFAULT_HEIGHT = 160;
 const POPUP_WIDTH = 380;
 const POPUP_HEIGHT = 540;
 const DECK_WIDTH = 1080;
@@ -257,7 +257,7 @@ function createMainWindow() {
   mainWindow = new BrowserWindow({
     title: '',
     width: WIDGET_WIDTH,
-    height: WIDGET_HEIGHT,
+    height: WIDGET_DEFAULT_HEIGHT,
     x: initialX,
     y: initialY,
     icon: fs.existsSync(appIconPath) ? appIconPath : undefined,
@@ -489,11 +489,11 @@ function setWindowMode(mode: ViewMode) {
   if (mode === 'widget') {
     mainWindow.setSkipTaskbar(true);
     mainWindow.setAlwaysOnTop(data.settings.alwaysOnTop ?? true);
-    mainWindow.setSize(WIDGET_WIDTH, WIDGET_HEIGHT, true);
+    mainWindow.setSize(WIDGET_WIDTH, WIDGET_DEFAULT_HEIGHT, false);
 
     const x = data.settings.widgetX ?? Math.min(mainWindow.getPosition()[0], screenWidth - WIDGET_WIDTH - 20);
-    const y = data.settings.widgetY ?? Math.min(mainWindow.getPosition()[1], screenHeight - WIDGET_HEIGHT - 20);
-    mainWindow.setPosition(x, y, true);
+    const y = data.settings.widgetY ?? Math.min(mainWindow.getPosition()[1], screenHeight - WIDGET_DEFAULT_HEIGHT - 20);
+    mainWindow.setPosition(x, y, false);
   } else {
     mainWindow.setSkipTaskbar(false);
     mainWindow.setAlwaysOnTop(false);
@@ -527,6 +527,25 @@ ipcMain.handle('window:close-quick-add', () => {
 });
 ipcMain.handle('window:set-mode', (_, mode: ViewMode) => setWindowMode(mode));
 ipcMain.handle('window:get-mode', () => currentMode);
+ipcMain.handle('window:set-widget-height', (_, height: number) => {
+  if (!mainWindow || currentMode !== 'widget') return;
+  const clampedHeight = Math.max(120, Math.min(540, Math.ceil(height)));
+  const [currentW, currentH] = mainWindow.getSize();
+  if (Math.abs(currentH - clampedHeight) < 2) return;
+
+  const [x, y] = mainWindow.getPosition();
+  const display = screen.getDisplayNearestPoint({ x, y });
+  const maxY = display.workArea.y + display.workArea.height;
+  let targetY = y;
+  if (targetY + clampedHeight > maxY) {
+    targetY = Math.max(display.workArea.y, maxY - clampedHeight);
+  }
+
+  mainWindow.setSize(WIDGET_WIDTH, clampedHeight, false);
+  if (targetY !== y) {
+    mainWindow.setPosition(x, targetY, false);
+  }
+});
 ipcMain.handle('window:set-always-on-top', (_, flag: boolean) => {
   if (mainWindow) mainWindow.setAlwaysOnTop(flag);
 });

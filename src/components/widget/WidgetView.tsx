@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 import type { Task, AppSettings, StreakMetrics } from '../../types';
 import { WidgetHeader } from './WidgetHeader';
 import { TaskItem } from './TaskItem';
@@ -33,6 +33,35 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
   onClose,
 }) => {
   const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const lastHeightRef = useRef<number>(0);
+
+  // Dynamic Content-Adaptive Height: Auto-measure and resize Electron window
+  useLayoutEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const syncHeight = () => {
+      const rectHeight = el.getBoundingClientRect().height;
+      const roundedHeight = Math.ceil(rectHeight);
+      if (roundedHeight > 0 && Math.abs(roundedHeight - lastHeightRef.current) >= 2) {
+        lastHeightRef.current = roundedHeight;
+        if (window.electronAPI?.setWidgetHeight) {
+          window.electronAPI.setWidgetHeight(roundedHeight);
+        }
+      }
+    };
+
+    syncHeight();
+
+    if (typeof ResizeObserver !== 'undefined') {
+      const observer = new ResizeObserver(() => {
+        syncHeight();
+      });
+      observer.observe(el);
+      return () => observer.disconnect();
+    }
+  }, [tasks]);
 
   const pendingTasks = tasks.filter(t => !t.completed);
   const completedTasks = tasks.filter(t => t.completed);
@@ -46,7 +75,10 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
   };
 
   return (
-    <div className="w-full h-full flex flex-col glass-surface rounded-2xl overflow-hidden font-sans select-none shadow-2xl">
+    <div
+      ref={containerRef}
+      className="w-full h-auto flex flex-col glass-surface rounded-2xl overflow-hidden font-sans select-none shadow-2xl"
+    >
       <WidgetHeader
         onQuickAdd={handleOpenAdd}
         onExpandToDeck={onExpandToDeck}
@@ -56,17 +88,17 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
         onClose={onClose}
       />
 
-      <div className="flex-1 flex flex-col px-3 pt-2 pb-2.5 overflow-hidden space-y-2">
-        {/* Tasks Container */}
-        <div className="flex-1 overflow-y-auto pr-0.5 space-y-1.5 scrollbar-thin">
+      <div className="flex flex-col px-3 pt-2 pb-2.5 space-y-2">
+        {/* Tasks Container with dynamic content-hugged height */}
+        <div className="max-h-[380px] overflow-y-auto pr-0.5 space-y-1.5 scrollbar-thin">
           {tasks.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center p-4 text-white/70 space-y-2.5">
-              <div className="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-amber-400">
+            <div className="py-3.5 px-2 flex flex-col items-center justify-center text-center text-white/70 space-y-2">
+              <div className="w-8 h-8 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-amber-400">
                 <CheckCircle2 className="w-4 h-4 text-amber-400" />
               </div>
               <div className="space-y-0.5">
                 <p className="text-xs font-bold text-white">All clear</p>
-                <p className="text-[11px] text-white/70">Capture what needs to be done</p>
+                <p className="text-[10px] text-white/60">Capture what needs to be done</p>
               </div>
               <button
                 onClick={handleOpenAdd}
@@ -113,7 +145,7 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
           )}
         </div>
 
-        {/* Footer Status with Consistency & Velocity Streak */}
+        {/* Footer Status directly hugged under the task list */}
         <div className="pt-2 border-t border-white/15 flex items-center justify-between text-[11px] text-white/80 font-sans">
           <div className="flex items-center gap-1.5" title="Local Streak Counter: 100% offline & private">
             <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400/20" />

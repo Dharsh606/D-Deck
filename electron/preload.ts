@@ -14,6 +14,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   closeWindow: () => ipcRenderer.invoke('window:close'),
   openExternal: (url: string) => ipcRenderer.invoke('app:open-external', url),
   savePosition: (mode: ViewMode, x: number, y: number) => ipcRenderer.invoke('window:save-position', mode, x, y),
+  setWidgetHeight: (height: number) => ipcRenderer.invoke('window:set-widget-height', height),
   openQuickAdd: (category?: string) => ipcRenderer.invoke('window:open-quick-add', category),
   closeQuickAdd: () => ipcRenderer.invoke('window:close-quick-add'),
   onDataUpdated: (callback: (data: DeckData) => void) => {
