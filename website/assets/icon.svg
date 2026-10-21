@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="deckGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="50%" stop-color="#FCD34D" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect x="24" y="24" width="464" height="464" rx="96" fill="rgba(255, 255, 255, 0.95)" stroke="url(#deckGrad)" stroke-width="12" />
+  
+  <!-- Subtle Circuit Lines -->
+  <path d="M 80 160 L 160 160 L 200 200" fill="none" stroke="#E2E8F0" stroke-width="6" stroke-linecap="round" />
+  <path d="M 432 352 L 352 352 L 312 312" fill="none" stroke="#E2E8F0" stroke-width="6" stroke-linecap="round" />
+  <circle cx="200" cy="200" r="8" fill="#F59E0B" filter="url(#glow)" />
+  <circle cx="312" cy="312" r="8" fill="#10B981" filter="url(#glow)" />
+
+  <!-- Stylized Capital 'D' -->
+  <path d="M 168 128 L 268 128 C 344 128 392 184 392 256 C 392 328 344 384 268 384 L 168 384 Z" 
+        fill="none" 
+        stroke="url(#deckGrad)" 
+        stroke-width="36" 
+        stroke-linejoin="round"
+        filter="url(#glow)" />
+
+  <!-- Inner Core Accent -->
+  <path d="M 224 196 L 260 196 C 298 196 324 220 324 256 C 324 292 298 316 260 316 L 224 316 Z" 
+        fill="#10B981" 
+        opacity="0.3" />
+</svg>

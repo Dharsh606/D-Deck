@@ -35,49 +35,49 @@ html, body, #root {
   -webkit-app-region: no-drag;
 }
 
-/* World-Class Translucent White/Grey Frosted Glassmorphism */
+/* Transparent Frosted Glassmorphism - Yellow, Green and White */
 .glass-surface {
-  background: rgba(18, 21, 28, 0.72);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.5), inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(32px) saturate(190%);
+  -webkit-backdrop-filter: blur(32px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.2), inset 0 1px 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .glass-surface-panel {
-  background: rgba(22, 25, 34, 0.78);
-  backdrop-filter: blur(32px) saturate(190%);
-  -webkit-backdrop-filter: blur(32px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.6), inset 0 1px 1px 0 rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(36px) saturate(200%);
+  -webkit-backdrop-filter: blur(36px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.25), inset 0 1px 1px 0 rgba(255, 255, 255, 0.45);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.20);
   transition: all 0.15s ease-out;
 }
 
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(245, 158, 11, 0.55);
 }
 
 .glass-input {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  color: #f4f4f5;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
   transition: all 0.15s ease;
 }
 
 .glass-input:focus {
   outline: none;
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(245, 158, 11, 0.6);
-  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.25);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(245, 158, 11, 0.85);
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.35);
 }
 
 /* Sleek Minimalist Scrollbar */

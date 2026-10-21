@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy - D-Deck by Code & Chaos</title>
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icon.png" />
+  <link rel="apple-touch-icon" href="assets/icon.png" />
+  <meta name="description" content="Privacy Policy for D-Deck. 100% offline local persistence, zero data collection, zero network tracking. Built by Code & Chaos." />
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Inter"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              yellow: '#F59E0B',
+              green: '#10B981',
+              dark: '#0F172A',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #F8FAFC;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.08) 0px, transparent 40%),
+        radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.08) 0px, transparent 40%);
+      color: #0F172A;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.04);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-amber-400 selection:text-black">
+
+  <!-- Navigation -->
+  <header class="glass-nav sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="assets/icon.png" alt="D-Deck" class="w-8 h-8 rounded-lg object-contain" />
+        <span class="font-bold text-slate-900 text-sm tracking-tight">D-Deck</span>
+        <span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-50 text-emerald-700 border border-emerald-200">
+          Privacy Policy
+        </span>
+      </a>
+
+      <div class="flex items-center gap-4 text-xs font-medium">
+        <a href="index.html" class="text-slate-600 hover:text-amber-600 transition-colors">Home</a>
+        <a href="terms.html" class="text-slate-600 hover:text-amber-600 transition-colors">Terms</a>
+        <a href="https://github.com/Dharsh606/D-Deck" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-700 hover:border-amber-400 transition-all">
+          GitHub
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto px-6 py-12 flex-1 w-full">
+    <div class="glass-card rounded-2xl p-8 md:p-12">
+      
+      <div class="border-b border-slate-200 pb-6 mb-8">
+        <div class="flex items-center gap-2 text-xs font-mono text-emerald-700 font-semibold mb-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          LOCAL FIRST DATA PROTECTION
+        </div>
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900">Privacy Policy</h1>
+        <p class="text-xs font-mono text-slate-500 mt-2">
+          Effective Date: October 2026 • Document Version: 1.0.0
+        </p>
+      </div>
+
+      <div class="space-y-8 text-sm text-slate-700 leading-relaxed">
+        
+        <section>
+          <h2 class="text-base font-bold text-slate-900 mb-2">1. Principle of Complete Local Privacy</h2>
+          <p>
+            D-Deck is engineered on a zero telemetry, local first architecture. We believe that your schedule, daily routines, habits, and tasks belong entirely to you. D-Deck does not track, collect, upload, or sell your personal data. There are no user accounts, no cloud databases, and no remote servers connected to the software.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-base font-bold text-slate-900 mb-2">2. Local Storage and File Location</h2>
+          <p>
+            All information created in D-Deck, including task titles, tags, routine definitions, completion states, settings, and velocity metrics, is stored exclusively on your local hard drive.
+          </p>
+          <div class="mt-3 p-3.5 rounded-lg bg-amber-50 border border-amber-200 font-mono text-xs text-amber-900">
+            Windows Directory: %APPDATA%\d-deck\d-deck-data.json
+          </div>
+          <p class="mt-2 text-xs text-slate-500">
+            This file never leaves your machine unless you manually export or move it.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-base font-bold text-slate-900 mb-2">3. Zero Network Tracking and Telemetry</h2>
+          <p>
+            The desktop application operates completely offline. Specifically:
+          </p>
+          <ul class="list-disc pl-5 mt-2 space-y-1.5 text-xs text-slate-600">
+            <li>No analytics SDKs or tracking pixels are included in the source code.</li>
+            <li>No crash reports or diagnostic telemetry are transmitted across the internet.</li>
+            <li>No outbound network calls are made during task creation, sprint timing, or reminder alerts.</li>
+            <li>Audio chime notifications and desktop reminders are processed 100% locally through native browser and operating system APIs.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-base font-bold text-slate-900 mb-2">4. User Rights and Data Control</h2>
+          <p>
+            Because your data is stored in standard JSON format in your user directory, you retain unconditional control:
+          </p>
+          <ul class="list-disc pl-5 mt-2 space-y-1.5 text-xs text-slate-600">
+            <li><strong>Export:</strong> You can export a full JSON backup of your records at any time directly through the Command Deck settings.</li>
+            <li><strong>Portability:</strong> You can transfer your data file to any other computer running D-Deck.</li>
+            <li><strong>Deletion:</strong> Uninstalling the application or deleting the data file permanently wipes your data from the system with no remote backups remaining.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-base font-bold text-slate-900 mb-2">5. Third-Party Code and Dependencies</h2>
+          <p>
+            D-Deck is open-source software built using React, Electron, and standard web technologies under the MIT License. All dependencies are open for public audit on our GitHub repository.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-base font-bold text-slate-900 mb-2">6. Contact and Governance</h2>
+          <p>
+            If you have questions or wish to review the security architecture of D-Deck, inspect the open repository or contact the project maintainers:
+          </p>
+          <p class="mt-2 font-mono text-xs text-slate-800">
+            Organization: Code & Chaos<br />
+            Tagline: We Built Stuff<br />
+            Source: <a href="https://github.com/Dharsh606/D-Deck" target="_blank" class="text-amber-600 underline">https://github.com/Dharsh606/D-Deck</a>
+          </p>
+        </section>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-200 bg-white/70 py-6 text-xs text-slate-500 font-mono">
+    <div class="max-w-4xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div>
+        <span class="font-bold text-slate-800">Code & Chaos</span> • We Built Stuff
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="hover:text-amber-600 transition-colors">Home</a>
+        <a href="terms.html" class="hover:text-amber-600 transition-colors">Terms</a>
+        <a href="https://github.com/Dharsh606/D-Deck" target="_blank" class="hover:text-amber-600 transition-colors">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
