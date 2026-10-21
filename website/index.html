@@ -36,7 +36,8 @@
               yellowDark: '#D97706',
               green: '#10B981',
               greenDark: '#059669',
-              dark: '#0F172A',
+              espresso: '#0E0D11',
+              card: 'rgba(24, 22, 28, 0.75)',
             }
           }
         }
@@ -46,51 +47,51 @@
 
   <style>
     body {
-      background-color: #F8FAFC;
+      background-color: #0E0D11;
       background-image: 
-        radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.09) 0px, transparent 45%),
-        radial-gradient(at 100% 30%, rgba(16, 185, 129, 0.08) 0px, transparent 45%),
-        radial-gradient(at 50% 100%, rgba(245, 158, 11, 0.06) 0px, transparent 50%);
-      color: #0F172A;
+        radial-gradient(at 0% 0%, rgba(245, 158, 11, 0.08) 0px, transparent 48%),
+        radial-gradient(at 100% 35%, rgba(16, 185, 129, 0.07) 0px, transparent 48%),
+        radial-gradient(at 50% 100%, rgba(180, 110, 40, 0.05) 0px, transparent 50%);
+      color: #E2E8F0;
       font-family: 'Inter', sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
     .glass-nav {
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(14, 13, 17, 0.85);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .glass-card {
-      background: rgba(255, 255, 255, 0.82);
+      background: rgba(24, 22, 29, 0.72);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(226, 232, 240, 0.9);
-      box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.5);
       transition: all 0.2s ease;
     }
 
     .glass-card:hover {
-      background: rgba(255, 255, 255, 0.95);
-      border-color: rgba(245, 158, 11, 0.4);
-      box-shadow: 0 14px 34px -6px rgba(15, 23, 42, 0.08);
+      background: rgba(30, 27, 36, 0.85);
+      border-color: rgba(245, 158, 11, 0.35);
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.65);
     }
 
     .glass-widget {
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(20, 18, 24, 0.88);
       backdrop-filter: blur(32px);
       -webkit-backdrop-filter: blur(32px);
-      border: 1px solid rgba(226, 232, 240, 0.95);
-      box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 25px 55px -12px rgba(0, 0, 0, 0.7);
     }
 
     /* Minimalist Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.4); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(245, 158, 11, 0.6); }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(245, 158, 11, 0.5); }
   </style>
 </head>
 <body class="selection:bg-amber-400 selection:text-black">
@@ -102,21 +103,21 @@
       <!-- Brand -->
       <a href="#" class="flex items-center gap-3">
         <img src="assets/icon.png" alt="D-Deck" class="w-8 h-8 rounded-lg object-contain" />
-        <span class="font-bold tracking-tight text-slate-900 text-base">
+        <span class="font-bold tracking-tight text-white text-base">
           D-Deck
         </span>
-        <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-50 text-emerald-700 border border-emerald-200">
+        <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
           v1.0.0
         </span>
       </a>
 
       <!-- Center Links -->
-      <nav class="hidden md:flex items-center gap-8 text-xs font-semibold text-slate-600">
-        <a href="#features" class="hover:text-amber-600 transition-colors">Features</a>
-        <a href="#preview" class="hover:text-amber-600 transition-colors">Interface</a>
-        <a href="#download" class="hover:text-amber-600 transition-colors">Download</a>
-        <a href="#faq" class="hover:text-amber-600 transition-colors">FAQ</a>
-        <a href="#team" class="hover:text-amber-600 transition-colors">Code & Chaos</a>
+      <nav class="hidden md:flex items-center gap-8 text-xs font-semibold text-slate-300">
+        <a href="#features" class="hover:text-amber-400 transition-colors">Features</a>
+        <a href="#preview" class="hover:text-amber-400 transition-colors">Interface</a>
+        <a href="#download" class="hover:text-amber-400 transition-colors">Download</a>
+        <a href="#faq" class="hover:text-amber-400 transition-colors">FAQ</a>
+        <a href="#team" class="hover:text-amber-400 transition-colors">Code & Chaos</a>
       </nav>
 
       <!-- Action Buttons -->
@@ -125,15 +126,15 @@
           href="https://github.com/Dharsh606/D-Deck" 
           target="_blank" 
           rel="noopener noreferrer"
-          class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-700 hover:text-slate-900 border border-slate-200 hover:border-slate-300 transition-all bg-white"
+          class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono text-slate-200 hover:text-white border border-white/10 hover:border-white/20 transition-all bg-white/5"
         >
-          <svg class="w-4 h-4 fill-current text-slate-800" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          <svg class="w-4 h-4 fill-current text-amber-400" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
           <span>GitHub</span>
         </a>
 
         <a 
           href="#download" 
-          class="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold transition-all shadow-sm active:scale-95"
+          class="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-zinc-950 text-xs font-bold transition-all shadow-sm active:scale-95"
         >
           <span>Get D-Deck</span>
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -147,22 +148,22 @@
     
     <!-- Official Logo -->
     <div class="mb-6">
-      <img src="assets/logo.png" alt="D-Deck Official Branding" class="h-28 md:h-32 w-auto object-contain" />
+      <img src="assets/logo.png" alt="D-Deck Official Branding" class="h-28 md:h-32 w-auto object-contain drop-shadow-xl" />
     </div>
 
     <!-- Status Badge -->
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-amber-200 bg-amber-50 text-amber-900 text-xs font-mono mb-6">
-      <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-amber-400/30 bg-amber-400/10 text-amber-300 text-xs font-mono mb-6">
+      <span class="w-2 h-2 rounded-full bg-amber-400"></span>
       100% Offline • Free and Open Source • Windows 10 and 11
     </div>
 
     <!-- Main Title -->
-    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 max-w-3xl leading-tight">
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white max-w-3xl leading-tight">
       A distraction-free desktop HUD for Windows
     </h1>
 
     <!-- Subtitle -->
-    <p class="text-sm md:text-base text-slate-600 max-w-2xl mt-4 leading-relaxed font-normal">
+    <p class="text-sm md:text-base text-slate-300 max-w-2xl mt-4 leading-relaxed font-normal">
       D-Deck floats silently on your desktop, stays out of your taskbar, and delivers precision alerts for scheduled tasks. Built for developers, gamers, and focused multitaskers who want zero clutter and complete local privacy.
     </p>
 
@@ -171,7 +172,7 @@
       <a 
         href="https://github.com/Dharsh606/D-Deck/releases/latest" 
         target="_blank" 
-        class="flex-1 min-w-[200px] flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm transition-all shadow-sm active:scale-95"
+        class="flex-1 min-w-[200px] flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-amber-400 hover:bg-amber-300 text-zinc-950 font-bold text-sm transition-all shadow-lg shadow-amber-400/20 active:scale-95"
       >
         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
         <span>Download Installer (.exe)</span>
@@ -179,38 +180,38 @@
 
       <a 
         href="#download" 
-        class="flex items-center gap-2 px-4 py-3 rounded-lg bg-white border border-slate-200 hover:border-slate-300 text-slate-800 text-sm font-semibold transition-all shadow-sm active:scale-95"
+        class="flex items-center gap-2 px-4 py-3 rounded-lg bg-white/10 hover:bg-white/15 border border-white/15 text-white text-sm font-semibold transition-all active:scale-95"
       >
         <span>Portable Build</span>
       </a>
     </div>
 
     <!-- Quick Technical Hint -->
-    <p class="text-xs font-mono text-slate-500 mt-4 flex items-center gap-2">
+    <p class="text-xs font-mono text-slate-400 mt-4 flex items-center gap-2">
       <span>Global stealth hotkey:</span>
-      <kbd class="px-2 py-0.5 rounded bg-slate-200/80 text-slate-800 font-mono text-[11px] font-semibold border border-slate-300">Ctrl + Shift + D</kbd>
+      <kbd class="px-2 py-0.5 rounded bg-white/10 text-amber-300 font-mono text-[11px] font-semibold border border-white/15">Ctrl + Shift + D</kbd>
     </p>
 
   </section>
 
   <!-- Technical Spec Strip -->
-  <section class="border-y border-slate-200 bg-white/70 py-4 font-mono text-xs text-slate-700">
+  <section class="border-y border-white/10 bg-black/25 py-4 font-mono text-xs text-slate-300">
     <div class="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
       <div>
-        <span class="text-slate-400 block text-[10px] uppercase">Storage Mode</span>
-        <span class="font-bold text-slate-900">100% Local JSON</span>
+        <span class="text-slate-500 block text-[10px] uppercase">Storage Mode</span>
+        <span class="font-bold text-white">100% Local JSON</span>
       </div>
       <div>
-        <span class="text-slate-400 block text-[10px] uppercase">Memory Footprint</span>
-        <span class="font-bold text-slate-900">&lt; 45 MB Active</span>
+        <span class="text-slate-500 block text-[10px] uppercase">Memory Footprint</span>
+        <span class="font-bold text-white">&lt; 45 MB Active</span>
       </div>
       <div>
-        <span class="text-slate-400 block text-[10px] uppercase">Windows Taskbar</span>
-        <span class="font-bold text-emerald-600">Zero Intrusion</span>
+        <span class="text-slate-500 block text-[10px] uppercase">Windows Taskbar</span>
+        <span class="font-bold text-emerald-400">Zero Intrusion</span>
       </div>
       <div>
-        <span class="text-slate-400 block text-[10px] uppercase">License</span>
-        <span class="font-bold text-amber-600">MIT Open Source</span>
+        <span class="text-slate-500 block text-[10px] uppercase">License</span>
+        <span class="font-bold text-amber-400">MIT Open Source</span>
       </div>
     </div>
   </section>
@@ -218,44 +219,44 @@
   <!-- Interactive Interface Preview -->
   <section id="preview" class="max-w-4xl mx-auto px-6 py-16">
     <div class="text-center mb-10">
-      <p class="font-mono text-xs uppercase tracking-wider text-amber-600 font-semibold mb-1">INTERACTIVE PREVIEW</p>
-      <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Engineered for daily workflow and gaming</h2>
-      <p class="text-xs md:text-sm text-slate-600 mt-2">Toggle between the floating desktop HUD and the full command deck.</p>
+      <p class="font-mono text-xs uppercase tracking-wider text-amber-400 font-semibold mb-1">INTERACTIVE PREVIEW</p>
+      <h2 class="text-2xl md:text-3xl font-bold text-white">Engineered for daily workflow and gaming</h2>
+      <p class="text-xs md:text-sm text-slate-400 mt-2">Toggle between the floating desktop HUD and the full command deck.</p>
     </div>
 
     <div class="flex flex-col items-center">
       
       <!-- View Switcher -->
-      <div class="inline-flex p-1 rounded-lg bg-slate-200/70 border border-slate-300 mb-8 font-mono text-xs">
-        <button id="btn-show-widget" class="px-4 py-1.5 rounded-md bg-white text-slate-900 font-semibold shadow-sm transition-all">
+      <div class="inline-flex p-1 rounded-lg bg-white/5 border border-white/10 mb-8 font-mono text-xs">
+        <button id="btn-show-widget" class="px-4 py-1.5 rounded-md bg-amber-400 text-zinc-950 font-bold shadow-sm transition-all">
           Desktop Widget (HUD)
         </button>
-        <button id="btn-show-deck" class="px-4 py-1.5 rounded-md text-slate-600 hover:text-slate-900 font-semibold transition-all">
+        <button id="btn-show-deck" class="px-4 py-1.5 rounded-md text-slate-300 hover:text-white font-semibold transition-all">
           Command Deck (Full View)
         </button>
       </div>
 
       <!-- Widget Mockup -->
-      <div id="mockup-widget" class="w-[300px] h-[390px] rounded-xl glass-widget flex flex-col overflow-hidden text-slate-900 transition-all">
+      <div id="mockup-widget" class="w-[300px] h-[390px] rounded-xl glass-widget flex flex-col overflow-hidden text-white transition-all">
         
         <!-- Widget Header -->
-        <div class="flex items-center justify-between px-3.5 py-2.5 bg-slate-50/80 border-b border-slate-200">
+        <div class="flex items-center justify-between px-3.5 py-2.5 bg-white/5 border-b border-white/10">
           <div class="flex items-center gap-2">
             <img src="assets/icon.png" class="w-4 h-4 rounded" alt="" />
-            <span class="font-bold text-xs text-slate-900">D-Deck</span>
+            <span class="font-bold text-xs text-white">D-Deck</span>
           </div>
 
           <!-- Focus Timer -->
-          <div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-800 text-[10px] font-mono">
+          <div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-amber-400/20 border border-amber-400/40 text-amber-300 text-[10px] font-mono font-semibold">
             <span>25m Sprint</span>
-            <span class="text-amber-600 font-bold">▶</span>
+            <span class="text-amber-400 font-bold">▶</span>
           </div>
 
           <!-- Controls -->
           <div class="flex items-center gap-1.5 text-slate-400 text-xs">
-            <span class="hover:text-slate-800 cursor-pointer">+</span>
-            <span class="text-amber-500 cursor-pointer">●</span>
-            <span class="hover:text-slate-800 cursor-pointer">✕</span>
+            <span class="hover:text-white cursor-pointer">+</span>
+            <span class="text-amber-400 cursor-pointer">●</span>
+            <span class="hover:text-white cursor-pointer">✕</span>
           </div>
         </div>
 
@@ -263,39 +264,39 @@
         <div class="flex-1 p-3 space-y-2 overflow-y-auto text-xs">
           
           <!-- Task 1 -->
-          <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm flex items-start justify-between">
+          <div class="p-2.5 rounded-lg bg-white/5 border border-white/10 shadow-sm flex items-start justify-between">
             <div class="flex items-start gap-2">
-              <span class="w-3.5 h-3.5 rounded border border-slate-400 mt-0.5 inline-block"></span>
+              <span class="w-3.5 h-3.5 rounded border border-white/40 mt-0.5 inline-block"></span>
               <div>
-                <p class="font-semibold text-slate-900 text-[11px]">Deploy Production Release</p>
+                <p class="font-semibold text-white text-[11px]">Deploy Production Release</p>
                 <div class="flex items-center gap-1.5 mt-1">
-                  <span class="px-1.5 py-0.5 rounded bg-slate-100 text-[9px] font-mono text-slate-600 border border-slate-200">coding</span>
-                  <span class="text-[9px] text-amber-700 font-mono font-medium">14:00 Alert</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white/10 text-[9px] font-mono text-slate-300 border border-white/15">coding</span>
+                  <span class="text-[9px] text-amber-300 font-mono font-medium">14:00 Alert</span>
                 </div>
               </div>
             </div>
-            <span class="w-2 h-2 rounded-full bg-emerald-500 mt-1"></span>
+            <span class="w-2 h-2 rounded-full bg-emerald-400 mt-1"></span>
           </div>
 
           <!-- Task 2 -->
-          <div class="p-2.5 rounded-lg bg-white border border-slate-200 shadow-sm flex items-start justify-between">
+          <div class="p-2.5 rounded-lg bg-white/5 border border-white/10 shadow-sm flex items-start justify-between">
             <div class="flex items-start gap-2">
-              <span class="w-3.5 h-3.5 rounded border border-slate-400 mt-0.5 inline-block"></span>
+              <span class="w-3.5 h-3.5 rounded border border-white/40 mt-0.5 inline-block"></span>
               <div>
-                <p class="font-semibold text-slate-900 text-[11px]">Night Gaming Session</p>
+                <p class="font-semibold text-white text-[11px]">Night Gaming Session</p>
                 <div class="flex items-center gap-1.5 mt-1">
-                  <span class="px-1.5 py-0.5 rounded bg-slate-100 text-[9px] font-mono text-slate-600 border border-slate-200">gaming</span>
-                  <span class="text-[9px] text-slate-500 font-mono">23:30</span>
+                  <span class="px-1.5 py-0.5 rounded bg-white/10 text-[9px] font-mono text-slate-300 border border-white/15">gaming</span>
+                  <span class="text-[9px] text-slate-400 font-mono">23:30</span>
                 </div>
               </div>
             </div>
-            <span class="text-[9px] font-mono text-emerald-700 bg-emerald-50 px-1 py-0.5 rounded border border-emerald-200">routine</span>
+            <span class="text-[9px] font-mono text-emerald-300 bg-emerald-500/20 px-1 py-0.5 rounded border border-emerald-400/30">routine</span>
           </div>
 
           <!-- Done Task -->
-          <div class="p-2 rounded-lg bg-slate-50 border border-slate-100 opacity-60 flex items-center justify-between text-[11px]">
-            <div class="flex items-center gap-2 line-through text-slate-500">
-              <span class="text-emerald-600 font-bold">✓</span>
+          <div class="p-2 rounded-lg bg-white/[0.02] border border-white/5 opacity-50 flex items-center justify-between text-[11px]">
+            <div class="flex items-center gap-2 line-through text-slate-400">
+              <span class="text-emerald-400 font-bold">✓</span>
               <span>Morning Workout</span>
             </div>
           </div>
@@ -303,53 +304,53 @@
         </div>
 
         <!-- Footer -->
-        <div class="px-3.5 py-2 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-[10px] font-mono text-slate-600">
-          <div class="flex items-center gap-1.5 text-amber-700 font-semibold">
+        <div class="px-3.5 py-2 bg-white/5 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-300">
+          <div class="flex items-center gap-1.5 text-amber-300 font-semibold">
             <span>Active Streak: 14d</span>
-            <span class="text-slate-400">•</span>
-            <span class="text-emerald-700">9/wk Velocity</span>
+            <span class="text-slate-500">•</span>
+            <span class="text-emerald-400">9/wk Velocity</span>
           </div>
-          <span>2 pending</span>
+          <span class="text-slate-400">2 pending</span>
         </div>
 
       </div>
 
       <!-- Command Deck Mockup -->
-      <div id="mockup-deck" class="hidden w-full max-w-2xl h-[370px] rounded-xl glass-widget p-5 flex flex-col justify-between text-slate-900 transition-all">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-200">
+      <div id="mockup-deck" class="hidden w-full max-w-2xl h-[370px] rounded-xl glass-widget p-5 flex flex-col justify-between text-white transition-all">
+        <div class="flex items-center justify-between pb-3 border-b border-white/10">
           <div class="flex items-center gap-3">
             <img src="assets/icon.png" class="w-6 h-6 rounded" alt="" />
             <div>
-              <h3 class="font-bold text-sm text-slate-900">D-Deck Command Center</h3>
-              <p class="text-[10px] font-mono text-slate-500">Full Schedule and Backlog Navigator</p>
+              <h3 class="font-bold text-sm text-white">D-Deck Command Center</h3>
+              <p class="text-[10px] font-mono text-slate-400">Full Schedule and Backlog Navigator</p>
             </div>
           </div>
-          <span class="px-2.5 py-1 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-mono">
+          <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/35 text-xs font-mono font-semibold">
             Local Database Connected
           </span>
         </div>
 
         <div class="grid grid-cols-3 gap-3 my-4">
-          <div class="p-3 rounded-lg bg-white border border-slate-200 shadow-sm text-left">
-            <span class="text-[10px] text-slate-500 uppercase font-mono">Consistency</span>
-            <p class="text-xl font-bold text-amber-600 mt-1">92%</p>
+          <div class="p-3 rounded-lg bg-white/5 border border-white/10 shadow-sm text-left">
+            <span class="text-[10px] text-slate-400 uppercase font-mono">Consistency</span>
+            <p class="text-xl font-bold text-amber-400 mt-1">92%</p>
             <p class="text-[10px] text-slate-500 mt-0.5">Consecutive Days</p>
           </div>
-          <div class="p-3 rounded-lg bg-white border border-slate-200 shadow-sm text-left">
-            <span class="text-[10px] text-slate-500 uppercase font-mono">Focus Sprint</span>
-            <p class="text-xl font-bold text-emerald-600 mt-1">4.5 hrs</p>
+          <div class="p-3 rounded-lg bg-white/5 border border-white/10 shadow-sm text-left">
+            <span class="text-[10px] text-slate-400 uppercase font-mono">Focus Sprint</span>
+            <p class="text-xl font-bold text-emerald-400 mt-1">4.5 hrs</p>
             <p class="text-[10px] text-slate-500 mt-0.5">Completed Today</p>
           </div>
-          <div class="p-3 rounded-lg bg-white border border-slate-200 shadow-sm text-left">
-            <span class="text-[10px] text-slate-500 uppercase font-mono">Routines</span>
-            <p class="text-xl font-bold text-slate-800 mt-1">4 Auto</p>
+          <div class="p-3 rounded-lg bg-white/5 border border-white/10 shadow-sm text-left">
+            <span class="text-[10px] text-slate-400 uppercase font-mono">Routines</span>
+            <p class="text-xl font-bold text-white mt-1">4 Auto</p>
             <p class="text-[10px] text-slate-500 mt-0.5">Midnight Reset</p>
           </div>
         </div>
 
-        <div class="text-left text-xs text-slate-600 font-mono p-3 rounded-lg bg-slate-50 border border-slate-200">
-          <p class="text-slate-800 font-semibold">Stealth hotkey: Ctrl + Shift + D</p>
-          <p class="text-slate-500 mt-0.5">Zero taskbar intrusion with native Windows 11 frosted acrylic composition.</p>
+        <div class="text-left text-xs text-slate-300 font-mono p-3 rounded-lg bg-black/30 border border-white/10">
+          <p class="text-white font-semibold">Stealth hotkey: Ctrl + Shift + D</p>
+          <p class="text-slate-400 mt-0.5">Zero taskbar intrusion with native Windows 11 frosted acrylic composition.</p>
         </div>
       </div>
 
@@ -359,9 +360,9 @@
   <!-- Features Grid -->
   <section id="features" class="max-w-5xl mx-auto px-6 py-16">
     <div class="text-center mb-12">
-      <p class="font-mono text-xs uppercase tracking-wider text-amber-600 font-semibold mb-1">CORE ARCHITECTURE</p>
-      <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Built for pure focus, zero distractions</h2>
-      <p class="text-xs md:text-sm text-slate-600 max-w-lg mx-auto mt-2">
+      <p class="font-mono text-xs uppercase tracking-wider text-amber-400 font-semibold mb-1">CORE ARCHITECTURE</p>
+      <h2 class="text-2xl md:text-3xl font-bold text-white">Built for pure focus, zero distractions</h2>
+      <p class="text-xs md:text-sm text-slate-400 max-w-lg mx-auto mt-2">
         Engineered specifically for users who need task management without third-party cloud servers or window clutter.
       </p>
     </div>
@@ -372,37 +373,37 @@
       <div class="md:col-span-2 p-6 rounded-xl glass-card flex flex-col justify-between">
         <div>
           <div class="flex items-center gap-3 mb-3">
-            <div class="w-9 h-9 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700 font-mono font-bold text-xs">
+            <div class="w-9 h-9 rounded-lg bg-amber-400/15 border border-amber-400/30 flex items-center justify-center text-amber-300 font-mono font-bold text-xs">
               HUD
             </div>
             <div>
-              <h3 class="text-base font-bold text-slate-900">Stealth Desktop HUD</h3>
-              <p class="text-xs font-mono text-amber-700">Zero Taskbar Clutter • Ctrl + Shift + D</p>
+              <h3 class="text-base font-bold text-white">Stealth Desktop HUD</h3>
+              <p class="text-xs font-mono text-amber-400">Zero Taskbar Clutter • Ctrl + Shift + D</p>
             </div>
           </div>
-          <p class="text-xs md:text-sm text-slate-600 leading-relaxed">
+          <p class="text-xs md:text-sm text-slate-300 leading-relaxed">
             Floats cleanly on your desktop canvas without polluting the Windows taskbar or Alt+Tab switcher. Press the stealth hotkey anywhere in Windows to toggle the widget to the foreground or hide it instantly.
           </p>
         </div>
-        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center gap-3 text-xs font-mono text-slate-500">
-          <span class="text-emerald-600 font-bold">✓</span> Windows 11 Acrylic Glass
+        <div class="mt-4 pt-3 border-t border-white/10 flex items-center gap-3 text-xs font-mono text-slate-400">
+          <span class="text-emerald-400 font-bold">✓</span> Windows 11 Acrylic Glass
           <span>•</span>
-          <span class="text-emerald-600 font-bold">✓</span> System Tray Minimize
+          <span class="text-emerald-400 font-bold">✓</span> System Tray Minimize
         </div>
       </div>
 
       <!-- Feature 2 -->
       <div class="p-6 rounded-xl glass-card flex flex-col justify-between">
         <div>
-          <div class="w-9 h-9 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 font-mono font-bold text-xs mb-3">
+          <div class="w-9 h-9 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-300 font-mono font-bold text-xs mb-3">
             TIMER
           </div>
-          <h3 class="text-base font-bold text-slate-900 mb-1.5">Focus Flow Sprints</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">
+          <h3 class="text-base font-bold text-white mb-1.5">Focus Flow Sprints</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
             One-click sprint timer directly in the titlebar (15m, 25m, 45m, 60m). Plays a gentle chime notification when your sprint completes.
           </p>
         </div>
-        <div class="mt-4 text-[11px] font-mono text-emerald-700">
+        <div class="mt-4 text-[11px] font-mono text-emerald-400 font-semibold">
           Header embedded countdown
         </div>
       </div>
@@ -410,15 +411,15 @@
       <!-- Feature 3 -->
       <div class="p-6 rounded-xl glass-card flex flex-col justify-between">
         <div>
-          <div class="w-9 h-9 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700 font-mono font-bold text-xs mb-3">
+          <div class="w-9 h-9 rounded-lg bg-amber-400/15 border border-amber-400/30 flex items-center justify-center text-amber-300 font-mono font-bold text-xs mb-3">
             AUTO
           </div>
-          <h3 class="text-base font-bold text-slate-900 mb-1.5">Daily Routine Auto-Reset</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">
+          <h3 class="text-base font-bold text-white mb-1.5">Daily Routine Auto-Reset</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
             Mark recurring tasks as a Daily Routine. Check them off during the day. At midnight, completed routines automatically reset to unchecked for the next morning.
           </p>
         </div>
-        <div class="mt-4 text-[11px] font-mono text-amber-700">
+        <div class="mt-4 text-[11px] font-mono text-amber-400 font-semibold">
           Zero manual re-typing
         </div>
       </div>
@@ -426,15 +427,15 @@
       <!-- Feature 4 -->
       <div class="p-6 rounded-xl glass-card flex flex-col justify-between">
         <div>
-          <div class="w-9 h-9 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 font-mono font-bold text-xs mb-3">
+          <div class="w-9 h-9 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-300 font-mono font-bold text-xs mb-3">
             ALERTS
           </div>
-          <h3 class="text-base font-bold text-slate-900 mb-1.5">Continuous Reminders</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">
+          <h3 class="text-base font-bold text-white mb-1.5">Continuous Reminders</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
             Alerts you 1 minute before task time, on exact time, and every minute thereafter until marked complete or snoozed.
           </p>
         </div>
-        <div class="mt-4 text-[11px] font-mono text-emerald-700">
+        <div class="mt-4 text-[11px] font-mono text-emerald-400 font-semibold">
           Precision audio chime
         </div>
       </div>
@@ -442,15 +443,15 @@
       <!-- Feature 5 -->
       <div class="p-6 rounded-xl glass-card flex flex-col justify-between">
         <div>
-          <div class="w-9 h-9 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 font-mono font-bold text-xs mb-3">
+          <div class="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-white font-mono font-bold text-xs mb-3">
             LOCAL
           </div>
-          <h3 class="text-base font-bold text-slate-900 mb-1.5">100% Offline and Private</h3>
-          <p class="text-xs text-slate-600 leading-relaxed">
+          <h3 class="text-base font-bold text-white mb-1.5">100% Offline and Private</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
             No cloud accounts, no subscriptions, and zero tracking. All tasks and metrics are stored in a single JSON file in %APPDATA%/d-deck.
           </p>
         </div>
-        <div class="mt-4 text-[11px] font-mono text-slate-600">
+        <div class="mt-4 text-[11px] font-mono text-slate-300 font-semibold">
           Complete data ownership
         </div>
       </div>
@@ -462,9 +463,9 @@
   <section id="download" class="max-w-4xl mx-auto px-6 py-16">
     <div class="p-8 md:p-12 rounded-2xl glass-card text-center">
       
-      <p class="font-mono text-xs uppercase tracking-wider text-emerald-700 font-semibold mb-1">DOWNLOAD CENTER</p>
-      <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Get D-Deck for Windows</h2>
-      <p class="text-xs md:text-sm text-slate-600 mt-2 max-w-xl mx-auto">
+      <p class="font-mono text-xs uppercase tracking-wider text-emerald-400 font-semibold mb-1">DOWNLOAD CENTER</p>
+      <h2 class="text-2xl md:text-3xl font-extrabold text-white">Get D-Deck for Windows</h2>
+      <p class="text-xs md:text-sm text-slate-300 mt-2 max-w-xl mx-auto">
         Completely free, open source under the MIT License. No credit cards, no account setup, and zero telemetries.
       </p>
 
@@ -472,20 +473,20 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 text-left font-mono">
         
         <!-- Windows Installer -->
-        <div class="p-5 rounded-xl bg-white border border-amber-300 shadow-sm flex flex-col justify-between">
+        <div class="p-5 rounded-xl bg-white/[0.04] border border-amber-400/40 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold text-amber-800 uppercase">Windows Installer</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 font-semibold">Recommended</span>
+              <span class="text-xs font-bold text-amber-300 uppercase">Windows Installer</span>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30 font-semibold">Recommended</span>
             </div>
-            <p class="text-xs text-slate-600 font-sans mb-4">
+            <p class="text-xs text-slate-300 font-sans mb-4">
               Standard installer with Start Menu integration, desktop shortcut, and optional run-on-startup.
             </p>
           </div>
           <a 
             href="https://github.com/Dharsh606/D-Deck/releases/latest" 
             target="_blank"
-            class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs transition-all shadow-sm"
+            class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-zinc-950 font-bold text-xs transition-all shadow-md shadow-amber-400/20"
           >
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
             <span>Download Setup (.exe)</span>
@@ -493,20 +494,20 @@
         </div>
 
         <!-- Windows Portable -->
-        <div class="p-5 rounded-xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+        <div class="p-5 rounded-xl bg-white/[0.04] border border-white/10 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-bold text-slate-800 uppercase">Windows Portable</span>
-              <span class="text-[10px] px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">Zero Install</span>
+              <span class="text-xs font-bold text-white uppercase">Windows Portable</span>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-white/10 text-slate-300 border border-white/15">Zero Install</span>
             </div>
-            <p class="text-xs text-slate-600 font-sans mb-4">
+            <p class="text-xs text-slate-300 font-sans mb-4">
               Standalone single executable. Runs instantly from any folder or USB drive with zero system modifications.
             </p>
           </div>
           <a 
             href="https://github.com/Dharsh606/D-Deck/releases/latest" 
             target="_blank"
-            class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs border border-slate-300 transition-all"
+            class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold text-xs border border-white/15 transition-all"
           >
             <span>Download Portable (.exe)</span>
           </a>
@@ -515,12 +516,12 @@
       </div>
 
       <!-- Android Companion Notice -->
-      <div class="mt-6 p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-left flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+      <div class="mt-6 p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-left flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
         <div>
-          <span class="font-bold text-emerald-900">Android Companion (APK):</span>
-          <span class="text-emerald-800 ml-1">Currently in development with offline homescreen widgets and local Wi-Fi sync.</span>
+          <span class="font-bold text-emerald-300">Android Companion (APK):</span>
+          <span class="text-slate-300 ml-1">Currently in development with offline homescreen widgets and local Wi-Fi sync.</span>
         </div>
-        <a href="https://github.com/Dharsh606/D-Deck" target="_blank" class="text-emerald-700 font-bold hover:underline whitespace-nowrap">
+        <a href="https://github.com/Dharsh606/D-Deck" target="_blank" class="text-emerald-400 font-bold hover:underline whitespace-nowrap">
           Track on GitHub
         </a>
       </div>
@@ -531,52 +532,52 @@
   <!-- FAQ Section -->
   <section id="faq" class="max-w-3xl mx-auto px-6 py-16">
     <div class="text-center mb-10">
-      <p class="font-mono text-xs uppercase tracking-wider text-amber-600 font-semibold mb-1">QUESTIONS AND ANSWERS</p>
-      <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Frequently Asked Questions</h2>
+      <p class="font-mono text-xs uppercase tracking-wider text-amber-400 font-semibold mb-1">QUESTIONS AND ANSWERS</p>
+      <h2 class="text-2xl md:text-3xl font-bold text-white">Frequently Asked Questions</h2>
     </div>
 
     <div class="space-y-3 font-sans text-left text-xs md:text-sm">
       
       <!-- FAQ 1 -->
-      <div class="faq-item rounded-xl glass-card border border-slate-200 overflow-hidden">
-        <button class="faq-toggle w-full p-4 text-left flex items-center justify-between font-semibold text-slate-900 cursor-pointer">
+      <div class="faq-item rounded-xl glass-card border border-white/10 overflow-hidden">
+        <button class="faq-toggle w-full p-4 text-left flex items-center justify-between font-semibold text-white cursor-pointer">
           <span>Is D-Deck really 100% free with no recurring subscriptions?</span>
-          <span class="faq-icon text-amber-600 font-bold text-base transition-transform">+</span>
+          <span class="faq-icon text-amber-400 font-bold text-base transition-transform">+</span>
         </button>
-        <div class="faq-answer hidden px-4 pb-4 text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+        <div class="faq-answer hidden px-4 pb-4 text-slate-300 leading-relaxed border-t border-white/5 pt-3">
           Yes. D-Deck has no paywalls, trial periods, or subscription fees. It is licensed under the open-source MIT License and will remain free forever.
         </div>
       </div>
 
       <!-- FAQ 2 -->
-      <div class="faq-item rounded-xl glass-card border border-slate-200 overflow-hidden">
-        <button class="faq-toggle w-full p-4 text-left flex items-center justify-between font-semibold text-slate-900 cursor-pointer">
+      <div class="faq-item rounded-xl glass-card border border-white/10 overflow-hidden">
+        <button class="faq-toggle w-full p-4 text-left flex items-center justify-between font-semibold text-white cursor-pointer">
           <span>Where is my data stored and does D-Deck upload anything?</span>
-          <span class="faq-icon text-amber-600 font-bold text-base transition-transform">+</span>
+          <span class="faq-icon text-amber-400 font-bold text-base transition-transform">+</span>
         </button>
-        <div class="faq-answer hidden px-4 pb-4 text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-          All your tasks, routines, settings, and streak records are stored locally in <code class="text-amber-700 font-mono bg-amber-50 px-1 py-0.5 rounded border border-amber-200">%APPDATA%/d-deck/d-deck-data.json</code>. Zero bytes are ever transmitted to any remote servers.
+        <div class="faq-answer hidden px-4 pb-4 text-slate-300 leading-relaxed border-t border-white/5 pt-3">
+          All your tasks, routines, settings, and streak records are stored locally in <code class="text-amber-300 font-mono bg-white/5 px-1.5 py-0.5 rounded border border-white/10">%APPDATA%/d-deck/d-deck-data.json</code>. Zero bytes are ever transmitted to any remote servers.
         </div>
       </div>
 
       <!-- FAQ 3 -->
-      <div class="faq-item rounded-xl glass-card border border-slate-200 overflow-hidden">
-        <button class="faq-toggle w-full p-4 text-left flex items-center justify-between font-semibold text-slate-900 cursor-pointer">
+      <div class="faq-item rounded-xl glass-card border border-white/10 overflow-hidden">
+        <button class="faq-toggle w-full p-4 text-left flex items-center justify-between font-semibold text-white cursor-pointer">
           <span>Why is there no taskbar icon for the widget?</span>
-          <span class="faq-icon text-amber-600 font-bold text-base transition-transform">+</span>
+          <span class="faq-icon text-amber-400 font-bold text-base transition-transform">+</span>
         </button>
-        <div class="faq-answer hidden px-4 pb-4 text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-          D-Deck is designed as a true desktop HUD companion. Keeping it off the Windows taskbar and out of the Alt+Tab switcher ensures your multitasking workspace remains completely clean. You can summon or hide it anytime with <code class="text-slate-800 font-mono font-bold">Ctrl+Shift+D</code> or via the system tray icon.
+        <div class="faq-answer hidden px-4 pb-4 text-slate-300 leading-relaxed border-t border-white/5 pt-3">
+          D-Deck is designed as a true desktop HUD companion. Keeping it off the Windows taskbar and out of the Alt+Tab switcher ensures your multitasking workspace remains completely clean. You can summon or hide it anytime with <code class="text-amber-300 font-mono font-bold">Ctrl+Shift+D</code> or via the system tray icon.
         </div>
       </div>
 
       <!-- FAQ 4 -->
-      <div class="faq-item rounded-xl glass-card border border-slate-200 overflow-hidden">
-        <button class="faq-toggle w-full p-4 text-left flex items-center justify-between font-semibold text-slate-900 cursor-pointer">
+      <div class="faq-item rounded-xl glass-card border border-white/10 overflow-hidden">
+        <button class="faq-toggle w-full p-4 text-left flex items-center justify-between font-semibold text-white cursor-pointer">
           <span>How do the continuous reminders work?</span>
-          <span class="faq-icon text-amber-600 font-bold text-base transition-transform">+</span>
+          <span class="faq-icon text-amber-400 font-bold text-base transition-transform">+</span>
         </button>
-        <div class="faq-answer hidden px-4 pb-4 text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+        <div class="faq-answer hidden px-4 pb-4 text-slate-300 leading-relaxed border-t border-white/5 pt-3">
           When you set a task with a scheduled time, D-Deck alerts you 1 minute before time, at the scheduled minute, and then persists with a subtle alert every minute until you check it off or snooze it.
         </div>
       </div>
@@ -585,19 +586,19 @@
   </section>
 
   <!-- About Team Section -->
-  <section id="team" class="max-w-4xl mx-auto px-6 py-16 border-t border-slate-200">
+  <section id="team" class="max-w-4xl mx-auto px-6 py-16 border-t border-white/10">
     <div class="p-8 md:p-12 rounded-2xl glass-card text-center">
       
-      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-amber-50 border border-amber-200 text-amber-800 text-xs font-mono mb-3">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-amber-400/10 border border-amber-400/25 text-amber-300 text-xs font-mono mb-3">
         ENGINEERING COLLECTIVE
       </div>
 
-      <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Code & Chaos</h2>
-      <p class="font-mono text-sm text-amber-700 mt-1 font-semibold">
+      <h2 class="text-2xl md:text-3xl font-bold text-white">Code & Chaos</h2>
+      <p class="font-mono text-sm text-amber-400 mt-1 font-semibold">
         "We Built Stuff"
       </p>
 
-      <p class="text-xs md:text-sm text-slate-600 max-w-xl mx-auto mt-4 leading-relaxed font-sans">
+      <p class="text-xs md:text-sm text-slate-300 max-w-xl mx-auto mt-4 leading-relaxed font-sans">
         We believe everyday software should respect your attention, hardware, and privacy. No corporate bloat, no subscription traps, and no background tracking. Just clean, high-performance tools built with real care and craftsmanship.
       </p>
 
@@ -605,16 +606,16 @@
         <a 
           href="https://github.com/Dharsh606/D-Deck" 
           target="_blank"
-          class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-slate-300 text-slate-800 hover:border-amber-400 transition-all shadow-sm"
+          class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/15 text-white hover:border-amber-400/50 hover:text-amber-300 transition-all shadow-sm"
         >
-          <svg class="w-4 h-4 fill-current text-slate-800" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
           <span>GitHub Organization</span>
         </a>
 
         <a 
           href="https://github.com/Dharsh606/D-Deck/issues" 
           target="_blank"
-          class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-slate-300 text-slate-800 hover:border-emerald-500 transition-all shadow-sm"
+          class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/15 text-white hover:border-emerald-500/50 hover:text-emerald-300 transition-all shadow-sm"
         >
           <span>Issue Tracker</span>
         </a>
@@ -624,17 +625,17 @@
   </section>
 
   <!-- Footer -->
-  <footer class="border-t border-slate-200 bg-white/80 py-8 text-xs text-slate-600 font-mono">
+  <footer class="border-t border-white/10 bg-[#09080C] py-8 text-xs text-slate-400 font-mono">
     <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-2">
         <img src="assets/icon.png" class="w-5 h-5 rounded" alt="" />
-        <span class="font-bold text-slate-900">D-Deck</span>
-        <span>• Code & Chaos: We Built Stuff</span>
+        <span class="font-bold text-white">D-Deck</span>
+        <span>: Code & Chaos - We Built Stuff</span>
       </div>
-      <div class="flex items-center gap-4 text-slate-500">
-        <a href="privacy.html" class="hover:text-amber-600 transition-colors">Privacy Policy</a>
-        <a href="terms.html" class="hover:text-amber-600 transition-colors">Terms of Service</a>
-        <a href="https://github.com/Dharsh606/D-Deck" target="_blank" class="hover:text-amber-600 transition-colors">Source Code</a>
+      <div class="flex items-center gap-4 text-slate-400">
+        <a href="privacy.html" class="hover:text-amber-400 transition-colors">Privacy Policy</a>
+        <a href="terms.html" class="hover:text-amber-400 transition-colors">Terms of Service</a>
+        <a href="https://github.com/Dharsh606/D-Deck" target="_blank" class="hover:text-amber-400 transition-colors">Source Code</a>
       </div>
     </div>
   </footer>
@@ -647,15 +648,15 @@
     const mockupDeck = document.getElementById('mockup-deck');
 
     btnWidget.addEventListener('click', () => {
-      btnWidget.className = 'px-4 py-1.5 rounded-md bg-white text-slate-900 font-semibold shadow-sm transition-all';
-      btnDeck.className = 'px-4 py-1.5 rounded-md text-slate-600 hover:text-slate-900 font-semibold transition-all';
+      btnWidget.className = 'px-4 py-1.5 rounded-md bg-amber-400 text-zinc-950 font-bold shadow-sm transition-all';
+      btnDeck.className = 'px-4 py-1.5 rounded-md text-slate-300 hover:text-white font-semibold transition-all';
       mockupWidget.classList.remove('hidden');
       mockupDeck.classList.add('hidden');
     });
 
     btnDeck.addEventListener('click', () => {
-      btnDeck.className = 'px-4 py-1.5 rounded-md bg-white text-slate-900 font-semibold shadow-sm transition-all';
-      btnWidget.className = 'px-4 py-1.5 rounded-md text-slate-600 hover:text-slate-900 font-semibold transition-all';
+      btnDeck.className = 'px-4 py-1.5 rounded-md bg-amber-400 text-zinc-950 font-bold shadow-sm transition-all';
+      btnWidget.className = 'px-4 py-1.5 rounded-md text-slate-300 hover:text-white font-semibold transition-all';
       mockupDeck.classList.remove('hidden');
       mockupWidget.classList.add('hidden');
     });
