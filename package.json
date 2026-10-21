@@ -1,6 +1,6 @@
 {
   "name": "d-deck",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "D-Deck: Futuristic Desktop Widget & Life Command Center for Windows & Mobile",
   "main": "dist-electron/electron/main.js",
   "author": "Dharshan V <https://github.com/Dharsh606>",
@@ -74,7 +74,9 @@
       {
         "from": "public",
         "to": "public",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       }
     ]
   }
