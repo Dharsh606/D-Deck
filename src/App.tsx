@@ -164,10 +164,10 @@ export const App: React.FC = () => {
 
   if (isLoading || !deckData) {
     return (
-      <div className="w-[280px] h-[380px] flex items-center justify-center glass-surface text-zinc-400 font-mono text-xs rounded-2xl shadow-2xl">
+      <div className="w-[280px] h-[380px] flex items-center justify-center glass-surface text-white/80 font-mono text-xs rounded-2xl shadow-2xl">
         <div className="flex flex-col items-center gap-2">
           <div className="w-5 h-5 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
-          <span className="text-zinc-300">Loading D-Deck...</span>
+          <span className="text-white font-semibold">Loading D-Deck...</span>
         </div>
       </div>
     );

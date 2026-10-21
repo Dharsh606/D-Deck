@@ -14,18 +14,18 @@ export const PriorityBadge: React.FC<PriorityBadgeProps> = ({ priority, showText
       label: 'Urgent',
     },
     high: {
-      color: 'bg-amber-400/15 text-amber-300 border-amber-400/30',
+      color: 'bg-amber-400/20 text-amber-300 border-amber-400/40',
       dot: 'bg-amber-400',
       label: 'High',
     },
     medium: {
-      color: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+      color: 'bg-emerald-400/20 text-emerald-300 border-emerald-400/40',
       dot: 'bg-emerald-400',
       label: 'Med',
     },
     low: {
-      color: 'bg-zinc-400/10 text-zinc-300 border-zinc-500/20',
-      dot: 'bg-zinc-400',
+      color: 'bg-white/10 text-white/80 border-white/20',
+      dot: 'bg-white/70',
       label: 'Low',
     },
   };

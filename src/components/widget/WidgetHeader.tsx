@@ -83,7 +83,7 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
   };
 
   return (
-    <div className="titlebar-drag flex items-center justify-between px-3 py-2 bg-white/[0.03] border-b border-white/[0.08] rounded-t-2xl cursor-move select-none">
+    <div className="titlebar-drag flex items-center justify-between px-3 py-2 bg-white/10 border-b border-white/20 rounded-t-2xl cursor-move select-none">
       <div className="titlebar-no-drag flex items-center gap-2">
         <DDeckLogo size="sm" />
       </div>
@@ -91,25 +91,25 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
       {/* Focus Flow HUD Mini Sprint Timer */}
       <div className="titlebar-no-drag flex items-center">
         <div 
-          className={`flex items-center gap-1 px-1.5 py-0.5 rounded-lg border transition-all text-[10px] font-mono select-none ${
+          className={`flex items-center gap-1.5 px-2 py-0.5 rounded-lg border transition-all text-[10px] font-mono select-none ${
             isRunning 
-              ? 'bg-amber-400/10 border-amber-400/35 text-amber-300 ring-1 ring-amber-400/20 shadow-sm shadow-amber-500/10' 
-              : 'glass-card text-zinc-400 hover:text-zinc-200'
+              ? 'bg-amber-400/25 border-amber-400 text-amber-300 ring-1 ring-amber-400/30 shadow-sm' 
+              : 'bg-white/10 border-white/20 text-white/90 hover:text-white hover:border-amber-400/50'
           }`}
           title={isRunning ? "Sprint in Progress - Click to Pause" : "Click time to cycle presets (25m/45m/15m/60m)"}
         >
-          <Timer className={`w-3 h-3 ${isRunning ? 'text-amber-400 animate-pulse' : 'text-zinc-500'}`} />
+          <Timer className={`w-3 h-3 ${isRunning ? 'text-amber-400 animate-pulse' : 'text-amber-400'}`} />
           <button
             onClick={handleCyclePreset}
             disabled={isRunning}
-            className={`font-semibold cursor-pointer ${isRunning ? 'cursor-default' : 'hover:text-amber-300'}`}
+            className={`font-semibold cursor-pointer ${isRunning ? 'cursor-default text-amber-300' : 'hover:text-amber-300 text-white'}`}
           >
             {isRunning ? formatTimer(secondsLeft) : `${currentPresetMins}m`}
           </button>
 
           <button
             onClick={handleToggleTimer}
-            className="p-0.5 hover:text-white transition-colors"
+            className="p-0.5 text-white/80 hover:text-white transition-colors"
             title={isRunning ? "Pause Sprint" : "Start Sprint"}
           >
             {isRunning ? <Pause className="w-2.5 h-2.5" /> : <Play className="w-2.5 h-2.5 fill-current" />}
@@ -118,7 +118,7 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
           {isRunning && (
             <button
               onClick={handleResetTimer}
-              className="p-0.5 hover:text-rose-400 transition-colors"
+              className="p-0.5 text-white/80 hover:text-rose-400 transition-colors"
               title="Reset Sprint"
             >
               <RotateCcw className="w-2.5 h-2.5" />
@@ -127,7 +127,7 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
         </div>
       </div>
 
-      <div className="titlebar-no-drag flex items-center gap-0.5">
+      <div className="titlebar-no-drag flex items-center gap-1">
         {/* Quick Add */}
         <button
           onClick={() => {
@@ -135,7 +135,7 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
             onQuickAdd();
           }}
           title="Add Task (+)"
-          className="p-1 rounded-lg bg-white/[0.06] hover:bg-white/[0.12] text-zinc-200 border border-white/[0.08] transition-all active:scale-95"
+          className="p-1 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-amber-400/50 transition-all active:scale-95"
         >
           <Plus className="w-3.5 h-3.5" />
         </button>
@@ -147,13 +147,13 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
             onToggleAlwaysOnTop();
           }}
           title={alwaysOnTop ? "Pinned (Always on top)" : "Unpinned"}
-          className={`p-1 rounded-lg transition-all ${
+          className={`p-1 rounded-lg transition-all border ${
             alwaysOnTop 
-              ? 'text-amber-400 bg-amber-400/15 border border-amber-400/30' 
-              : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.06]'
+              ? 'text-amber-300 bg-amber-400/25 border-amber-400/50' 
+              : 'text-white/80 hover:text-white hover:bg-white/15 border-transparent'
           }`}
         >
-          {alwaysOnTop ? <Pin className="w-3.5 h-3.5 fill-amber-400/20" /> : <PinOff className="w-3.5 h-3.5" />}
+          {alwaysOnTop ? <Pin className="w-3.5 h-3.5 fill-amber-400/30" /> : <PinOff className="w-3.5 h-3.5" />}
         </button>
 
         {/* Full View */}
@@ -163,7 +163,7 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
             onExpandToDeck();
           }}
           title="Full View"
-          className="p-1 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.06] transition-all"
+          className="p-1 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-all"
         >
           <Maximize2 className="w-3.5 h-3.5" />
         </button>
@@ -175,7 +175,7 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
             onMinimize();
           }}
           title="Minimize"
-          className="p-1 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.06] transition-all"
+          className="p-1 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-all"
         >
           <Minus className="w-3.5 h-3.5" />
         </button>
@@ -187,7 +187,7 @@ export const WidgetHeader: React.FC<WidgetHeaderProps> = ({
             onClose();
           }}
           title="Close to Tray"
-          className="p-1 rounded-lg text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10 transition-all"
+          className="p-1 rounded-lg text-white/80 hover:text-rose-400 hover:bg-rose-500/20 transition-all"
         >
           <X className="w-3.5 h-3.5" />
         </button>

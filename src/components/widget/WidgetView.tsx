@@ -60,19 +60,19 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
         {/* Tasks Container */}
         <div className="flex-1 overflow-y-auto pr-0.5 space-y-1.5 scrollbar-thin">
           {tasks.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center p-4 text-zinc-500 space-y-2.5">
-              <div className="w-9 h-9 rounded-full bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-zinc-400">
-                <CheckCircle2 className="w-4 h-4 text-amber-400/70" />
+            <div className="h-full flex flex-col items-center justify-center text-center p-4 text-white/70 space-y-2.5">
+              <div className="w-9 h-9 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-amber-400">
+                <CheckCircle2 className="w-4 h-4 text-amber-400" />
               </div>
               <div className="space-y-0.5">
-                <p className="text-xs font-medium text-zinc-300">All clear</p>
-                <p className="text-[11px] text-zinc-500">Capture what needs to be done</p>
+                <p className="text-xs font-bold text-white">All clear</p>
+                <p className="text-[11px] text-white/70">Capture what needs to be done</p>
               </div>
               <button
                 onClick={handleOpenAdd}
-                className="px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] hover:border-amber-400/40 text-zinc-200 hover:text-amber-300 border border-white/[0.1] text-xs font-medium transition-all flex items-center gap-1.5 active:scale-95 shadow-sm"
+                className="px-3.5 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-zinc-950 text-xs font-bold transition-all flex items-center gap-1.5 active:scale-95 shadow-sm"
               >
-                <Plus className="w-3.5 h-3.5 text-amber-400" />
+                <Plus className="w-3.5 h-3.5" />
                 Add task
               </button>
             </div>
@@ -91,10 +91,10 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
               {completedTasks.length > 0 && (
                 <div className="pt-2">
                   <div className="flex items-center gap-2 mb-1.5 px-1">
-                    <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
+                    <span className="text-[10px] font-mono text-emerald-400 font-semibold uppercase tracking-wider">
                       Done ({completedTasks.length})
                     </span>
-                    <div className="flex-1 h-px bg-white/[0.06]" />
+                    <div className="flex-1 h-px bg-white/20" />
                   </div>
                   <div className="space-y-1.5">
                     {completedTasks.map(task => (
@@ -114,14 +114,14 @@ export const WidgetView: React.FC<WidgetViewProps> = ({
         </div>
 
         {/* Footer Status with Consistency & Velocity Streak */}
-        <div className="pt-2 border-t border-white/[0.08] flex items-center justify-between text-[11px] text-zinc-400 font-sans">
+        <div className="pt-2 border-t border-white/15 flex items-center justify-between text-[11px] text-white/80 font-sans">
           <div className="flex items-center gap-1.5" title="Local Streak Counter: 100% offline & private">
             <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400/20" />
-            <span className="text-zinc-200 font-semibold">{streak?.currentStreak ?? 0}d streak</span>
-            <span className="text-zinc-600">•</span>
-            <span className="text-emerald-400 font-mono text-[10px]">{streak?.weeklyVelocity ?? 0}/wk</span>
+            <span className="text-white font-semibold">{streak?.currentStreak ?? 0}d streak</span>
+            <span className="text-white/40">•</span>
+            <span className="text-emerald-400 font-mono text-[10px] font-bold">{streak?.weeklyVelocity ?? 0}/wk</span>
           </div>
-          <div className="text-[10px] text-zinc-400 font-mono">
+          <div className="text-[10px] text-white/70 font-mono">
             <span>{pendingTasks.length} pending</span>
           </div>
         </div>
