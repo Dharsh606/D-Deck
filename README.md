@@ -49,19 +49,19 @@ Most to-do apps send a single quiet notification that is easy to miss. D-Deck ke
 
 No need to clone repositories or build code. Just download the app and enjoy:
 
-1. Head over to the **[GitHub Releases Page](https://github.com/Dharsh606/D-Deck/releases)**.
+1. Head over to the **[GitHub Releases Page](https://github.com/codeandchaos-studio/D-Deck/releases)**.
 2. Download either:
    - **`D-Deck-Setup-*.exe`**: Recommended installer. Adds desktop and startup shortcuts.
    - **`D-Deck-Portable-*.exe`**: Standalone portable version. Just double-click and run directly from anywhere (USB drive, Desktop, or Downloads).
 3. Open the app, press `Ctrl+Shift+D` to show or hide it, and you're good to go.
 
-You can also check out our website at [https://dharsh606.github.io/D-Deck/website/](https://dharsh606.github.io/D-Deck/website/).
+You can also check out our website at [https://codeandchaos-studio.github.io/D-Deck/website/](https://codeandchaos-studio.github.io/D-Deck/website/).
 
 ## Team
 
 **Code & Chaos**  
 *We Built Stuff*  
-Repository: [https://github.com/Dharsh606/D-Deck](https://github.com/Dharsh606/D-Deck)
+Repository: [https://github.com/codeandchaos-studio/D-Deck](https://github.com/codeandchaos-studio/D-Deck)
 
 ## License
 

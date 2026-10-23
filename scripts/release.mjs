@@ -123,9 +123,9 @@ async function main() {
   console.log(`   1. D-Deck-Setup-${targetVersion}.exe (Full NSIS Installer)`);
   console.log(`   2. D-Deck-Portable-${targetVersion}.exe (Zero-Install Portable)`);
   console.log(`\n🔗 Track build status in real time:`);
-  console.log(`   https://github.com/Dharsh606/D-Deck/actions`);
+  console.log(`   https://github.com/codeandchaos-studio/D-Deck/actions`);
   console.log(`\n🔗 View published release once build completes (~2 min):`);
-  console.log(`   https://github.com/Dharsh606/D-Deck/releases/tag/${tagName}`);
+  console.log(`   https://github.com/codeandchaos-studio/D-Deck/releases/tag/${tagName}`);
   console.log('\n⚡ Lifetime Standard: Built & Published by Code & Chaos • We Built Stuff\n');
 }
 

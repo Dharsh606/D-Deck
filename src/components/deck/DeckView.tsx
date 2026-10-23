@@ -509,9 +509,9 @@ export const DeckView: React.FC<DeckViewProps> = ({
                   <button
                     onClick={() => {
                       if (window.electronAPI) {
-                        window.electronAPI.openExternal('https://github.com/Dharsh606/D-Deck');
+                        window.electronAPI.openExternal('https://github.com/codeandchaos-studio/D-Deck');
                       } else {
-                        window.open('https://github.com/Dharsh606/D-Deck', '_blank');
+                        window.open('https://github.com/codeandchaos-studio/D-Deck', '_blank');
                       }
                     }}
                     className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-amber-400/50 hover:text-amber-300 transition-all active:scale-95 font-medium"
@@ -523,9 +523,9 @@ export const DeckView: React.FC<DeckViewProps> = ({
                   <button
                     onClick={() => {
                       if (window.electronAPI) {
-                        window.electronAPI.openExternal('https://dharsh606.github.io/D-Deck/');
+                        window.electronAPI.openExternal('https://codeandchaos-studio.github.io/D-Deck/');
                       } else {
-                        window.open('https://dharsh606.github.io/D-Deck/', '_blank');
+                        window.open('https://codeandchaos-studio.github.io/D-Deck/', '_blank');
                       }
                     }}
                     className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-emerald-400/50 hover:text-emerald-300 transition-all active:scale-95 font-medium"
@@ -537,9 +537,9 @@ export const DeckView: React.FC<DeckViewProps> = ({
                   <button
                     onClick={() => {
                       if (window.electronAPI) {
-                        window.electronAPI.openExternal('https://github.com/Dharsh606/D-Deck/releases');
+                        window.electronAPI.openExternal('https://github.com/codeandchaos-studio/D-Deck/releases');
                       } else {
-                        window.open('https://github.com/Dharsh606/D-Deck/releases', '_blank');
+                        window.open('https://github.com/codeandchaos-studio/D-Deck/releases', '_blank');
                       }
                     }}
                     className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-zinc-950 font-bold transition-all active:scale-95 shadow-sm"
