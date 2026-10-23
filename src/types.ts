@@ -40,6 +40,7 @@ export interface Task {
   isRoutine?: boolean; // Daily Routine: automatically resets at midnight
   lastResetDate?: string; // Track day of last routine reset (YYYY-MM-DD)
   reminderEnabled: boolean;
+  soundEnabled?: boolean; // Individual task reminder audio toggle (default true)
   reminderStages?: ReminderStages;
   subtasks: Subtask[];
   meta?: TaskMeta;
@@ -50,7 +51,9 @@ export interface AppSettings {
   alwaysOnTop: boolean;
   notificationsEnabled: boolean;
   soundEnabled: boolean;
+  customSoundPath?: string; // Local audio file path on user machine
   widgetOpacity: number;
+  widgetWidth?: number; // User-customized horizontal width
   widgetX?: number;
   widgetY?: number;
   deckX?: number;
@@ -86,6 +89,7 @@ export interface ElectronAPI {
   openExternal: (url: string) => Promise<void>;
   savePosition: (mode: ViewMode, x: number, y: number) => Promise<void>;
   setWidgetHeight?: (height: number) => Promise<void>;
+  selectCustomSound?: () => Promise<string | null>;
   openQuickAdd?: (category?: string) => Promise<void>;
   closeQuickAdd?: () => Promise<void>;
   onDataUpdated?: (callback: (data: DeckData) => void) => () => void;

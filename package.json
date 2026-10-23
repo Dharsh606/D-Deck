@@ -45,6 +45,7 @@
   "build": {
     "appId": "com.dharshan.ddeck",
     "productName": "D-Deck",
+    "compression": "maximum",
     "directories": {
       "output": "release"
     },

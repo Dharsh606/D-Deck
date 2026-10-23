@@ -1,9 +1,8 @@
-import reminderSoundUrl from '../assets/reminder.mp3';
-
 // Audio feedback system
 class SoundEffects {
   private ctx: AudioContext | null = null;
   private enabled: boolean = true;
+  private customSoundPath: string | null = null;
 
   constructor() {}
 
@@ -21,6 +20,10 @@ class SoundEffects {
 
   public setEnabled(flag: boolean) {
     this.enabled = flag;
+  }
+
+  public setCustomSoundPath(path?: string | null) {
+    this.customSoundPath = path || null;
   }
 
   public playClick() {
@@ -74,30 +77,65 @@ class SoundEffects {
     } catch {}
   }
 
-  public playReminderChime() {
-    if (!this.enabled) return;
+  // Crisp dual-tone synthetic electronic chime (0 KB bundle footprint)
+  public playSyntheticChime() {
     try {
-      const candidatePaths = [
-        reminderSoundUrl,
-        './sounds/reminder.mp3',
-        './reminder.mp3',
-        './sounds/reminder.wav',
-        './reminder.wav'
-      ].filter(Boolean) as string[];
+      this.initCtx();
+      if (!this.ctx) return;
+      const now = this.ctx.currentTime;
 
-      const tryPlay = (index: number) => {
-        if (index >= candidatePaths.length) return;
-        const audio = new Audio(candidatePaths[index]);
+      // Harmonic dual-tone bell: A5 (880Hz) followed by E6 (1318.5Hz) with acoustic resonance
+      const tones = [
+        { freq: 880, start: 0, dur: 0.35, gain: 0.16 },
+        { freq: 1318.51, start: 0.12, dur: 0.55, gain: 0.20 },
+        { freq: 1760, start: 0.16, dur: 0.65, gain: 0.10 }
+      ];
+
+      tones.forEach(t => {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(t.freq, now + t.start);
+
+        gain.gain.setValueAtTime(t.gain, now + t.start);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + t.start + t.dur);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now + t.start);
+        osc.stop(now + t.start + t.dur);
+      });
+    } catch {}
+  }
+
+  // Plays custom user audio file if available, or falls back to synthetic chime
+  public playReminderChime(overridePath?: string) {
+    if (!this.enabled) return;
+
+    const soundFile = overridePath || this.customSoundPath;
+    if (soundFile) {
+      try {
+        const safeUrl = soundFile.startsWith('file://') ? soundFile : `file:///${soundFile.replace(/\\/g, '/')}`;
+        const audio = new Audio(safeUrl);
         audio.volume = 0.95;
         const promise = audio.play();
         if (promise !== undefined) {
           promise.catch(() => {
-            tryPlay(index + 1);
+            // If custom file was deleted or moved, gracefully fallback to synth chime
+            this.playSyntheticChime();
           });
+          return;
         }
-      };
-      tryPlay(0);
-    } catch {}
+      } catch {
+        this.playSyntheticChime();
+        return;
+      }
+    }
+
+    this.playSyntheticChime();
   }
 }
 

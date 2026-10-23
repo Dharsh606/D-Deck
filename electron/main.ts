@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Notification, Tray, Menu, shell, screen, nativeImage, globalShortcut, nativeTheme } from 'electron';
+import { app, BrowserWindow, ipcMain, Notification, Tray, Menu, shell, screen, nativeImage, globalShortcut, nativeTheme, dialog } from 'electron';
 import path from 'path';
 import fs from 'fs';
 import type { DeckData, ViewMode } from '../src/types';
@@ -160,7 +160,7 @@ function checkThreeStageReminders() {
           'D-Deck (Upcoming in 1m)',
           `Scheduled at ${task.dueTime}: "${task.title}"`
         );
-        if (mainWindow && !mainWindow.isDestroyed()) {
+        if (mainWindow && !mainWindow.isDestroyed() && data.settings.soundEnabled && task.soundEnabled !== false) {
           mainWindow.webContents.send('deck:play-reminder-sound');
         }
       }
@@ -173,7 +173,7 @@ function checkThreeStageReminders() {
           'D-Deck Reminder',
           `Time for: "${task.title}" (${task.dueTime})`
         );
-        if (mainWindow && !mainWindow.isDestroyed()) {
+        if (mainWindow && !mainWindow.isDestroyed() && data.settings.soundEnabled && task.soundEnabled !== false) {
           mainWindow.webContents.send('deck:play-reminder-sound');
         }
       }
@@ -189,7 +189,7 @@ function checkThreeStageReminders() {
             `D-Deck Reminder (+${elapsedMinutes}m)`,
             `"${task.title}" is pending (${elapsedMinutes}m overdue). Click to mark done!`
           );
-          if (mainWindow && !mainWindow.isDestroyed()) {
+          if (mainWindow && !mainWindow.isDestroyed() && data.settings.soundEnabled && task.soundEnabled !== false) {
             mainWindow.webContents.send('deck:play-reminder-sound');
           }
         }
@@ -243,11 +243,12 @@ function createMainWindow() {
   const savedData = readDeckData();
   const savedX = savedData.settings.widgetX;
   const savedY = savedData.settings.widgetY;
+  const widgetWidth = savedData.settings.widgetWidth ?? WIDGET_WIDTH;
 
   // Restore saved position or default to top-right
   const initialX = (savedX !== undefined && savedX >= 0 && savedX < screenWidth)
     ? savedX
-    : screenWidth - WIDGET_WIDTH - 24;
+    : screenWidth - widgetWidth - 24;
   const initialY = (savedY !== undefined && savedY >= 0 && savedY < screenHeight)
     ? savedY
     : 48;
@@ -256,8 +257,13 @@ function createMainWindow() {
 
   mainWindow = new BrowserWindow({
     title: '',
-    width: WIDGET_WIDTH,
+    width: widgetWidth,
     height: WIDGET_DEFAULT_HEIGHT,
+    minWidth: 240,
+    maxWidth: 650,
+    minHeight: 120,
+    maxHeight: 650,
+    resizable: true,
     x: initialX,
     y: initialY,
     icon: fs.existsSync(appIconPath) ? appIconPath : undefined,
@@ -302,6 +308,19 @@ function createMainWindow() {
       data.settings.deckY = y;
     }
     writeDeckData(data);
+  });
+
+  // Persist user-adjusted widget width permanently on drag
+  mainWindow.on('resize', () => {
+    if (!mainWindow) return;
+    if (currentMode === 'widget') {
+      const [w] = mainWindow.getSize();
+      const data = readDeckData();
+      if (data.settings.widgetWidth !== w && w >= 240 && w <= 650) {
+        data.settings.widgetWidth = w;
+        writeDeckData(data);
+      }
+    }
   });
 
   // Hide to system tray instead of terminating when close is clicked
@@ -489,12 +508,17 @@ function setWindowMode(mode: ViewMode) {
   if (mode === 'widget') {
     mainWindow.setSkipTaskbar(true);
     mainWindow.setAlwaysOnTop(data.settings.alwaysOnTop ?? true);
-    mainWindow.setSize(WIDGET_WIDTH, WIDGET_DEFAULT_HEIGHT, false);
+    const targetW = data.settings.widgetWidth ?? WIDGET_WIDTH;
+    mainWindow.setMinimumSize(240, 120);
+    mainWindow.setMaximumSize(650, 650);
+    mainWindow.setSize(targetW, WIDGET_DEFAULT_HEIGHT, false);
 
-    const x = data.settings.widgetX ?? Math.min(mainWindow.getPosition()[0], screenWidth - WIDGET_WIDTH - 20);
+    const x = data.settings.widgetX ?? Math.min(mainWindow.getPosition()[0], screenWidth - targetW - 20);
     const y = data.settings.widgetY ?? Math.min(mainWindow.getPosition()[1], screenHeight - WIDGET_DEFAULT_HEIGHT - 20);
     mainWindow.setPosition(x, y, false);
   } else {
+    mainWindow.setMinimumSize(800, 600);
+    mainWindow.setMaximumSize(3840, 2160);
     mainWindow.setSkipTaskbar(false);
     mainWindow.setAlwaysOnTop(false);
     mainWindow.setSize(DECK_WIDTH, DECK_HEIGHT, true);
@@ -541,10 +565,25 @@ ipcMain.handle('window:set-widget-height', (_, height: number) => {
     targetY = Math.max(display.workArea.y, maxY - clampedHeight);
   }
 
-  mainWindow.setSize(WIDGET_WIDTH, clampedHeight, false);
+  // Preserve user-dragged width currentW instead of resetting to hardcoded 280
+  mainWindow.setSize(currentW, clampedHeight, false);
   if (targetY !== y) {
     mainWindow.setPosition(x, targetY, false);
   }
+});
+ipcMain.handle('app:select-custom-sound', async () => {
+  if (!mainWindow) return null;
+  const result = await dialog.showOpenDialog(mainWindow, {
+    title: 'Select Custom Notification Audio',
+    properties: ['openFile'],
+    filters: [
+      { name: 'Audio Files', extensions: ['mp3', 'wav', 'ogg', 'm4a'] }
+    ]
+  });
+  if (result.canceled || result.filePaths.length === 0) {
+    return null;
+  }
+  return result.filePaths[0];
 });
 ipcMain.handle('window:set-always-on-top', (_, flag: boolean) => {
   if (mainWindow) mainWindow.setAlwaysOnTop(flag);

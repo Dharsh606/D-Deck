@@ -23,6 +23,7 @@ export const App: React.FC = () => {
       const data = await loadDeckData();
       setDeckData(data);
       sfx.setEnabled(data.settings.soundEnabled);
+      sfx.setCustomSoundPath(data.settings.customSoundPath);
 
       if (window.electronAPI) {
         try {
@@ -42,6 +43,8 @@ export const App: React.FC = () => {
     if (window.electronAPI?.onDataUpdated) {
       unsubData = window.electronAPI.onDataUpdated((data) => {
         setDeckData(data);
+        sfx.setEnabled(data.settings.soundEnabled);
+        sfx.setCustomSoundPath(data.settings.customSoundPath);
       });
     }
 

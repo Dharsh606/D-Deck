@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Plus, Calendar, Clock, CheckSquare, Repeat } from 'lucide-react';
+import { X, Plus, Calendar, Clock, CheckSquare, Repeat, Volume2, VolumeX, ListChecks } from 'lucide-react';
 import type { Task, TaskCategory, TaskPriority } from '../../types';
 import { loadDeckData, saveDeckData } from '../../services/storage';
 import { DDeckLogo } from '../common/DDeckLogo';
@@ -14,6 +14,7 @@ export const QuickAddPopup: React.FC = () => {
   const [dueTime, setDueTime] = useState<string>('11:30');
   const [durationDays, setDurationDays] = useState<number>(1);
   const [isRoutine, setIsRoutine] = useState<boolean>(false);
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [subtaskInput, setSubtaskInput] = useState('');
   const [subtasks, setSubtasks] = useState<{ id: string; title: string; completed: boolean }[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -69,6 +70,7 @@ export const QuickAddPopup: React.FC = () => {
       isRoutine,
       lastResetDate: isRoutine ? dueDate : undefined,
       reminderEnabled: true,
+      soundEnabled,
       subtasks,
     };
 
@@ -260,11 +262,11 @@ export const QuickAddPopup: React.FC = () => {
               </div>
             </div>
 
-            {/* Daily Routine Auto-Reset Toggle */}
+            {/* Daily Protocol Auto-Reset Toggle */}
             <div className="pt-2 border-t border-white/10 flex items-center justify-between">
               <div className="flex items-center gap-1.5">
                 <Repeat className={`w-3.5 h-3.5 ${isRoutine ? 'text-emerald-400' : 'text-white/60'}`} />
-                <span className="text-[11px] text-white font-medium">Daily Routine</span>
+                <span className="text-[11px] text-white font-medium">Daily Protocol</span>
               </div>
               <label className="flex items-center gap-1.5 cursor-pointer">
                 <input
@@ -273,13 +275,45 @@ export const QuickAddPopup: React.FC = () => {
                   onChange={e => setIsRoutine(e.target.checked)}
                   className="w-3.5 h-3.5 accent-emerald-400 rounded cursor-pointer"
                 />
-                <span className="text-[10px] text-white/70">Auto-resets at midnight</span>
+                <span className="text-[10px] text-white/70">Auto-resets midnight</span>
+              </label>
+            </div>
+
+            {/* Individual Task Chime Sound Toggle */}
+            <div className="pt-2 border-t border-white/10 flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                {soundEnabled ? (
+                  <Volume2 className="w-3.5 h-3.5 text-amber-400" />
+                ) : (
+                  <VolumeX className="w-3.5 h-3.5 text-white/40" />
+                )}
+                <span className="text-[11px] text-white font-medium">Reminder Sound</span>
+              </div>
+              <label className="flex items-center gap-1.5 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={soundEnabled}
+                  onChange={e => setSoundEnabled(e.target.checked)}
+                  className="w-3.5 h-3.5 accent-amber-400 rounded cursor-pointer"
+                />
+                <span className="text-[10px] text-white/70">{soundEnabled ? 'Chime ON' : 'Silent only'}</span>
               </label>
             </div>
           </div>
 
           {/* Subtasks */}
           <div>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-[10px] font-semibold text-white/80 uppercase tracking-wider flex items-center gap-1">
+                <ListChecks className="w-3 h-3 text-amber-400" />
+                Subtasks / Habit Items
+              </label>
+              {subtasks.length > 0 && (
+                <span className="text-[10px] font-mono text-emerald-400 font-bold">
+                  {subtasks.length} item{subtasks.length > 1 ? 's' : ''}
+                </span>
+              )}
+            </div>
             <div className="flex gap-1.5">
               <input
                 type="text"
@@ -303,11 +337,11 @@ export const QuickAddPopup: React.FC = () => {
               </button>
             </div>
             {subtasks.length > 0 && (
-              <div className="mt-1.5 space-y-1 max-h-16 overflow-y-auto pr-1">
-                {subtasks.map(s => (
+              <div className="mt-1.5 space-y-1 max-h-28 overflow-y-auto pr-1 scrollbar-thin">
+                {subtasks.map((s, idx) => (
                   <div key={s.id} className="text-[10px] text-white flex items-center justify-between bg-white/10 border border-white/20 px-2.5 py-1 rounded-lg">
-                    <span className="flex items-center gap-1.5">
-                      <CheckSquare className="w-2.5 h-2.5 text-white/70" />
+                    <span className="flex items-center gap-1.5 truncate pr-2">
+                      <span className="text-white/40 font-mono text-[9px]">{idx + 1}.</span>
                       {s.title}
                     </span>
                     <button 

@@ -23,6 +23,10 @@ import {
   Sparkles,
   Repeat,
   Flame,
+  Music,
+  Play,
+  FolderOpen,
+  RotateCcw,
   Tag,
   Check
 } from 'lucide-react';
@@ -112,7 +116,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
   const navItems = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard, count: pendingTasksCount },
     { id: 'tasks', label: 'All Tasks', icon: CheckSquare, count: totalTasks },
-    { id: 'routines', label: 'Daily Routines', icon: Repeat, count: routineTasksCount },
+    { id: 'routines', label: 'Daily Protocols', icon: Repeat, count: routineTasksCount },
     { id: 'settings', label: 'Settings', icon: SettingsIcon },
     { id: 'about', label: 'About D-Deck', icon: Info },
   ];
@@ -615,7 +619,7 @@ export const DeckView: React.FC<DeckViewProps> = ({
                     </div>
                     <div>
                       <h4 className="text-xs font-bold text-white">Audio Feedback</h4>
-                      <p className="text-[11px] text-white/70">Custom chime for notifications, sprint completion, and click tactile feel.</p>
+                      <p className="text-[11px] text-white/70">Chime for notifications, sprint completion, and click tactile feel.</p>
                     </div>
                   </div>
                   <input
@@ -624,6 +628,71 @@ export const DeckView: React.FC<DeckViewProps> = ({
                     onChange={e => onUpdateSettings({ soundEnabled: e.target.checked })}
                     className="w-4 h-4 accent-amber-400 rounded cursor-pointer"
                   />
+                </div>
+
+                {/* Custom Audio Chime File Selector */}
+                <div className="p-3.5 rounded-xl glass-card border border-white/20 space-y-2.5">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-white/10 text-amber-400">
+                        <Music className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-white">Notification Chime Audio</h4>
+                        <p className="text-[11px] text-white/70">
+                          {settings.customSoundPath 
+                            ? `Custom File: ${settings.customSoundPath.split(/[/\\]/).pop()}` 
+                            : 'Default: Synthetic Dual-Tone Chime (0 KB footprint)'}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 self-end sm:self-auto">
+                      <button
+                        type="button"
+                        onClick={() => sfx.playReminderChime(settings.customSoundPath)}
+                        className="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white text-xs font-semibold border border-white/15 transition-all flex items-center gap-1"
+                        title="Test Current Chime"
+                      >
+                        <Play className="w-3 h-3 text-emerald-400" />
+                        Test
+                      </button>
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          if (window.electronAPI?.selectCustomSound) {
+                            const path = await window.electronAPI.selectCustomSound();
+                            if (path) {
+                              onUpdateSettings({ customSoundPath: path });
+                              sfx.setCustomSoundPath(path);
+                              sfx.playReminderChime(path);
+                            }
+                          }
+                        }}
+                        className="px-3 py-1 rounded-md bg-amber-400 hover:bg-amber-300 text-zinc-950 text-xs font-bold transition-all shadow-sm flex items-center gap-1"
+                      >
+                        <FolderOpen className="w-3 h-3" />
+                        Choose Audio File...
+                      </button>
+                      {settings.customSoundPath && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            onUpdateSettings({ customSoundPath: undefined });
+                            sfx.setCustomSoundPath(null);
+                            sfx.playSyntheticChime();
+                          }}
+                          className="px-2 py-1 rounded-md bg-white/10 hover:bg-rose-500/20 text-rose-300 text-xs font-mono border border-white/15 hover:border-rose-500/40 transition-all flex items-center gap-1"
+                          title="Reset to default sound"
+                        >
+                          <RotateCcw className="w-3 h-3" />
+                          Reset
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-white/50 pl-11 font-mono">
+                    Audio is loaded directly from your computer storage. No files uploaded or bundled into the app, keeping your system fast and 100% private.
+                  </p>
                 </div>
 
                 <div className="p-3.5 rounded-xl glass-card border border-white/20 flex items-center justify-between">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, Clock, Trash2, ChevronDown, ChevronUp, AlertCircle, Repeat } from 'lucide-react';
+import { Check, Clock, Trash2, ChevronDown, ChevronUp, AlertCircle, Repeat, VolumeX, ListChecks } from 'lucide-react';
 import type { Task } from '../../types';
 import { PriorityBadge } from '../common/PriorityBadge';
 import { sfx } from '../../services/audio';
@@ -128,9 +128,16 @@ export const TaskItem: React.FC<TaskItemProps> = ({
               )}
 
               {task.isRoutine && (
-                <span className="inline-flex items-center gap-1 text-emerald-300 font-mono text-[9px] bg-emerald-400/20 px-1.5 py-0.5 rounded border border-emerald-400/40 font-semibold" title="Daily Routine: Automatically resets at midnight">
+                <span className="inline-flex items-center gap-1 text-emerald-300 font-mono text-[9px] bg-emerald-400/20 px-1.5 py-0.5 rounded border border-emerald-400/40 font-semibold" title="Daily Protocol: Automatically resets at midnight">
                   <Repeat className="w-2.5 h-2.5" />
-                  Routine
+                  Protocol
+                </span>
+              )}
+
+              {task.reminderEnabled && task.soundEnabled === false && (
+                <span className="inline-flex items-center gap-1 text-white/50 font-mono text-[9px] bg-white/5 px-1 py-0.5 rounded border border-white/10" title="Reminder is silent (chime muted)">
+                  <VolumeX className="w-2.5 h-2.5" />
+                  Silent
                 </span>
               )}
 
@@ -143,7 +150,8 @@ export const TaskItem: React.FC<TaskItemProps> = ({
               )}
 
               {task.subtasks && task.subtasks.length > 0 && (
-                <span className="text-white/70 font-mono">
+                <span className="inline-flex items-center gap-1 text-white/80 font-mono text-[9px] bg-white/10 px-1.5 py-0.5 rounded border border-white/20">
+                  <ListChecks className="w-2.5 h-2.5 text-amber-400" />
                   {task.subtasks.filter(s => s.completed).length}/{task.subtasks.length}
                 </span>
               )}
@@ -177,26 +185,52 @@ export const TaskItem: React.FC<TaskItemProps> = ({
               <p className="text-white/80 leading-relaxed font-sans">{task.description}</p>
             )}
 
-            {task.subtasks && task.subtasks.length > 0 && (
-              <div className="space-y-1 mt-1.5">
-                {task.subtasks.map(sub => (
-                  <div 
-                    key={sub.id} 
-                    className="flex items-center gap-2 cursor-pointer"
-                    onClick={() => onToggleSubtask && onToggleSubtask(task.id, sub.id)}
-                  >
-                    <div className={`w-3 h-3 rounded border flex items-center justify-center ${
-                      sub.completed ? 'bg-emerald-400 border-emerald-400 text-zinc-950 font-bold' : 'border-white/40 bg-white/10'
-                    }`}>
-                      {sub.completed && <Check className="w-2 h-2 stroke-[3]" />}
-                    </div>
-                    <span className={sub.completed ? 'line-through text-white/50' : 'text-white'}>
-                      {sub.title}
+            {task.subtasks && task.subtasks.length > 0 && (() => {
+              const completedCount = task.subtasks.filter(s => s.completed).length;
+              const totalCount = task.subtasks.length;
+              const percent = Math.round((completedCount / totalCount) * 100);
+
+              return (
+                <div className="space-y-2 mt-1.5">
+                  <div className="flex items-center justify-between text-[10px] text-white/70 font-mono">
+                    <span className="flex items-center gap-1 text-white/80">
+                      <ListChecks className="w-3 h-3 text-amber-400" />
+                      Checklist ({completedCount}/{totalCount})
                     </span>
+                    <span className="text-emerald-400 font-bold">{percent}%</span>
                   </div>
-                ))}
-              </div>
-            )}
+                  <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-emerald-400 transition-all duration-300 rounded-full" 
+                      style={{ width: `${percent}%` }} 
+                    />
+                  </div>
+                  <div className="space-y-1.5 mt-2 max-h-52 overflow-y-auto pr-1 scrollbar-thin">
+                    {task.subtasks.map((sub, idx) => (
+                      <div 
+                        key={sub.id} 
+                        className={`flex items-center gap-2 p-1.5 rounded-lg border transition-all cursor-pointer ${
+                          sub.completed 
+                            ? 'bg-white/5 border-white/5 text-white/50' 
+                            : 'bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-amber-400/40'
+                        }`}
+                        onClick={() => onToggleSubtask && onToggleSubtask(task.id, sub.id)}
+                      >
+                        <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center flex-shrink-0 transition-all ${
+                          sub.completed ? 'bg-emerald-400 border-emerald-400 text-zinc-950 font-bold' : 'border-white/40 bg-white/10'
+                        }`}>
+                          {sub.completed && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                        </div>
+                        <span className={`text-[11px] leading-snug select-none ${sub.completed ? 'line-through' : ''}`}>
+                          <span className="text-white/40 font-mono text-[10px] mr-1.5">{idx + 1}.</span>
+                          {sub.title}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         )}
       </div>
