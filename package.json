@@ -1,7 +1,7 @@
 {
   "name": "d-deck",
   "version": "2.0.0",
-  "description": "D-Deck: Futuristic Desktop Widget & Life Command Center for Windows & Mobile",
+  "description": "D-Deck: Futuristic Desktop Widget & Life Command Center for Windows & macOS",
   "main": "dist-electron/electron/main.js",
   "author": "Code & Chaos <https://github.com/codeandchaos-studio>",
   "repository": "https://github.com/codeandchaos-studio/D-Deck",

@@ -488,15 +488,15 @@ export const DeckView: React.FC<DeckViewProps> = ({
                 <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
                   <div className="p-3 rounded-xl glass-card border border-white/20">
                     <span className="text-[10px] text-white/70 font-mono uppercase tracking-wider">Version History</span>
-                    <p className="text-white mt-1 font-semibold">1 Release (v1.0.0 Stable)</p>
+                    <p className="text-white mt-1 font-semibold">v2.0.0 Stable (Major Release)</p>
+                  </div>
+                  <div className="p-3 rounded-xl glass-card border border-white/20">
+                    <span className="text-[10px] text-white/70 font-mono uppercase tracking-wider">Supported Platforms</span>
+                    <p className="text-white mt-1 font-semibold">Desktop (Windows Live • macOS Coming)</p>
                   </div>
                   <div className="p-3 rounded-xl glass-card border border-white/20">
                     <span className="text-[10px] text-white/70 font-mono uppercase tracking-wider">Architecture</span>
                     <p className="text-white mt-1 font-semibold">Electron 35 • React 19 • TypeScript</p>
-                  </div>
-                  <div className="p-3 rounded-xl glass-card border border-white/20">
-                    <span className="text-[10px] text-white/70 font-mono uppercase tracking-wider">Storage Engine</span>
-                    <p className="text-white mt-1 font-semibold">Local JSON (%APPDATA%/d-deck)</p>
                   </div>
                   <div className="p-3 rounded-xl glass-card border border-white/20">
                     <span className="text-[10px] text-white/70 font-mono uppercase tracking-wider">License</span>

@@ -11,7 +11,7 @@ export interface Subtask {
 export interface TaskMeta {
   rating?: number; // 1 to 5 stars for movies/games
   status?: 'planned' | 'in-progress' | 'completed' | 'dropped';
-  platform?: string; // PC, Steam, PS5, Web, Mobile
+  platform?: string; // PC, Steam, PS5, Web, Mac
   link?: string; // repo, doc, or streaming link
   tag?: string;
 }

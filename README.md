@@ -4,7 +4,7 @@
 
 # D-Deck
 
-A clean, distraction-free desktop to-do widget for Windows with continuous audio reminders, a sprint timer, and daily habit auto-reset.
+A clean, distraction-free desktop to-do widget engineered for computers, laptops, and workstations (Windows available now, macOS releasing shortly) with continuous audio reminders, a sprint timer, and daily protocol auto-reset.
 
 **Built by Code & Chaos — We Built Stuff**
 
@@ -33,9 +33,9 @@ Most to-do apps send a single quiet notification that is easy to miss. D-Deck ke
 - A 1-click countdown timer built right into the widget header (15m, 25m, 45m, 60m).
 - Great for coding sprints, quick gaming sessions, or reading breaks. Soft audio chime when your time is up.
 
-### Daily Habit Auto-Reset
-- Mark everyday tasks (like workouts, hydration, or daily reviews) as a **Daily Routine**.
-- When you finish them, check them off. At midnight, completed routines automatically reset back to unchecked for the next day, so you never have to re-type them.
+### Daily Protocol Auto-Reset
+- Mark everyday tasks (like workouts, hydration, or daily reviews) as a **Daily Protocol**.
+- When you finish them, check them off. At midnight, completed protocols automatically reset back to unchecked for the next day, so you never have to re-type them.
 
 ### Freeform Tags & Fast Search
 - No rigid folders. Tag your tasks however you want (e.g. `coding`, `gaming`, `gym`, `work`) and filter through them in seconds.
@@ -44,6 +44,13 @@ Most to-do apps send a single quiet notification that is easy to miss. D-Deck ke
 - No cloud accounts, no sign-ups, and zero background telemetry.
 - Everything stays on your machine, saved in `%APPDATA%/d-deck/d-deck-data.json`.
 - Includes 1-click data export and backup anytime you want.
+
+## Platform Support
+
+D-Deck is designed and engineered exclusively for desktop computers, laptops, and workstations:
+- **Windows 10 / 11**: Fully supported (Setup Installer & Zero-Install Portable `.exe`).
+- **macOS**: In active development — releasing shortly.
+- *Notice*: D-Deck is built purely for computer displays where deep work, development, and gaming happen. There is no mobile or Android companion app.
 
 ## How to get it
 
